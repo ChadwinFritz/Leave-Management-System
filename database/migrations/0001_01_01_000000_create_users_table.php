@@ -20,7 +20,7 @@ return new class extends Migration
             
             $table->unsignedTinyInteger('level')->default(0); 
             
-            $table->string('username')->unique(); // Unique username
+            $table->string('username')->nullable()->unique();
             $table->string('password'); // User password
 
             $table->string('status')->default('pending');
