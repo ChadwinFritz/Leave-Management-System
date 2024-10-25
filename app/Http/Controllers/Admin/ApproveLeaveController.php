@@ -36,10 +36,10 @@ class ApproveLeaveController extends Controller
             'total_leave' => $leaveApplication->number_of_days, // Assuming this is the total leave
             'start_date' => $leaveApplication->start_date,
             'end_date' => $leaveApplication->end_date,
-            'start_half' => $leaveApplication->start_half,
-            'end_half' => $leaveApplication->end_half,
-            'on_date' => $leaveApplication->on_date,
-            'on_time' => $leaveApplication->on_time,
+            'start_half' => $leaveApplication->start_half ?? null,
+            'end_half' => $leaveApplication->end_half ?? null,
+            'on_date' => $leaveApplication->on_date ?? null,
+            'on_time' => $leaveApplication->on_time ?? null,
             'leave_type' => $leaveApplication->leave_type,
         ]);
 

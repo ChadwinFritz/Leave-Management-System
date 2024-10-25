@@ -46,15 +46,7 @@
             </a>
 
             <!-- Logout Button -->
-            <form action="
-                 @if(auth()->user()->level === 1)
-                     {{ route('admin.logout') }}
-                 @elseif(auth()->user()->level === 2)
-                     {{ route('superadmin.logout') }}
-                 @else
-                     {{ route('user.logout') }}
-                 @endif
-             " method="POST" class="inline">
+            <form action="{{ route('admin.logout') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit" class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded">
                     Logout

@@ -37,7 +37,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Logout Routes
-Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout')->middleware('auth');
+Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout')->middleware('auth:admin');
 Route::post('/superadmin/logout', [LoginController::class, 'logout'])->name('superadmin.logout')->middleware('auth:superadmin');
 Route::post('/user/logout', [LoginController::class, 'logout'])->name('user.logout')->middleware('auth');
 

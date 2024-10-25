@@ -59,7 +59,22 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirect to the login page after logout
+        // Redirect to the login page after logout based on user level
+        if ($request->user()) {
+            // Determine the user's level for redirection after logout
+            switch ($request->user()->level) {
+                case 0: // Normal User
+                    return redirect()->route('auth.login')->with('message', 'You have been logged out successfully.');
+                case 1: // Admin
+                    return redirect()->route('auth.login')->with('message', 'You have been logged out successfully.');
+                case 2: // Super Admin
+                    return redirect()->route('auth.login')->with('message', 'You have been logged out successfully.');
+                default:
+                    return redirect()->route('auth.login')->withErrors('Unauthorized access.');
+            }
+        }
+
+        // Default redirection if no user found
         return redirect()->route('auth.login')->with('message', 'You have been logged out successfully.');
     }
 }

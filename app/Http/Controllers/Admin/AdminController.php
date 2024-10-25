@@ -24,11 +24,11 @@ class AdminController extends Controller
     // Show the user management dashboard
     public function indexManageUsers()
     {
-        // Fetch all users, keeping them as model objects
-        $users = User::all(); // No need to map if you want to use properties directly
+        // Fetch all users
+        $employees = User::all(); // Fetch users and assign them to $employees to match the Blade file
 
-        // Return the view with users data
-        return view('admin.admin_manage_users', compact('users'));
+        // Return the view with the users data
+        return view('admin.admin_manage_users', compact('employees')); // Pass $employees to the view
     }
 
     // Delete a user
@@ -46,7 +46,7 @@ class AdminController extends Controller
         $user->delete();
 
         // Redirect back with a success message
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('admin.manage.users')->with('success', 'User deleted successfully.');
     }
 
     // Helper method to get role name based on user level

@@ -37,8 +37,8 @@ class LeaveSeeder extends Seeder
                 'total_leave' => 3,
                 'start_date' => Carbon::create(2024, 11, 1),
                 'end_date' => Carbon::create(2024, 11, 3),
-                'start_half' => 'morning',
-                'end_half' => 'afternoon',
+                'start_half' => null,
+                'end_half' => null,
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type' => 'vacation', // Ensure this code exists in leave_types
@@ -52,7 +52,7 @@ class LeaveSeeder extends Seeder
                 'start_date' => Carbon::create(2024, 11, 10),
                 'end_date' => Carbon::create(2024, 11, 12),
                 'start_half' => null,
-                'end_half' => 'morning',
+                'end_half' => null,
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type' => 'personal_leave', // Ensure this code exists in leave_types
@@ -65,10 +65,10 @@ class LeaveSeeder extends Seeder
                 'total_leave' => 1,
                 'start_date' => Carbon::create(2024, 11, 15),
                 'end_date' => Carbon::create(2024, 11, 15),
-                'start_half' => 'afternoon',
+                'start_half' => null,
                 'end_half' => null,
-                'on_date' => Carbon::create(2024, 11, 15),
-                'on_time' => '14:00:00',
+                'on_date' => null,
+                'on_time' => null,
                 'leave_type' => 'sick_leave', // Ensure this code exists in leave_types
                 'created_at' => now(),
                 'updated_at' => now(),
