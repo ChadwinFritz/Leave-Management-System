@@ -18,7 +18,7 @@ class LeaveApplicationSeeder extends Seeder
         DB::table('leave_applications')->insert([
             [
                 'employee_id' => 1, // Assuming employee with ID 1
-                'leave_type' => 'sick_leave',
+                'leave_type_id' => 1, // Assuming sick leave has ID 1
                 'start_date' => Carbon::now()->format('Y-m-d'),
                 'end_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
                 'start_half' => null,
@@ -35,7 +35,7 @@ class LeaveApplicationSeeder extends Seeder
             ],
             [
                 'employee_id' => 2, // Assuming employee with ID 2
-                'leave_type' => 'vacation',
+                'leave_type_id' => 2, // Assuming vacation has ID 2
                 'start_date' => Carbon::now()->addDays(7)->format('Y-m-d'),
                 'end_date' => Carbon::now()->addDays(14)->format('Y-m-d'),
                 'start_half' => null,
@@ -52,7 +52,7 @@ class LeaveApplicationSeeder extends Seeder
             ],
             [
                 'employee_id' => 3, // Assuming employee with ID 3
-                'leave_type' => 'personal_leave',
+                'leave_type_id' => 3, // Assuming personal leave has ID 3
                 'start_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
                 'end_date' => Carbon::now()->addDays(4)->format('Y-m-d'),
                 'start_half' => 'morning',
@@ -69,7 +69,7 @@ class LeaveApplicationSeeder extends Seeder
             ],
             [
                 'employee_id' => 4, // Assuming employee with ID 4
-                'leave_type' => 'bereavement',
+                'leave_type_id' => 4, // Assuming bereavement has ID 4
                 'start_date' => Carbon::now()->format('Y-m-d'),
                 'end_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
                 'start_half' => null,
@@ -86,7 +86,7 @@ class LeaveApplicationSeeder extends Seeder
             ],
             [
                 'employee_id' => 5, // Assuming employee with ID 5
-                'leave_type' => 'sick_leave',
+                'leave_type_id' => 1, // Assuming sick leave has ID 1
                 'start_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
                 'end_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
                 'start_half' => 'afternoon',

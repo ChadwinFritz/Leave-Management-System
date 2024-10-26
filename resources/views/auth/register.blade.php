@@ -9,6 +9,13 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Surname -->
+        <div class="mt-4">
+            <x-input-label for="surname" :value="__('Surname')" />
+            <x-text-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="old('surname')" required autocomplete="family-name" />
+            <x-input-error :messages="$errors->get('surname')" class="mt-2" />
+        </div>
+
         <!-- Username -->
         <div class="mt-4">
             <x-input-label for="username" :value="__('Username')" />
@@ -21,6 +28,72 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Phone -->
+        <div class="mt-4">
+            <x-input-label for="phone" :value="__('Phone')" />
+            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" autocomplete="tel" />
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+        </div>
+
+        <!-- Address -->
+        <div class="mt-4">
+            <x-input-label for="address" :value="__('Address')" />
+            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" autocomplete="street-address" />
+            <x-input-error :messages="$errors->get('address')" class="mt-2" />
+        </div>
+
+        <!-- Hire Date -->
+        <div class="mt-4">
+            <x-input-label for="hire_date" :value="__('Hire Date')" />
+            <x-text-input id="hire_date" class="block mt-1 w-full" type="date" name="hire_date" :value="old('hire_date')" autocomplete="hire-date" />
+            <x-input-error :messages="$errors->get('hire_date')" class="mt-2" />
+        </div>
+
+        <!-- Department -->
+        <div class="mt-4">
+            <x-input-label for="department_id" :value="__('Department')" />
+            <select id="department_id" name="department_id" class="block mt-1 w-full" required>
+                <option value="">{{ __('Select Department') }}</option>
+                @foreach($departments ?? [] as $department) <!-- Default to empty array -->
+                    <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                        {{ $department->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('department_id')" class="mt-2" />
+        </div>
+
+        <!-- Duty -->
+        <div class="mt-4">
+            <x-input-label for="duty_id" :value="__('Duty')" />
+            <select id="duty_id" name="duty_id" class="block mt-1 w-full" required>
+                <option value="">{{ __('Select Duty') }}</option>
+                @foreach($duties ?? [] as $duty) <!-- Default to empty array to avoid undefined variable error -->
+                    <option value="{{ $duty->id }}" {{ old('duty_id') == $duty->id ? 'selected' : '' }}>
+                        {{ $duty->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('duty_id')" class="mt-2" />
+        </div>
+
+        <!-- Employee Code -->
+        <div class="mt-4">
+            <x-input-label for="employee_code" :value="__('Employee Code')" />
+            <x-text-input id="employee_code" class="block mt-1 w-full" type="text" name="employee_code" :value="$formattedEmployeeCode" required readonly />
+            <x-input-error :messages="$errors->get('employee_code')" class="mt-2" />
+        </div>
+
+        <!-- Employment Status -->
+        <div class="mt-4">
+            <x-input-label for="employment_status" :value="__('Employment Status')" />
+            <select id="employment_status" name="employment_status" class="block mt-1 w-full">
+                <option value="active" {{ old('employment_status') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ old('employment_status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+            </select>
+            <x-input-error :messages="$errors->get('employment_status')" class="mt-2" />
         </div>
 
         <!-- Password -->

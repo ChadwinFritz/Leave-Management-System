@@ -3,7 +3,7 @@
         <!-- Logo/Brand -->
         <div>
             <a href="{{ route('user.dashboard') }}" class="text-black text-2xl font-bold">
-                User Dashboard
+                Employee
             </a>
         </div>
 

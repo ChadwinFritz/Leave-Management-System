@@ -88,10 +88,13 @@ class UserController extends Controller
     // Method to apply for leave
     public function applyForLeave()
     {
-        // Logic to show the leave application form
-        return view('user.leave_application');
-    }
+        // Get the authenticated user's employee record
+        $employee = Employee::where('user_id', Auth::id())->firstOrFail();
 
+        // Pass the employee data to the view
+        return view('user.user_leave_application', compact('employee')); // Ensure 'employee' is passed
+    }
+    
     // Method to view leave history
     public function leaveHistory()
     {

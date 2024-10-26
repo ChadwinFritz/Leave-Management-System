@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <!-- Navigation Bar -->
     <x-user.nav />
 
@@ -29,14 +28,18 @@
                     <div>
                         @php $leaveTypes = \App\Models\LeaveType::all(); @endphp
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Leave Type</label>
-                            <select name="leave_type" class="form-select mt-1 block w-full" required>
+                        <!-- Leave Type -->
+                        <div class="mt-4">
+                            <x-input-label for="leave_type_id" :value="__('Leave Type')" />
+                            <select id="leave_type_id" name="leave_type_id" class="block mt-1 w-full" required>
+                                <option value="">{{ __('Select Leave Type') }}</option>
                                 @foreach($leaveTypes as $leaveType)
-                                    <option value="{{ $leaveType->id }}">{{ $leaveType->name }}</option>
+                                    <option value="{{ $leaveType->id }}" {{ old('leave_type_id') == $leaveType->id ? 'selected' : '' }}>
+                                        {{ $leaveType->name }}
+                                    </option>
                                 @endforeach
                             </select>
-                            <span class="text-gray-500 text-sm">Select Leave Type</span>
+                            <x-input-error :messages="$errors->get('leave_type_id')" class="mt-2" />
                         </div>
 
                         <div class="mb-4">
@@ -45,14 +48,28 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="block text-gray-700">End Date</label>
+                            <input name="end_date" type="date" class="form-input mt-1 block w-full" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Employee Code</label>
+                            <input type="text" name="employee_code" class="form-input mt-1 block w-full" 
+                                value="{{ $employee->employee_code }}" readonly />
+                            <span class="text-gray-500 text-sm">Employee unique code</span>
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block text-gray-700">Name</label>
-                            <input type="text" name="name" class="form-input mt-1 block w-full" value="{{ Auth::user()->name }}" required/>
+                            <input type="text" name="name" class="form-input mt-1 block w-full" 
+                                value="{{ $employee->name }}" required/>
                             <span class="text-gray-500 text-sm">Name of employee</span>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Username</label>
-                            <input type="text" name="username" class="form-input mt-1 block w-full" value="{{ Auth::user()->username }}" required/>
+                            <input type="text" name="username" class="form-input mt-1 block w-full" 
+                                value="{{ Auth::user()->username }}" required/>
                             <span class="text-gray-500 text-sm">Username of employee</span>
                         </div>
 
@@ -66,13 +83,9 @@
                     <div>
                         <div class="mb-4">
                             <label class="block text-gray-700">Contact Number</label>
-                            <input type="text" class="form-input mt-1 block w-full" name="contact_number" placeholder="Mobile number" required/>
+                            <input type="text" class="form-input mt-1 block w-full" name="contact_number" 
+                                value="{{ $employee->phone }}" readonly placeholder="Mobile number" required/>
                             <span class="text-gray-500 text-sm">Employee contact number</span>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">End Date</label>
-                            <input name="end_date" type="date" class="form-input mt-1 block w-full" required>
                         </div>
 
                         @csrf

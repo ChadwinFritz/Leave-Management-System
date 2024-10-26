@@ -33,7 +33,8 @@ Route::middleware('guest')->group(function () {
         return view('auth.register');
     })->name('register');
 
-    Route::post('/register', [RegisteredUserController::class, 'register'])->name('auth.register');
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('auth.register');
 });
 
 // Logout Routes
@@ -111,4 +112,5 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('user/leave/history', [LeaveHistoryController::class, 'index'])->name('user.leave.history');
     Route::get('user/profile/edit', [UserController::class, 'editProfile'])->name('user.profile.edit');
     Route::post('user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
+    Route::get('/user/leave/application', [UserController::class, 'applyForLeave'])->name('user.leave.application');
 });

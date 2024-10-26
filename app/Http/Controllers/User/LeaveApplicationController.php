@@ -23,7 +23,7 @@ class LeaveApplicationController extends Controller
     {
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            'leave_type' => 'required|exists:leave_types,id',
+            'leave_type_id' => 'required|exists:leave_types,id', // Change to leave_type_id
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string|max:255',
@@ -46,7 +46,7 @@ class LeaveApplicationController extends Controller
         // Create a new leave application
         LeaveApplication::create([
             'employee_id' => $employee->id,
-            'leave_type' => $request->leave_type,
+            'leave_type_id' => $request->leave_type_id, // Use leave_type_id instead of leave_type
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'reason' => $request->reason,

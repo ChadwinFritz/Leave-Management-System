@@ -3,7 +3,7 @@
         <!-- Logo/Brand -->
         <div>
             <a href="{{ route('superadmin.dashboard') }}" class="text-black text-2xl font-bold">
-                Super Admin Dashboard
+                Super Admin
             </a>
         </div>
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LeaveApplication extends Model
 {
@@ -11,7 +12,7 @@ class LeaveApplication extends Model
 
     protected $fillable = [
         'employee_id',
-        'leave_type',
+        'leave_type_id', // Updated to reflect the foreign key
         'start_date',
         'end_date',
         'start_half',
@@ -36,7 +37,7 @@ class LeaveApplication extends Model
      * Relationship to the Employee model.
      * A leave application belongs to an employee.
      */
-    public function employee()
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
@@ -54,8 +55,8 @@ class LeaveApplication extends Model
      * Relationship to the LeaveType model.
      * A leave application belongs to a specific leave type.
      */
-    public function leaveType()
+    public function leaveType(): BelongsTo
     {
-        return $this->belongsTo(LeaveType::class, 'leave_type', 'code');
+        return $this->belongsTo(LeaveType::class, 'leave_type_id');
     }
 }

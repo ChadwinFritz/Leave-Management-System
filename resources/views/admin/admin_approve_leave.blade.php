@@ -30,9 +30,9 @@
                             @foreach($leaveApplications as $application)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $application->employee->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->leave_type }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->start_date }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->end_date }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->leaveType->name }}</td> <!-- Updated to access leave type name -->
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->start_date->format('Y-m-d') }}</td> <!-- Formatting the date -->
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $application->end_date->format('Y-m-d') }}</td> <!-- Formatting the date -->
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $application->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <form action="{{ route('leave.approve', $application->id) }}" method="POST" class="inline">

@@ -4,7 +4,7 @@
         <!-- Logo/Brand -->
         <div>
             <a href="{{ route('admin.dashboard') }}" class="text-black text-2xl font-bold">
-                Admin Dashboard
+                Admin
             </a>
         </div>
 

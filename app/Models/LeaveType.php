@@ -22,7 +22,7 @@ class LeaveType extends Model
      */
     public function leaves(): HasMany
     {
-        return $this->hasMany(Leave::class, 'leave_type', 'code');
+        return $this->hasMany(Leave::class, 'leave_type_id'); // Updated to use leave_type_id
     }
 
     /**
@@ -31,6 +31,6 @@ class LeaveType extends Model
      */
     public function leaveApplications(): HasMany
     {
-        return $this->hasMany(LeaveApplication::class, 'leave_type', 'code');
+        return $this->hasMany(LeaveApplication::class, 'leave_type_id', 'employee_id'); // Updated to use leave_type_id
     }
 }

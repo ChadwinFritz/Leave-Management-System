@@ -20,7 +20,7 @@
                     @foreach($leaveHistory as $leave)
                         <tr class="border-b">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $leave->leaveType ? $leave->leaveType->name : 'N/A' }}
+                                {{ $leave->leaveType->name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $leave->start_date->format('Y-m-d') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $leave->end_date->format('Y-m-d') }}</td>
