@@ -46,8 +46,6 @@ class RegisteredUserController extends Controller
 
         if ($existingEmployee) {
             // Handle the case where the employee code already exists (optional)
-            // You might want to throw an error or increment the code until you find an unused one
-            // For example, loop until you find an available code
             do {
                 $employeeCode++;
                 $formattedEmployeeCode = 'EMP' . str_pad($employeeCode, 3, '0', STR_PAD_LEFT);
@@ -89,7 +87,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Create a new employee linked to the user
+        // Create a new employee linked to the user with status set to 'pending'
         Employee::create([
             'name' => $request->name,
             'surname' => $request->surname,
@@ -102,13 +100,14 @@ class RegisteredUserController extends Controller
             'department_id' => $request->department_id,
             'duty_id' => $request->duty_id,
             'employment_status' => $request->employment_status,
+            'status' => 'pending', // Set status to pending
         ]);
 
         // Fire the Registered event
         event(new Registered($user));
 
         // Redirect to the login page with a success message
-        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+        return redirect()->route('login')->with('success', 'Registration successful. Please wait for admin approval to log in.');
     }
 
     /**

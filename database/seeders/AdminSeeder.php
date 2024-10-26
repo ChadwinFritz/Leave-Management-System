@@ -20,6 +20,8 @@ class AdminSeeder extends Seeder
             'username' => 'admin', // Ensure this is unique
             'password' => Hash::make('password'), // Replace with a secure password
             'level' => 1, // Setting the level to 1 for Admin role
+            'status' => 'active',
+            'is_approved' => true, // Automatically approve the user
         ]);
 
         // Optionally, create a Super Admin user
@@ -29,6 +31,8 @@ class AdminSeeder extends Seeder
             'username' => 'superadmin', // Ensure this is unique
             'password' => Hash::make('superpassword'), // Replace with a secure password
             'level' => 2, // Setting the level to 2 for Super Admin role
+            'status' => 'active',
+            'is_approved' => true, // Automatically approve the user
         ]);
     }
 }

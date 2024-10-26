@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable(); // Full name of the user
-
+        
             $table->string('email')->unique(); // Email address of the user
             // Using integer type for 'level' to store role levels: 0 for users, 1 for admins, 2 for super admins
-            
             $table->unsignedTinyInteger('level')->default(0); 
             
             $table->string('username')->nullable()->unique();
             $table->string('password'); // User password
-
-            $table->string('status')->default('pending');
-
+        
+            $table->string('status')->default('pending'); // Status can be 'pending', 'approved', etc.
+            $table->boolean('is_approved')->default(false); // Indicates if the user is approved by an admin
+        
             $table->rememberToken(); // Token for "remember me" functionality
             $table->timestamps(); // Created and updated timestamps
-        });
+        });        
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

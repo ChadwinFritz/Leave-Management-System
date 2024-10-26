@@ -13,47 +13,52 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Sample data for level 0 users
+        // Sample data for level 0 users with mixed approval statuses
         $users = [
             [
-                'name' => 'John Doe',
-                'email' => 'john.doe@example.com',
-                'username' => 'johndoe',
-                'password' => Hash::make('password123'),
+                'name' => 'Alice Brown',
+                'email' => 'alice.brown@example.com',
+                'username' => 'alicebrown',
+                'password' => Hash::make('alicepass123'),
                 'level' => 0,
                 'status' => 'active',
+                'is_approved' => true,
             ],
             [
-                'name' => 'Jane Smith',
-                'email' => 'jane.smith@example.com',
-                'username' => 'janesmith',
-                'password' => Hash::make('password123'),
+                'name' => 'Charlie Thompson',
+                'email' => 'charlie.thompson@example.com',
+                'username' => 'charliethompson',
+                'password' => Hash::make('charliepass123'),
                 'level' => 0,
-                'status' => 'active',
+                'status' => 'pending',
+                'is_approved' => false, // Not approved
             ],
             [
-                'name' => 'Robert Johnson',
-                'email' => 'robert.johnson@example.com',
-                'username' => 'robertjohnson',
-                'password' => Hash::make('password123'),
+                'name' => 'Sophia Garcia',
+                'email' => 'sophia.garcia@example.com',
+                'username' => 'sophiagarcia',
+                'password' => Hash::make('sophiapass123'),
                 'level' => 0,
                 'status' => 'active',
+                'is_approved' => true,
             ],
             [
-                'name' => 'Emily Davis',
-                'email' => 'emily.davis@example.com',
-                'username' => 'emilydavis',
-                'password' => Hash::make('password123'),
+                'name' => 'Liam Lee',
+                'email' => 'liam.lee@example.com',
+                'username' => 'liamlee',
+                'password' => Hash::make('liampass123'),
                 'level' => 0,
-                'status' => 'active',
+                'status' => 'pending',
+                'is_approved' => false, // Not approved
             ],
             [
-                'name' => 'Michael Brown',
-                'email' => 'michael.brown@example.com',
-                'username' => 'michaelbrown',
-                'password' => Hash::make('password123'),
+                'name' => 'Olivia Martinez',
+                'email' => 'olivia.martinez@example.com',
+                'username' => 'oliviamartinez',
+                'password' => Hash::make('oliviapass123'),
                 'level' => 0,
-                'status' => 'active',
+                'status' => 'pending',
+                'is_approved' => false, // Not approved
             ],
         ];
 

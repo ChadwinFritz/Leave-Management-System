@@ -21,15 +21,21 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Attempt to log the user in
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-            // If authentication succeeds, call the authenticated method to redirect user
-            return $this->authenticated($request, Auth::user());
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+
+        // Check if the user exists and if their account is approved
+        if ($user && $user->is_approved) { // Assuming 'is_approved' is a boolean column indicating account status
+            // Attempt to log the user in
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+                // If authentication succeeds, call the authenticated method to redirect user
+                return $this->authenticated($request, Auth::user());
+            }
         }
 
-        // If authentication fails, redirect back with an error
+        // If authentication fails or account is not approved, redirect back with an error
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => $user ? 'Your account is not approved yet.' : 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
 
