@@ -14,9 +14,10 @@ class CreateSystemSettingsTable extends Migration
     public function up()
     {
         Schema::create('system_settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('key')->unique(); // For setting names
-            $table->text('value')->nullable(); // For setting values
+            $table->boolean('maintenance_mode')->default(false);
+            $table->string('default_language')->default('en');
+            $table->string('theme')->default('light');
+            $table->string('time_zone')->default('UTC');
             $table->timestamps();
         });
     }

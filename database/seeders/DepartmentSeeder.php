@@ -50,6 +50,41 @@ class DepartmentSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'code' => 'MKT',
+                'name' => 'Marketing',
+                'description' => 'Responsible for promoting products and managing brand awareness.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'SAL',
+                'name' => 'Sales',
+                'description' => 'Handles customer relationships and drives revenue through sales strategies.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'IT',
+                'name' => 'Information Technology',
+                'description' => 'Manages technology infrastructure and supports IT operations.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'R&D',
+                'name' => 'Research and Development',
+                'description' => 'Focuses on innovating and improving products and services.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'CSR',
+                'name' => 'Corporate Social Responsibility',
+                'description' => 'Develops and manages sustainability initiatives and community outreach programs.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

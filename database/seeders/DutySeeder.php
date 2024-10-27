@@ -50,6 +50,41 @@ class DutySeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'code' => 'DESIGN',
+                'name' => 'Designer',
+                'description' => 'Creates visuals and design elements for products.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'DEVOPS',
+                'name' => 'DevOps Engineer',
+                'description' => 'Responsible for deploying and managing applications.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'SALES',
+                'name' => 'Sales Representative',
+                'description' => 'Handles sales and customer relations.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'MARKETING',
+                'name' => 'Marketing Specialist',
+                'description' => 'Develops marketing strategies to promote products.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'SUPPORT',
+                'name' => 'Support Specialist',
+                'description' => 'Provides assistance and support to customers.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

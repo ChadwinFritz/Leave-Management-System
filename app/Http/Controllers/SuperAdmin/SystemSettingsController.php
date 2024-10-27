@@ -23,16 +23,20 @@ class SystemSettingsController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'site_name' => 'required|string|max:255',
-            'admin_email' => 'required|string|email|max:255',
+            'maintenance_mode' => 'required|boolean',
+            'default_language' => 'required|string|max:2', // Assuming you are using ISO language codes
+            'theme' => 'required|string|in:light,dark', // Validate theme
+            'time_zone' => 'required|string', // Add time zone validation
         ]);
 
         // Retrieve the current settings from the database
         $settings = SystemSetting::first();
 
         // Update settings with the new values
-        $settings->site_name = $request->site_name;
-        $settings->admin_email = $request->admin_email;
+        $settings->maintenance_mode = $request->maintenance_mode;
+        $settings->default_language = $request->default_language;
+        $settings->theme = $request->theme;
+        $settings->time_zone = $request->time_zone;
 
         // Save the changes to the database
         $settings->save();
