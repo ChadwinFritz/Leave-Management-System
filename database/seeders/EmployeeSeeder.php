@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EmployeeSeeder extends Seeder
 {
@@ -14,11 +15,12 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('employees')->insert([
+        // Sample data for employees
+        $employees = [
             [
-                'name' => 'John',
-                'surname' => 'Doe',
-                'email' => 'john.doe@example.com',
+                'name' => 'Alice',
+                'surname' => 'Brown',
+                'email' => 'alice.brown@example.com',
                 'phone' => '555-1234',
                 'address' => '123 Main St, Anytown, USA',
                 'hire_date' => '2023-01-15',
@@ -28,13 +30,13 @@ class EmployeeSeeder extends Seeder
                 'employee_code' => 'EMP001',
                 'employment_status' => 'active',
                 'notes' => 'Top performer in the sales department.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name' => 'Jane',
-                'surname' => 'Smith',
-                'email' => 'jane.smith@example.com',
+                'name' => 'Charlie',
+                'surname' => 'Thompson',
+                'email' => 'charlie.thompson@example.com',
                 'phone' => '555-5678',
                 'address' => '456 Oak St, Anytown, USA',
                 'hire_date' => '2022-05-22',
@@ -44,13 +46,13 @@ class EmployeeSeeder extends Seeder
                 'employee_code' => 'EMP002',
                 'employment_status' => 'active',
                 'notes' => 'Excellent in project management.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name' => 'Emily',
-                'surname' => 'Johnson',
-                'email' => 'emily.johnson@example.com',
+                'name' => 'Sophia',
+                'surname' => 'Garcia',
+                'email' => 'sophia.garcia@example.com',
                 'phone' => '555-8765',
                 'address' => '789 Pine St, Anytown, USA',
                 'hire_date' => '2021-11-30',
@@ -60,13 +62,13 @@ class EmployeeSeeder extends Seeder
                 'employee_code' => 'EMP003',
                 'employment_status' => 'active',
                 'notes' => 'Great team player and communicator.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name' => 'Michael',
-                'surname' => 'Brown',
-                'email' => 'michael.brown@example.com',
+                'name' => 'Liam',
+                'surname' => 'Lee',
+                'email' => 'liam.lee@example.com',
                 'phone' => '555-4321',
                 'address' => '321 Maple St, Anytown, USA',
                 'hire_date' => '2020-08-15',
@@ -76,13 +78,13 @@ class EmployeeSeeder extends Seeder
                 'employee_code' => 'EMP004',
                 'employment_status' => 'active',
                 'notes' => 'Promoted to senior developer.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'name' => 'Sarah',
-                'surname' => 'Davis',
-                'email' => 'sarah.davis@example.com',
+                'name' => 'Olivia',
+                'surname' => 'Martinez',
+                'email' => 'olivia.martinez@example.com',
                 'phone' => '555-5670',
                 'address' => '654 Cedar St, Anytown, USA',
                 'hire_date' => '2019-06-25',
@@ -92,9 +94,17 @@ class EmployeeSeeder extends Seeder
                 'employee_code' => 'EMP005',
                 'employment_status' => 'active',
                 'notes' => 'Has shown leadership potential.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
-        ]);
+        ];
+
+        // Insert or update employees in the database using updateOrInsert to avoid duplicates
+        foreach ($employees as $employee) {
+            DB::table('employees')->updateOrInsert(
+                ['email' => $employee['email']], // Unique identifier to check for duplicates
+                $employee
+            );
+        }
     }
 }

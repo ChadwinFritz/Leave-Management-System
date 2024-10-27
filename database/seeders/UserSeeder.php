@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -23,6 +24,8 @@ class UserSeeder extends Seeder
                 'level' => 0,
                 'status' => 'active',
                 'is_approved' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Charlie Thompson',
@@ -32,6 +35,8 @@ class UserSeeder extends Seeder
                 'level' => 0,
                 'status' => 'pending',
                 'is_approved' => false, // Not approved
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Sophia Garcia',
@@ -41,6 +46,8 @@ class UserSeeder extends Seeder
                 'level' => 0,
                 'status' => 'active',
                 'is_approved' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Liam Lee',
@@ -50,6 +57,8 @@ class UserSeeder extends Seeder
                 'level' => 0,
                 'status' => 'pending',
                 'is_approved' => false, // Not approved
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'name' => 'Olivia Martinez',
@@ -59,10 +68,17 @@ class UserSeeder extends Seeder
                 'level' => 0,
                 'status' => 'pending',
                 'is_approved' => false, // Not approved
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
 
-        // Insert users into the database
-        DB::table('users')->insert($users);
+        // Insert users into the database using updateOrInsert to avoid duplicates
+        foreach ($users as $user) {
+            DB::table('users')->updateOrInsert(
+                ['email' => $user['email']], // Unique identifier to check for duplicates
+                $user
+            );
+        }
     }
 }

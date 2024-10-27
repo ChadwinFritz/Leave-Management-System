@@ -40,7 +40,7 @@ class CreateLeavesTable extends Migration
             $table->time('on_time')->nullable(); 
             
             // Foreign key to the leave types table
-            $table->string('leave_type'); // This will refer to the leave_types table
+            $table->string('leave_type')->nullable(); // Make leave_type nullable
             $table->foreign('leave_type')->references('code')->on('leave_types')->onDelete('cascade'); // Assuming leave_type stores the code from leave_types table
             
             // Standard timestamps column
