@@ -99,9 +99,42 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" oninput="validatePassword()" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
+            <!-- Password validation messages -->
+            <div id="passwordRequirements" class="mt-2 text-sm text-gray-600">
+                <p id="uppercase" class="text-gray-600">• At least one uppercase letter</p>
+                <p id="number" class="text-gray-600">• At least one number</p>
+                <p id="special" class="text-gray-600">• At least one special character (!@#$%^&*()_+)</p>
+            </div>
         </div>
+
+        <script>
+            function validatePassword() {
+                const password = document.getElementById('password').value;
+                
+                // Select each requirement element
+                const uppercase = document.getElementById('uppercase');
+                const number = document.getElementById('number');
+                const special = document.getElementById('special');
+
+                // Test password for each condition
+                const hasUppercase = /[A-Z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                const hasSpecial = /[!@#$%^&*()_+]/.test(password);
+
+                // Update styling based on validation status
+                uppercase.classList.toggle('text-green-500', hasUppercase);
+                uppercase.classList.toggle('text-gray-600', !hasUppercase);
+
+                number.classList.toggle('text-green-500', hasNumber);
+                number.classList.toggle('text-gray-600', !hasNumber);
+
+                special.classList.toggle('text-green-500', hasSpecial);
+                special.classList.toggle('text-gray-600', !hasSpecial);
+            }
+        </script>
 
         <!-- Confirm Password -->
         <div class="mt-4">

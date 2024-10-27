@@ -33,7 +33,7 @@ Route::middleware('guest')->group(function () {
         return view('auth.register');
     })->name('register');
 
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register.create');
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('auth.register');
 });
 

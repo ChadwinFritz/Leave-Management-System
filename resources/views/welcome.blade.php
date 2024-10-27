@@ -17,7 +17,7 @@
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
             <div class="space-x-4">
                 <a href="{{ route('auth.login') }}" class="text-gray-700 hover:text-blue-600">Login</a>
-                <a href="{{ route('auth.register') }}" class="text-gray-700 hover:text-blue-600">Register</a>
+                <a href="{{ route('auth.register.create') }}" class="text-gray-700 hover:text-blue-600">Register</a>
             </div>
         </div>
     </nav>

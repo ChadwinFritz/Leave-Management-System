@@ -21,31 +21,23 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        // Fetch departments and duties
         $departments = Department::all();
         $duties = Duty::all();
 
         // Generate Employee Code
-        $lastEmployee = Employee::latest()->first(); // Get the last employee record
+        $lastEmployee = Employee::latest()->first();
 
-        // Check if any employee exists
         if ($lastEmployee) {
-            // Get the current highest number from the last employee code
-            $lastCode = (int) substr($lastEmployee->employee_code, -3); // Extract the last 3 digits
-            $employeeCode = $lastCode + 1; // Increment
+            $lastCode = (int) substr($lastEmployee->employee_code, -3);
+            $employeeCode = $lastCode + 1;
         } else {
-            // If no employees exist, start with 1
             $employeeCode = 1;
         }
 
-        // Format the new employee code
-        $formattedEmployeeCode = 'EMP' . str_pad($employeeCode, 3, '0', STR_PAD_LEFT); // Format as EMP001, EMP002, etc.
-
-        // Check if the generated employee code already exists
+        $formattedEmployeeCode = 'EMP' . str_pad($employeeCode, 3, '0', STR_PAD_LEFT);
         $existingEmployee = Employee::where('employee_code', $formattedEmployeeCode)->first();
 
         if ($existingEmployee) {
-            // Handle the case where the employee code already exists (optional)
             do {
                 $employeeCode++;
                 $formattedEmployeeCode = 'EMP' . str_pad($employeeCode, 3, '0', STR_PAD_LEFT);
@@ -61,7 +53,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate the incoming request data
+        // Validate the incoming request data with additional password rules
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
@@ -73,26 +65,36 @@ class RegisteredUserController extends Controller
             'department_id' => ['required', 'exists:departments,id'],
             'duty_id' => ['required', 'exists:duties,id'],
             'employment_status' => ['required', 'string'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[A-Z]/',       // Must contain at least one uppercase letter
+                'regex:/[0-9]/',       // Must contain at least one number
+                'regex:/[!@#$%^&*()_+]/', // Must contain at least one special character
+                'confirmed',
+            ],
+        ], [
+            // Custom error message for regex rule
+            'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character (!@#$%^&*()_+).',
         ]);
 
-        // Automatically set hire_date as the current date
         $hireDate = now();
 
         // Create a new user
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
-            'email' => $request->email, // Ensure this is included
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Create a new employee linked to the user with status set to 'pending'
+        // Create a new employee linked to the user
         Employee::create([
             'name' => $request->name,
             'surname' => $request->surname,
             'user_id' => $user->id,
-            'email' => $request->email, // Add email here
+            'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'hire_date' => $hireDate,
@@ -100,13 +102,11 @@ class RegisteredUserController extends Controller
             'department_id' => $request->department_id,
             'duty_id' => $request->duty_id,
             'employment_status' => $request->employment_status,
-            'status' => 'pending', // Set status to pending
+            'status' => 'pending',
         ]);
 
-        // Fire the Registered event
         event(new Registered($user));
 
-        // Redirect to the login page with a success message
         return redirect()->route('login')->with('success', 'Registration successful. Please wait for admin approval to log in.');
     }
 
