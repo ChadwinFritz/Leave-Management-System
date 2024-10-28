@@ -10,7 +10,7 @@
     <div class="container mx-auto py-6 px-4">
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-semibold text-gray-900">Manage Admins</h1>
-            <a href="{{ route('superadmin.create.admin') }}" class="bg-green-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600 transition">
+            <a href="{{ route('superadmin.create.admin') }}" class="bg-gray-500 text-black px-4 py-2 rounded-md shadow hover:bg-green-600 transition">
                 Add New Admin
             </a>
         </div>

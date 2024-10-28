@@ -19,11 +19,12 @@ class UserController extends Controller
         // Get the authenticated user's employee record
         $employee = Employee::where('user_id', Auth::id())->firstOrFail();
 
-        // Calculate total leaves taken by the user
-        $totalLeavesTaken = Leave::where('employee_id', $employee->id)->sum('days_taken'); // Sum of days taken
+        // Calculate total approved leaves taken by the user
+        $totalLeavesTaken = Leave::where('employee_id', $employee->id)
+            ->where('status', 'approved') // Only approved leaves
+            ->sum('number_of_days'); // Sum of number_of_days taken for approved leaves
 
-        // Calculate remaining leave balance
-        // This will now correctly use the leaveTypes relationship defined in Employee
+        // Calculate the total leave limit and remaining leave balance
         $totalLeaveLimit = $employee->leaveTypes()->sum('limit'); // Assuming 'limit' is the total days allowed for leave
         $remainingLeave = $totalLeaveLimit - $totalLeavesTaken;
 
@@ -33,13 +34,15 @@ class UserController extends Controller
         $remainingDays = [];
 
         foreach ($leaveTypes as $leaveType) {
-            // Calculate days taken for each leave type
+            // Calculate approved days taken for each leave type
             $daysTakenForType = Leave::where('employee_id', $employee->id)
                 ->where('leave_type_id', $leaveType->id)
-                ->sum('days_taken'); // Sum of days taken for this specific type
+                ->where('status', 'approved') // Only approved leaves for this type
+                ->sum('number_of_days'); // Sum of days taken for this specific type
 
+            // Append days taken and remaining days for each leave type
             $takenDays[] = $daysTakenForType;
-            $remainingDays[] = $leaveType->limit - $daysTakenForType; // Remaining days for this type
+            $remainingDays[] = max(0, $leaveType->limit - $daysTakenForType); // Ensure no negative values
         }
 
         // Return the view with the required data

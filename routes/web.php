@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\AdminController;
@@ -37,11 +36,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('auth.register');
 });
 
-// Logout Routes
-Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout')->middleware('auth:admin');
-Route::post('/superadmin/logout', [LoginController::class, 'logout'])->name('superadmin.logout')->middleware('auth:superadmin');
-Route::post('/user/logout', [LoginController::class, 'logout'])->name('user.logout')->middleware('auth');
-
 // Admin Employee Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     // Employee Management Routes
@@ -70,6 +64,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'indexDashboard'])->name('admin.dashboard'); // Admin Dashboard
     Route::get('/admin/manage-users', [AdminController::class, 'indexManageUsers'])->name('users.index'); // List Users
     Route::delete('/admin/manage-users/{id}', [AdminController::class, 'destroy'])->name('users.destroy'); // Delete User
+
+    Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
 });
 
 // Super Admin Routes
@@ -100,6 +96,8 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
     Route::get('superadmin/admins/create', [SuperAdminController::class, 'createAdmin'])->name('superadmin.create.admin');
 
+    Route::post('/superadmin/logout', [LoginController::class, 'logout'])->name('superadmin.logout');
+
 });
 
 
@@ -113,4 +111,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('user/profile/edit', [UserController::class, 'editProfile'])->name('user.profile.edit');
     Route::post('user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
     Route::get('/user/leave/application', [UserController::class, 'applyForLeave'])->name('user.leave.application');
+
+    Route::post('/user/logout', [LoginController::class, 'logout'])->name('user.logout');
 });
