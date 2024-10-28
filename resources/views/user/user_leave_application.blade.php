@@ -44,12 +44,17 @@
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Start Date</label>
-                            <input name="start_date" type="date" class="form-input mt-1 block w-full" required>
+                            <input name="start_date" id="start_date" type="date" class="form-input mt-1 block w-full" required onchange="calculateDays()" >
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">End Date</label>
-                            <input name="end_date" type="date" class="form-input mt-1 block w-full" required>
+                            <input name="end_date" id="end_date" type="date" class="form-input mt-1 block w-full" required onchange="calculateDays()">
+                        </div>
+
+                        <div class="mb-4" id="days_count" style="display: none;">
+                            <label class="block text-gray-700">Number of Days</label>
+                            <input type="text" id="days" class="form-input mt-1 block w-full" readonly>
                         </div>
 
                         <div class="mb-4">
@@ -99,4 +104,27 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function calculateDays() {
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+            const daysCountDiv = document.getElementById('days_count');
+            const daysInput = document.getElementById('days');
+
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (startDate && endDate && startDate <= endDate) {
+                const timeDiff = endDate - startDate;
+                const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+
+                daysCountDiv.style.display = 'block'; // Show the days count div
+                daysInput.value = dayDiff; // Set the value in the input
+            } else {
+                daysCountDiv.style.display = 'none'; // Hide the days count div if invalid
+                daysInput.value = ''; // Clear the value
+            }
+        }
+    </script>
 </x-app-layout>

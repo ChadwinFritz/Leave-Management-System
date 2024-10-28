@@ -20,17 +20,35 @@ class UserController extends Controller
         $employee = Employee::where('user_id', Auth::id())->firstOrFail();
 
         // Calculate total leaves taken by the user
-        $totalLeavesTaken = Leave::where('employee_id', $employee->id)->count();
+        $totalLeavesTaken = Leave::where('employee_id', $employee->id)->sum('days_taken'); // Sum of days taken
 
         // Calculate remaining leave balance
         // This will now correctly use the leaveTypes relationship defined in Employee
-        $totalLeaveLimit = $employee->leaveTypes()->sum('limit');
+        $totalLeaveLimit = $employee->leaveTypes()->sum('limit'); // Assuming 'limit' is the total days allowed for leave
         $remainingLeave = $totalLeaveLimit - $totalLeavesTaken;
+
+        // Prepare leave type data
+        $leaveTypes = LeaveType::all(); // Fetch all leave types
+        $takenDays = [];
+        $remainingDays = [];
+
+        foreach ($leaveTypes as $leaveType) {
+            // Calculate days taken for each leave type
+            $daysTakenForType = Leave::where('employee_id', $employee->id)
+                ->where('leave_type_id', $leaveType->id)
+                ->sum('days_taken'); // Sum of days taken for this specific type
+
+            $takenDays[] = $daysTakenForType;
+            $remainingDays[] = $leaveType->limit - $daysTakenForType; // Remaining days for this type
+        }
 
         // Return the view with the required data
         return view('user.user_dashboard', [
             'totalLeavesTaken' => $totalLeavesTaken,
             'remainingLeave' => $remainingLeave,
+            'leaveTypes' => $leaveTypes,
+            'takenDays' => $takenDays,
+            'remainingDays' => $remainingDays,
         ]);
     }
 
