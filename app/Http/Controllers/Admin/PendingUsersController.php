@@ -8,38 +8,47 @@ use Illuminate\Http\Request;
 
 class PendingUsersController extends Controller
 {
-    // Show the pending user registrations
+    /**
+     * Display a listing of pending users.
+     */
     public function index()
     {
-        // Fetch users that are pending approval
+        // Retrieve users with 'pending' status
         $pendingUsers = User::where('status', 'pending')->get();
 
-        // Return the view with pending users data
+        // Return the view with the list of pending users
         return view('admin.admin_pending_users', compact('pendingUsers'));
     }
 
-    // Approve a pending user
+    /**
+     * Approve a user registration.
+     */
     public function approve($id)
     {
-        // Find the user by ID
+        // Retrieve the user by ID
         $user = User::findOrFail($id);
         
-        // Update the user's status to 'active'
-        $user->status = 'active';
+        // Update the user's status and approval flag
+        $user->status = 'approved';
+        $user->is_approved = true;
         $user->save();
 
         // Redirect back with a success message
         return redirect()->route('users.pending')->with('success', 'User approved successfully.');
     }
 
-    // Reject a pending user
+    /**
+     * Reject a user registration.
+     */
     public function reject($id)
     {
-        // Find the user by ID
+        // Retrieve the user by ID
         $user = User::findOrFail($id);
         
-        // Optionally, you can delete the user or update their status
-        $user->delete(); // or you could set a status to 'rejected'
+        // Either delete the user or set status to 'rejected'
+        $user->status = 'rejected';
+        $user->is_approved = false;
+        $user->save();
 
         // Redirect back with a success message
         return redirect()->route('users.pending')->with('success', 'User rejected successfully.');

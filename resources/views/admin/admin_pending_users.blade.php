@@ -31,10 +31,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <form action="{{ route('users.approve', $user->id) }}" method="POST" class="inline">
                                             @csrf
+                                            @method('POST')
                                             <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
                                         </form>
                                         <form action="{{ route('users.reject', $user->id) }}" method="POST" class="inline">
                                             @csrf
+                                            @method('POST')
                                             <button type="submit" class="text-red-600 hover:text-red-900">Reject</button>
                                         </form>
                                     </td>
