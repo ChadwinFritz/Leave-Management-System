@@ -23,8 +23,8 @@ class Notification extends Model
     protected $fillable = [
         'user_id',
         'message',
-        'status', // 'read', 'unread', or other custom statuses
-        'date_sent',
+        'type', // 'leave_approval', 'reminder', 'alert', 'announcement'
+        'is_read',
     ];
 
     /**
@@ -34,6 +34,7 @@ class Notification extends Model
      */
     protected $casts = [
         'date_sent' => 'datetime',
+        'is_read' => 'boolean',
     ];
 
     /**
@@ -78,7 +79,7 @@ class Notification extends Model
      */
     public function scopeUnread($query)
     {
-        return $query->where('status', 'unread');
+        return $query->where('is_read', false);
     }
 
     /**
@@ -100,7 +101,7 @@ class Notification extends Model
      */
     public function markAsRead()
     {
-        $this->update(['status' => 'read']);
+        $this->update(['is_read' => true]);
     }
 
     /**
@@ -110,7 +111,7 @@ class Notification extends Model
      */
     public function markAsUnread()
     {
-        $this->update(['status' => 'unread']);
+        $this->update(['is_read' => false]);
     }
 
     /**
@@ -122,5 +123,17 @@ class Notification extends Model
     public function getFormattedDateSentAttribute()
     {
         return $this->date_sent->format('F j, Y, g:i a'); // Example formatting
+    }
+
+    /**
+     * Scope a query to only include a certain type of notification.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
     }
 }

@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
 
 class Availability extends Model
 {
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'availabilities';
 
     /**
@@ -38,12 +46,13 @@ class Availability extends Model
      * @var array
      */
     protected $attributes = [
-        'status' => 'active', // Default status is active
+        'status' => 'available', // Default status is 'available'
     ];
 
     /**
-     * Relationship to the Employee model.
-     * An availability belongs to an employee.
+     * Relationship: An availability belongs to an employee.
+     *
+     * @return BelongsTo
      */
     public function employee(): BelongsTo
     {
@@ -51,8 +60,7 @@ class Availability extends Model
     }
 
     /**
-     * Boot method for the Availability model.
-     * Used for model-specific logic like validation and automatic updates.
+     * Boot method for model-specific logic like validation and automatic updates.
      */
     protected static function booted()
     {
@@ -62,26 +70,61 @@ class Availability extends Model
                 throw new \Exception('The start time must be before the end time.');
             }
 
-            // Optionally, you can set the employee_id automatically based on Auth::user() if needed
-            if (empty($availability->employee_id)) {
+            // If employee_id is not set, optionally use Auth::user()->id
+            if (empty($availability->employee_id) && Auth::check()) {
                 $availability->employee_id = Auth::id();
             }
         });
     }
 
     /**
-     * Scope to get active availabilities.
+     * Scope to filter active availabilities.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('status', 'available');
     }
 
     /**
-     * Scope to get availabilities by employee.
+     * Scope to filter availabilities for a specific employee.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $employeeId
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForEmployee($query, $employeeId)
     {
         return $query->where('employee_id', $employeeId);
+    }
+
+    /**
+     * Check if the availability overlaps with another time period.
+     *
+     * @param string $from
+     * @param string $to
+     * @return bool
+     */
+    public function overlaps($from, $to): bool
+    {
+        return $this->available_from < $to && $this->available_to > $from;
+    }
+
+    /**
+     * Scope to find availabilities that overlap with a given time range.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $from
+     * @param string $to
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOverlapping($query, $from, $to)
+    {
+        return $query->where(function ($q) use ($from, $to) {
+            $q->where('available_from', '<', $to)
+              ->where('available_to', '>', $from);
+        });
     }
 }

@@ -26,7 +26,9 @@ class Department extends Model
     protected $fillable = [
         'name',
         'description',
-        'manager_id', // Added for tracking the department manager
+        'manager_id',
+        'supervisor_id',
+        'status',
     ];
 
     /**
@@ -37,6 +39,7 @@ class Department extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'status' => 'string', // Ensures status is always a string
     ];
 
     /**
@@ -60,32 +63,93 @@ class Department extends Model
     }
 
     /**
-     * Boot method to automatically assign a manager if not set.
+     * Relationship: A department has one supervisor (Employee).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'supervisor_id');
+    }
+
+    /**
+     * Boot method to handle default values or custom logic.
      */
     protected static function booted()
     {
         static::creating(function ($department) {
-            // Optionally set a default manager if none is provided
+            // Example logic to ensure a manager is assigned
             if (empty($department->manager_id)) {
-                // Logic to pick a default manager (could be the first employee, or based on some other business logic)
-                $department->manager_id = Employee::first()->id; // Example: First employee becomes the manager
+                $department->manager_id = Employee::first()->id; // Default to the first employee, for example
             }
         });
     }
 
     /**
      * Scope to get departments managed by a specific manager.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $managerId
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeManagedBy($query, $managerId)
+    public function scopeManagedBy($query, int $managerId)
     {
         return $query->where('manager_id', $managerId);
     }
 
     /**
-     * Scope to get departments by name.
+     * Scope to get departments supervised by a specific supervisor.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $supervisorId
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNamed($query, $name)
+    public function scopeSupervisedBy($query, int $supervisorId)
+    {
+        return $query->where('supervisor_id', $supervisorId);
+    }
+
+    /**
+     * Scope to filter departments by name (partial match).
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $name
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNamed($query, string $name)
     {
         return $query->where('name', 'like', "%{$name}%");
+    }
+
+    /**
+     * Scope to filter active or inactive departments.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByStatus($query, string $status = 'active')
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * Mark the department as active.
+     *
+     * @return void
+     */
+    public function activate()
+    {
+        $this->update(['status' => 'active']);
+    }
+
+    /**
+     * Mark the department as inactive.
+     *
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->update(['status' => 'inactive']);
     }
 }

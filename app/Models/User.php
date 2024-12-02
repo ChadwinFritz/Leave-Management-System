@@ -19,12 +19,19 @@ class User extends Authenticatable
     const LEVEL_SUPER_ADMIN = 2;
     const LEVEL_SUPERVISOR = 3;
 
+    // Define constants for statuses
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_INACTIVE = 'inactive';
+
     protected $fillable = [
         'name',
         'email',
         'level',
         'username',
         'password',
+        'status',
+        'is_approved',
     ];
 
     protected $hidden = [
@@ -91,6 +98,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is approved.
+     * 
+     * @return bool
+     */
+    public function isApproved()
+    {
+        return $this->is_approved;
+    }
+
+    /**
      * Get the level description for the user.
      * 
      * @return string
@@ -112,16 +129,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Accessor for the full name of the user (if needed).
-     * 
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return $this->name; // Customize based on how full name is structured in your system
-    }
-
-    /**
      * Mutator to hash password before saving it.
      * 
      * @param string $password
@@ -130,26 +137,6 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
-    }
-
-    /**
-     * Get the user's role description.
-     * 
-     * @return string
-     */
-    public function getRoleDescriptionAttribute()
-    {
-        return $this->getLevelDescription();
-    }
-
-    /**
-     * Retrieve the user level as a string instead of a number.
-     *
-     * @return string
-     */
-    public function getRoleAsString()
-    {
-        return $this->getLevelDescription();
     }
 
     /**
@@ -162,5 +149,28 @@ class User extends Authenticatable
     public function scopeOfLevel($query, $level)
     {
         return $query->where('level', $level);
+    }
+
+    /**
+     * Scope to filter users by status.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * Scope to filter approved users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
     }
 }

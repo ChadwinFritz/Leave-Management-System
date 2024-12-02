@@ -26,6 +26,7 @@ class Duty extends Model
         'code',
         'name',
         'description',
+        'status', // Include status in fillable to allow updates
     ];
 
     /**
@@ -34,11 +35,11 @@ class Duty extends Model
      * @var array
      */
     protected $casts = [
-        'assigned_at' => 'datetime', // Automatically cast 'assigned_at' to datetime when retrieved
+        'status' => 'string', // Ensure status is always treated as a string
     ];
 
     /**
-     * Relationship: A duty can be assigned to many employees.
+     * A duty can be assigned to many employees.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -50,35 +51,71 @@ class Duty extends Model
     }
 
     /**
-     * Boot method to handle pivot table logic, like updating the assigned_at timestamp.
+     * Boot method to handle model events.
      */
     protected static function booted()
     {
         static::creating(function ($duty) {
-            // Optionally validate the uniqueness of 'code' or 'name'
+            // Ensure unique code at the time of creation
             if (Duty::where('code', $duty->code)->exists()) {
-                throw new \Exception("Duty code must be unique.");
+                throw new \Exception("Duty code '{$duty->code}' must be unique.");
             }
-        });
-
-        static::updating(function ($duty) {
-            // Custom logic when duty is updated, if needed
         });
     }
 
     /**
      * Scope to filter duties by code.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $code
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeByCode($query, $code)
+    public function scopeByCode($query, string $code)
     {
         return $query->where('code', $code);
     }
 
     /**
-     * Scope to filter duties by name.
+     * Scope to filter duties by name (case-insensitive, partial match).
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $name
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeByName($query, $name)
+    public function scopeByName($query, string $name)
     {
         return $query->where('name', 'like', "%{$name}%");
+    }
+
+    /**
+     * Scope to filter active or inactive duties.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByStatus($query, string $status = 'active')
+    {
+        return $query->where('status', $status);
+    }
+
+    /**
+     * Mark the duty as active.
+     *
+     * @return void
+     */
+    public function activate()
+    {
+        $this->update(['status' => 'active']);
+    }
+
+    /**
+     * Mark the duty as inactive.
+     *
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->update(['status' => 'inactive']);
     }
 }

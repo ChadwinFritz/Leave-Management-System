@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +20,7 @@ class Leave extends Model
      */
     protected $fillable = [
         'employee_id',
-        'leave_application_id', // Updated from application_id to leave_application_id
+        'leave_application_id',
         'total_leave',
         'start_date',
         'end_date',
@@ -27,7 +29,7 @@ class Leave extends Model
         'on_date',
         'on_time',
         'leave_type',
-        'status', // Added status to track leave status
+        'status',
     ];
 
     /**
@@ -51,7 +53,7 @@ class Leave extends Model
 
     /**
      * Relationship to the Employee model.
-     * A leave belongs to an employee (user).
+     * A leave belongs to an employee.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -79,7 +81,7 @@ class Leave extends Model
      */
     public function leaveType()
     {
-        return $this->belongsTo(LeaveType::class, 'leave_type', 'code'); // Assuming leave_type stores the code from leave_types table
+        return $this->belongsTo(LeaveType::class, 'leave_type', 'code');
     }
 
     /**
@@ -99,7 +101,7 @@ class Leave extends Model
 
     /**
      * Scope to filter by leave status.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePending($query)
@@ -109,7 +111,7 @@ class Leave extends Model
 
     /**
      * Scope to filter by approved leave status.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeApproved($query)
@@ -119,7 +121,7 @@ class Leave extends Model
 
     /**
      * Scope to filter by rejected leave status.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeRejected($query)
@@ -129,18 +131,23 @@ class Leave extends Model
 
     /**
      * Scope to filter leave by date range.
-     * 
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $startDate
+     * @param string $endDate
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDateRange($query, $startDate, $endDate)
     {
-        return $query->whereBetween('start_date', [$startDate, $endDate])
-                     ->orWhereBetween('end_date', [$startDate, $endDate]);
+        return $query->where(function ($q) use ($startDate, $endDate) {
+            $q->whereBetween('start_date', [$startDate, $endDate])
+              ->orWhereBetween('end_date', [$startDate, $endDate]);
+        });
     }
 
     /**
      * Get the full status text for the leave.
-     * 
+     *
      * @return string
      */
     public function getStatusTextAttribute()

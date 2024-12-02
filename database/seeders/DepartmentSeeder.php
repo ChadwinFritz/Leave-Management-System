@@ -15,57 +15,56 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get a sample employee ID to act as a supervisor for each department
-        $supervisors = Employee::all();
+        // Retrieve a collection of employees who can act as supervisors
+        $supervisors = Employee::where('employment_status', 'active')->get();
+
+        // If no supervisors are available, provide a fallback or skip supervisor assignment
+        if ($supervisors->isEmpty()) {
+            $this->command->warn("No active employees found to assign as supervisors. Departments will be seeded without supervisors.");
+        }
 
         // Define an array of sample departments
         $departments = [
             [
                 'name' => 'Software Development',
                 'description' => 'Responsible for developing software solutions.',
-                'manager_id' => null, // No manager assigned for now
-                'supervisor_id' => $supervisors->random()->id, // Randomly assign a supervisor from existing employees
+                'manager_id' => null,
+                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null, // Assign if available
                 'status' => 'active',
             ],
             [
                 'name' => 'Human Resources',
                 'description' => 'Manages employee relations, payroll, and benefits.',
                 'manager_id' => null,
-                'supervisor_id' => $supervisors->random()->id, // Randomly assign a supervisor from existing employees
+                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
                 'status' => 'active',
             ],
             [
                 'name' => 'Marketing',
                 'description' => 'Handles marketing strategies and campaigns.',
                 'manager_id' => null,
-                'supervisor_id' => $supervisors->random()->id, // Randomly assign a supervisor from existing employees
+                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
                 'status' => 'active',
             ],
             [
                 'name' => 'Finance',
                 'description' => 'Responsible for managing financial operations.',
                 'manager_id' => null,
-                'supervisor_id' => $supervisors->random()->id, // Randomly assign a supervisor from existing employees
-                'status' => 'inactive', // Set to inactive for testing purposes
+                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
+                'status' => 'inactive',
             ],
             [
                 'name' => 'Customer Support',
                 'description' => 'Supports customers with inquiries and technical issues.',
                 'manager_id' => null,
-                'supervisor_id' => $supervisors->random()->id, // Randomly assign a supervisor from existing employees
+                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
                 'status' => 'active',
             ],
         ];
 
         // Loop through each department and insert it into the departments table
         foreach ($departments as $department) {
-            Department::create([
-                'name' => $department['name'],
-                'description' => $department['description'],
-                'manager_id' => $department['manager_id'],
-                'supervisor_id' => $department['supervisor_id'],
-                'status' => $department['status'],
-            ]);
+            Department::create($department);
         }
     }
 }

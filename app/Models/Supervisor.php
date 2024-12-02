@@ -19,6 +19,13 @@ class Supervisor extends Model
     protected $table = 'supervisors';
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

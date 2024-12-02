@@ -34,52 +34,44 @@ class SystemSetting extends Model
     ];
 
     /**
-     * Get the setting value by key.
+     * Retrieve the setting value by its key.
      *
      * @param string $key
      * @return string|null
      */
-    public static function getValueByKey($key)
+    public static function getValueByKey(string $key): ?string
     {
-        // Try fetching from cache first
+        // Try to fetch the value from cache
         return Cache::remember("system_setting_{$key}", now()->addMinutes(60), function () use ($key) {
             $setting = self::where('key', $key)->first();
-            return $setting ? $setting->value : null;
+            return $setting?->value;
         });
     }
 
     /**
-     * Set or update the value for a given key.
+     * Create or update a system setting value.
      *
      * @param string $key
      * @param string $value
-     * @return bool
+     * @return static
      */
-    public static function setValueByKey($key, $value)
+    public static function setValueByKey(string $key, string $value): self
     {
-        // Validate key and value if necessary
-        if (empty($key) || !is_string($value)) {
-            throw new \InvalidArgumentException("Invalid key or value.");
-        }
+        // Use updateOrCreate to manage new or existing settings
+        $setting = self::updateOrCreate(['key' => $key], ['value' => $value]);
 
-        // Use updateOrCreate to update existing or create new setting
-        $setting = self::updateOrCreate(
-            ['key' => $key],
-            ['value' => $value]
-        );
-
-        // Clear the cache for this setting after an update
+        // Clear the cached value for the updated setting
         Cache::forget("system_setting_{$key}");
 
         return $setting;
     }
 
     /**
-     * Get all system settings as an associative array.
+     * Get all settings as a key-value pair array.
      *
      * @return array
      */
-    public static function getAllSettings()
+    public static function getAllSettings(): array
     {
         return Cache::remember('system_settings_all', now()->addMinutes(60), function () {
             return self::all()->pluck('value', 'key')->toArray();
@@ -90,9 +82,10 @@ class SystemSetting extends Model
      * Delete a setting by its key.
      *
      * @param string $key
-     * @return bool|null
+     * @return bool
+     * @throws \Exception
      */
-    public static function deleteSettingByKey($key)
+    public static function deleteSettingByKey(string $key): bool
     {
         $setting = self::where('key', $key)->first();
 
@@ -103,7 +96,7 @@ class SystemSetting extends Model
         // Delete the setting
         $deleted = $setting->delete();
 
-        // Clear the cache for this setting after deletion
+        // Clear the cache after deletion
         Cache::forget("system_setting_{$key}");
 
         return $deleted;
@@ -115,10 +108,20 @@ class SystemSetting extends Model
      * @param string $key
      * @return bool
      */
-    public static function settingExists($key)
+    public static function settingExists(string $key): bool
     {
         return Cache::remember("system_setting_exists_{$key}", now()->addMinutes(60), function () use ($key) {
             return self::where('key', $key)->exists();
         });
+    }
+
+    /**
+     * Flush the cache for all settings.
+     *
+     * @return void
+     */
+    public static function clearSettingsCache(): void
+    {
+        Cache::forget('system_settings_all');
     }
 }

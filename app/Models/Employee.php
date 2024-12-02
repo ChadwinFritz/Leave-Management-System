@@ -39,6 +39,17 @@ class Employee extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'hire_date' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
      * Relationship to the User model.
      * An employee belongs to a user.
      *
@@ -96,35 +107,14 @@ class Employee extends Model
     }
 
     /**
-     * Relationship to the LeaveType model.
-     * An employee can have many leave types.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function leaveTypes(): HasMany
-    {
-        return $this->hasMany(LeaveType::class);
-    }
-
-    /**
-     * Relationship to the Supervisor model.
-     * An employee has a supervisor.
-     */
-    public function supervisor(): BelongsTo
-    {
-        return $this->belongsTo(Supervisor::class, 'supervisor_id');
-    }
-
-    /**
-     * Boot method for model events.
-     * Automatically generates the employee code upon creation.
+     * Boot method to handle automatic employee code generation and other logic.
      */
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($employee) {
-            // Generate employee_code automatically
+            // Generate a unique employee code if not provided
             if (empty($employee->employee_code)) {
                 $lastEmployee = self::orderBy('id', 'desc')->first();
                 $nextCode = $lastEmployee ? intval(substr($lastEmployee->employee_code, 3)) + 1 : 1;
@@ -136,7 +126,8 @@ class Employee extends Model
     /**
      * Scope to filter active employees.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
     {
@@ -146,20 +137,56 @@ class Employee extends Model
     /**
      * Scope to filter employees by department.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $departmentId
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeInDepartment($query, $departmentId)
+    public function scopeInDepartment($query, int $departmentId)
     {
         return $query->where('department_id', $departmentId);
     }
 
     /**
-     * Scope to filter employees by hire date.
+     * Scope to filter employees hired after a specific date.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|\DateTime $date
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeHiredAfter($query, $date)
     {
         return $query->where('hire_date', '>', $date);
+    }
+
+    /**
+     * Scope to filter employees hired before a specific date.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|\DateTime $date
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHiredBefore($query, $date)
+    {
+        return $query->where('hire_date', '<', $date);
+    }
+
+    /**
+     * Mark an employee as active.
+     *
+     * @return void
+     */
+    public function activate()
+    {
+        $this->update(['employment_status' => 'active']);
+    }
+
+    /**
+     * Mark an employee as inactive.
+     *
+     * @return void
+     */
+    public function deactivate()
+    {
+        $this->update(['employment_status' => 'inactive']);
     }
 }

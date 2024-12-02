@@ -62,7 +62,7 @@ class EscalationRequest extends Model
      */
     public function supervisor(): BelongsTo
     {
-        return $this->belongsTo(Supervisor::class, 'supervisor_id');
+        return $this->belongsTo(Employee::class, 'supervisor_id'); // Assuming Supervisor is also an Employee model
     }
 
     /**
