@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Duty;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DutySeeder extends Seeder
 {
@@ -12,79 +12,50 @@ class DutySeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        DB::table('duties')->insert([
+        // Define an array of sample duties
+        $duties = [
             [
-                'code' => 'DEV',
-                'name' => 'Developer',
-                'description' => 'Responsible for writing and maintaining code.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'code' => 'D001',
+                'name' => 'Software Development',
+                'description' => 'Responsible for coding and developing software applications.',
+                'status' => 'active',
             ],
             [
-                'code' => 'QA',
+                'code' => 'D002',
+                'name' => 'System Maintenance',
+                'description' => 'Responsible for maintaining and upgrading system infrastructure.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'D003',
+                'name' => 'User Support',
+                'description' => 'Provides assistance to users with technical issues.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'D004',
                 'name' => 'Quality Assurance',
-                'description' => 'Ensures that the product is bug-free and meets the requirements.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'description' => 'Ensures the quality of software through testing and bug tracking.',
+                'status' => 'inactive',
             ],
             [
-                'code' => 'PM',
-                'name' => 'Project Manager',
-                'description' => 'Oversees project development and manages the team.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'code' => 'D005',
+                'name' => 'Project Management',
+                'description' => 'Coordinates projects, manages timelines, and oversees project progress.',
+                'status' => 'active',
             ],
-            [
-                'code' => 'HR',
-                'name' => 'Human Resources',
-                'description' => 'Manages employee relations and recruitment.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'ADMIN',
-                'name' => 'Administrator',
-                'description' => 'Responsible for managing the company’s administrative tasks.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'DESIGN',
-                'name' => 'Designer',
-                'description' => 'Creates visuals and design elements for products.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'DEVOPS',
-                'name' => 'DevOps Engineer',
-                'description' => 'Responsible for deploying and managing applications.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'SALES',
-                'name' => 'Sales Representative',
-                'description' => 'Handles sales and customer relations.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'MARKETING',
-                'name' => 'Marketing Specialist',
-                'description' => 'Develops marketing strategies to promote products.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'SUPPORT',
-                'name' => 'Support Specialist',
-                'description' => 'Provides assistance and support to customers.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        ];
+
+        // Loop through each duty and insert it into the duties table
+        foreach ($duties as $duty) {
+            Duty::create([
+                'code' => $duty['code'],
+                'name' => $duty['name'],
+                'description' => $duty['description'],
+                'status' => $duty['status'],
+            ]);
+        }
     }
 }

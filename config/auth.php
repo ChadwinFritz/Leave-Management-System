@@ -48,6 +48,12 @@ return [
             'provider' => 'superadmins',
             // Level 2: Super Admin
         ],
+
+        'supervisor' => [
+            'driver' => 'session',
+            'provider' => 'supervisors',
+            // Level 3: Supervisor
+        ],
     ],
 
     /*
@@ -56,8 +62,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | All authentication guards have a user provider, which defines how the
-    | users are retrieved from your database or storage system used by the
-    | application. Typically, Eloquent is utilized.
+    | users are retrieved from your database or storage system used by
+    | the application. Typically, Eloquent is utilized.
     |
     | If you have multiple user tables or models you may configure multiple
     | providers to represent each model/table. These providers can then be
@@ -81,6 +87,11 @@ return [
         'superadmins' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,  // Assuming SuperAdmins are also Users, level 2
+        ],
+
+        'supervisors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,  // Assuming Supervisors are also Users, level 3
         ],
     ],
 
@@ -109,6 +120,12 @@ return [
         ],
         'superadmins' => [
             'provider' => 'superadmins',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'supervisors' => [
+            'provider' => 'supervisors',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

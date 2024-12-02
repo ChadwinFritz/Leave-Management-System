@@ -4,31 +4,35 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartmentsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('departments', function (Blueprint $table) {
-            $table->increments('id'); // Primary key
-            $table->string('code')->unique(); // Unique code for the department (optional)
-            $table->string('name')->unique(); // Department name
-            $table->text('description')->nullable(); // Description of the department
+            $table->id(); // Primary key
+            $table->string('name')->unique(); // Unique name for the department
+            $table->string('description')->nullable(); // Optional department description
+            $table->unsignedBigInteger('manager_id')->nullable(); // Reference to the manager
+            $table->unsignedBigInteger('supervisor_id')->nullable(); // Reference to the supervisor (fixed here)
+            $table->enum('status', ['active', 'inactive'])->default('active'); // Status of the department
             $table->timestamps(); // Created and updated timestamps
+
+            // Foreign keys
+            $table->foreign('supervisor_id')->references('id')->on('employees')->nullOnDelete();
+
+            // Indexing
+            $table->index('supervisor_id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('departments');
     }
-}
+};

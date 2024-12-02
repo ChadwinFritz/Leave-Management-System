@@ -1,5 +1,6 @@
-<x-app-layout>
+resources/views/user/user_profile.blade.php
 
+<x-app-layout>
     <!-- Navigation Bar -->
     <x-user.nav />
 
@@ -31,31 +32,31 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Name</label>
                             <input type="text" name="name" class="form-input mt-1 block w-full" 
-                                   value="{{ Auth::user()->employee->name }}" required/>
+                                   value="{{ old('name', Auth::user()->employee->name) }}" required/>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Username</label>
                             <input type="text" name="username" class="form-input mt-1 block w-full" 
-                                   value="{{ Auth::user()->username }}" required/>
+                                   value="{{ old('username', Auth::user()->username) }}" required/>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Email</label>
                             <input type="email" name="email" class="form-input mt-1 block w-full" 
-                                   value="{{ Auth::user()->email }}" required/>
+                                   value="{{ old('email', Auth::user()->email) }}" required/>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Contact Number</label>
                             <input type="text" name="phone" class="form-input mt-1 block w-full" 
-                                   value="{{ Auth::user()->employee->phone }}" required/>
+                                   value="{{ old('phone', Auth::user()->employee->phone) }}" required/>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Address</label>
                             <textarea class="form-textarea mt-1 block w-full" name="address" rows="4" 
-                                      required>{{ Auth::user()->employee->address }}</textarea>
+                                      required>{{ old('address', Auth::user()->employee->address) }}</textarea>
                         </div>
                     </div>
 

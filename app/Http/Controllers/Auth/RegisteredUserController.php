@@ -21,6 +21,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // Fetch all departments and duties
         $departments = Department::all();
         $duties = Duty::all();
 
@@ -45,6 +46,7 @@ class RegisteredUserController extends Controller
             } while ($existingEmployee);
         }
 
+        // Pass the departments, duties, and employee code to the view
         return view('auth.register', compact('departments', 'duties', 'formattedEmployeeCode'));
     }
 
@@ -102,19 +104,11 @@ class RegisteredUserController extends Controller
             'department_id' => $request->department_id,
             'duty_id' => $request->duty_id,
             'employment_status' => $request->employment_status,
-            'status' => 'pending',
+            'status' => 'pending', // Assuming 'pending' is the status for new users
         ]);
 
         event(new Registered($user));
 
-        return redirect()->route('login')->with('success', 'Registration successful. Please wait for admin approval to log in.');
-    }
-
-    /**
-     * Register a new user.
-     */
-    public function register(Request $request): RedirectResponse
-    {
-        return $this->store($request);
+        return redirect()->route('auth.login')->with('success', 'Registration successful. Please wait for admin approval to log in.');
     }
 }

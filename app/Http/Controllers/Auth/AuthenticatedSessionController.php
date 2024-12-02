@@ -40,6 +40,8 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             case 2: // Super Admin
                 return redirect()->intended(route('superadmin.dashboard'));
+            case 3: // Supervisor
+                return redirect()->intended(route('supervisor.dashboard'));
             default:
                 return redirect()->route('auth.login')->withErrors('Unauthorized access.');
         }

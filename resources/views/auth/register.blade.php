@@ -44,19 +44,12 @@
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div>
 
-        <!-- Hire Date -->
-        <div class="mt-4">
-            <x-input-label for="hire_date" :value="__('Hire Date')" />
-            <x-text-input id="hire_date" class="block mt-1 w-full" type="date" name="hire_date" :value="old('hire_date')" autocomplete="hire-date" />
-            <x-input-error :messages="$errors->get('hire_date')" class="mt-2" />
-        </div>
-
         <!-- Department -->
         <div class="mt-4">
             <x-input-label for="department_id" :value="__('Department')" />
             <select id="department_id" name="department_id" class="block mt-1 w-full" required>
                 <option value="">{{ __('Select Department') }}</option>
-                @foreach($departments ?? [] as $department) <!-- Default to empty array -->
+                @foreach($departments as $department)
                     <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
                         {{ $department->name }}
                     </option>
@@ -70,7 +63,7 @@
             <x-input-label for="duty_id" :value="__('Duty')" />
             <select id="duty_id" name="duty_id" class="block mt-1 w-full" required>
                 <option value="">{{ __('Select Duty') }}</option>
-                @foreach($duties ?? [] as $duty) <!-- Default to empty array to avoid undefined variable error -->
+                @foreach($duties as $duty)
                     <option value="{{ $duty->id }}" {{ old('duty_id') == $duty->id ? 'selected' : '' }}>
                         {{ $duty->name }}
                     </option>
@@ -102,37 +95,20 @@
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" oninput="validatePassword()" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
 
-            <!-- Password validation messages -->
+            <!-- Password validation -->
             <div id="passwordRequirements" class="mt-2 text-sm text-gray-600">
-                <p id="uppercase" class="text-gray-600">• At least one uppercase letter</p>
-                <p id="number" class="text-gray-600">• At least one number</p>
-                <p id="special" class="text-gray-600">• At least one special character (!@#$%^&*()_+)</p>
+                <p id="uppercase">• At least one uppercase letter</p>
+                <p id="number">• At least one number</p>
+                <p id="special">• At least one special character (!@#$%^&*()_+)</p>
             </div>
         </div>
 
         <script>
             function validatePassword() {
                 const password = document.getElementById('password').value;
-                
-                // Select each requirement element
-                const uppercase = document.getElementById('uppercase');
-                const number = document.getElementById('number');
-                const special = document.getElementById('special');
-
-                // Test password for each condition
-                const hasUppercase = /[A-Z]/.test(password);
-                const hasNumber = /[0-9]/.test(password);
-                const hasSpecial = /[!@#$%^&*()_+]/.test(password);
-
-                // Update styling based on validation status
-                uppercase.classList.toggle('text-green-500', hasUppercase);
-                uppercase.classList.toggle('text-gray-600', !hasUppercase);
-
-                number.classList.toggle('text-green-500', hasNumber);
-                number.classList.toggle('text-gray-600', !hasNumber);
-
-                special.classList.toggle('text-green-500', hasSpecial);
-                special.classList.toggle('text-gray-600', !hasSpecial);
+                document.getElementById('uppercase').classList.toggle('text-green-500', /[A-Z]/.test(password));
+                document.getElementById('number').classList.toggle('text-green-500', /[0-9]/.test(password));
+                document.getElementById('special').classList.toggle('text-green-500', /[!@#$%^&*()_+]/.test(password));
             }
         </script>
 
@@ -144,7 +120,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('auth.login') }}">
                 {{ __('Already registered?') }}
             </a>
 

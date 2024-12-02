@@ -4,56 +4,71 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class LeaveTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         DB::table('leave_types')->insert([
+            [
+                'code' => 'ANNUAL',
+                'name' => 'Annual Leave',
+                'has_limit' => true,
+                'limit' => 20, // Example limit for annual leave
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
             [
                 'code' => 'SICK',
                 'name' => 'Sick Leave',
                 'has_limit' => true,
-                'limit' => 12, // 12 days limit per year
-                'created_at' => now(),
-                'updated_at' => now(),
+                'limit' => 15, // Example limit for sick leave
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'code' => 'VAC',
-                'name' => 'Vacation',
+                'code' => 'CASUAL',
+                'name' => 'Casual Leave',
                 'has_limit' => true,
-                'limit' => 15, // 15 days limit per year
-                'created_at' => now(),
-                'updated_at' => now(),
+                'limit' => 10, // Example limit for casual leave
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'code' => 'BEREAVEMENT',
-                'name' => 'Bereavement Leave',
-                'has_limit' => false, // No limit on bereavement leave
+                'code' => 'COMPENSATORY',
+                'name' => 'Compensatory Leave',
+                'has_limit' => false, // No limit for compensatory leave
                 'limit' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'code' => 'PERSONAL',
-                'name' => 'Personal Leave',
-                'has_limit' => true,
-                'limit' => 5, // 5 days limit per year
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'code' => 'MATERNITY',
                 'name' => 'Maternity Leave',
                 'has_limit' => true,
-                'limit' => 90, // 90 days limit for maternity leave
-                'created_at' => now(),
-                'updated_at' => now(),
+                'limit' => 90, // Example limit for maternity leave
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'code' => 'PATERNITY',
+                'name' => 'Paternity Leave',
+                'has_limit' => true,
+                'limit' => 10, // Example limit for paternity leave
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'code' => 'UNPAID',
+                'name' => 'Unpaid Leave',
+                'has_limit' => false, // No limit for unpaid leave
+                'limit' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ]);
     }

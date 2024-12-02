@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
+use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class EmployeeSeeder extends Seeder
 {
@@ -13,178 +14,96 @@ class EmployeeSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Sample data for employees
+        // Get existing departments and users to link employees to
+        $departments = Department::all();
+        $users = User::all();
+
+        // Define a set of sample employee data
         $employees = [
             [
-                'name' => 'Alice',
-                'surname' => 'Brown',
-                'email' => 'alice.brown@example.com',
-                'phone' => '555-1234',
+                'name' => 'John',
+                'surname' => 'Doe',
+                'email' => 'john.doe@example.com',
+                'phone' => '123-456-7890',
                 'address' => '123 Main St, Anytown, USA',
-                'hire_date' => '2023-01-15',
-                'user_id' => 1, // Assuming a user with ID 1 exists
-                'department_id' => 1, // Assuming a department with ID 1 exists
-                'duty_id' => 1, // Assuming a duty with ID 1 exists
-                'employee_code' => 'EMP001',
+                'hire_date' => now(),
+                'user_id' => $users->random()->id, // Randomly assign a user
+                'department_id' => $departments->random()->id, // Randomly assign a department
+                'employee_code' => 'EMP1001',
                 'employment_status' => 'active',
-                'notes' => 'Top performer in the sales department.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'notes' => 'Experienced in software development',
             ],
             [
-                'name' => 'Charlie',
-                'surname' => 'Thompson',
-                'email' => 'charlie.thompson@example.com',
-                'phone' => '555-5678',
-                'address' => '456 Oak St, Anytown, USA',
-                'hire_date' => '2022-05-22',
-                'user_id' => 2,
-                'department_id' => 2,
-                'duty_id' => 2,
-                'employee_code' => 'EMP002',
-                'employment_status' => 'active',
-                'notes' => 'Excellent in project management.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Sophia',
-                'surname' => 'Garcia',
-                'email' => 'sophia.garcia@example.com',
-                'phone' => '555-8765',
-                'address' => '789 Pine St, Anytown, USA',
-                'hire_date' => '2021-11-30',
-                'user_id' => 3,
-                'department_id' => 1,
-                'duty_id' => 3,
-                'employee_code' => 'EMP003',
-                'employment_status' => 'active',
-                'notes' => 'Great team player and communicator.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Liam',
-                'surname' => 'Lee',
-                'email' => 'liam.lee@example.com',
-                'phone' => '555-4321',
-                'address' => '321 Maple St, Anytown, USA',
-                'hire_date' => '2020-08-15',
-                'user_id' => 4,
-                'department_id' => 3,
-                'duty_id' => 1,
-                'employee_code' => 'EMP004',
-                'employment_status' => 'active',
-                'notes' => 'Promoted to senior developer.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Olivia',
-                'surname' => 'Martinez',
-                'email' => 'olivia.martinez@example.com',
-                'phone' => '555-5670',
-                'address' => '654 Cedar St, Anytown, USA',
-                'hire_date' => '2019-06-25',
-                'user_id' => 5,
-                'department_id' => 2,
-                'duty_id' => 2,
-                'employee_code' => 'EMP005',
-                'employment_status' => 'active',
-                'notes' => 'Has shown leadership potential.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Ethan',
-                'surname' => 'Johnson',
-                'email' => 'ethan.johnson@example.com',
-                'phone' => '555-6543',
-                'address' => '987 Elm St, Anytown, USA',
-                'hire_date' => '2022-11-15',
-                'user_id' => 6,
-                'department_id' => 1,
-                'duty_id' => 1,
-                'employee_code' => 'EMP006',
-                'employment_status' => 'active',
-                'notes' => 'Focused on client relationships.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Mia',
-                'surname' => 'Wilson',
-                'email' => 'mia.wilson@example.com',
-                'phone' => '555-9999',
-                'address' => '321 Birch St, Anytown, USA',
-                'hire_date' => '2020-02-10',
-                'user_id' => 7,
-                'department_id' => 3,
-                'duty_id' => 3,
-                'employee_code' => 'EMP007',
-                'employment_status' => 'active',
-                'notes' => 'Creative and innovative thinker.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'Ava',
+                'name' => 'Jane',
                 'surname' => 'Smith',
-                'email' => 'ava.smith@example.com',
-                'phone' => '555-3456',
-                'address' => '654 Oak St, Anytown, USA',
-                'hire_date' => '2018-03-12',
-                'user_id' => 8,
-                'department_id' => 2,
-                'duty_id' => 2,
-                'employee_code' => 'EMP008',
+                'email' => 'jane.smith@example.com',
+                'phone' => '987-654-3210',
+                'address' => '456 Elm St, Othertown, USA',
+                'hire_date' => now()->subYear(),
+                'user_id' => $users->random()->id,
+                'department_id' => $departments->random()->id,
+                'employee_code' => 'EMP1002',
                 'employment_status' => 'active',
-                'notes' => 'Skilled in digital marketing.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'notes' => 'Handles HR and admin tasks',
             ],
             [
-                'name' => 'Noah',
-                'surname' => 'Taylor',
-                'email' => 'noah.taylor@example.com',
-                'phone' => '555-8888',
-                'address' => '789 Fir St, Anytown, USA',
-                'hire_date' => '2019-04-20',
-                'user_id' => 9,
-                'department_id' => 1,
-                'duty_id' => 1,
-                'employee_code' => 'EMP009',
-                'employment_status' => 'active',
-                'notes' => 'Expert in data analysis.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'name' => 'Michael',
+                'surname' => 'Johnson',
+                'email' => 'michael.johnson@example.com',
+                'phone' => '321-654-9870',
+                'address' => '789 Oak St, Sometown, USA',
+                'hire_date' => now()->subMonths(6),
+                'user_id' => $users->random()->id,
+                'department_id' => $departments->random()->id,
+                'employee_code' => 'EMP1003',
+                'employment_status' => 'inactive',
+                'notes' => 'Former employee, no longer with the company',
             ],
             [
-                'name' => 'Isabella',
+                'name' => 'Emily',
                 'surname' => 'Davis',
-                'email' => 'isabella.davis@example.com',
-                'phone' => '555-2468',
-                'address' => '321 Cedar St, Anytown, USA',
-                'hire_date' => '2022-07-30',
-                'user_id' => 10,
-                'department_id' => 3,
-                'duty_id' => 2,
-                'employee_code' => 'EMP010',
+                'email' => 'emily.davis@example.com',
+                'phone' => '654-321-9870',
+                'address' => '101 Pine St, Anycity, USA',
+                'hire_date' => now()->subMonths(2),
+                'user_id' => $users->random()->id,
+                'department_id' => $departments->random()->id,
+                'employee_code' => 'EMP1004',
                 'employment_status' => 'active',
-                'notes' => 'Outstanding performance in Q2.',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'notes' => 'Working in marketing and communications',
+            ],
+            [
+                'name' => 'Daniel',
+                'surname' => 'Williams',
+                'email' => 'daniel.williams@example.com',
+                'phone' => '555-111-2222',
+                'address' => '202 Birch St, Thistown, USA',
+                'hire_date' => now()->subMonths(3),
+                'user_id' => $users->random()->id,
+                'department_id' => $departments->random()->id,
+                'employee_code' => 'EMP1005',
+                'employment_status' => 'active',
+                'notes' => 'Experienced in sales and customer service',
             ],
         ];
 
-        // Insert or update employees in the database using updateOrInsert to avoid duplicates
+        // Loop through each employee and insert them into the employees table
         foreach ($employees as $employee) {
-            DB::table('employees')->updateOrInsert(
-                ['email' => $employee['email']], // Unique identifier to check for duplicates
-                $employee
-            );
+            Employee::create([
+                'name' => $employee['name'],
+                'surname' => $employee['surname'],
+                'email' => $employee['email'],
+                'phone' => $employee['phone'],
+                'address' => $employee['address'],
+                'hire_date' => $employee['hire_date'],
+                'user_id' => $employee['user_id'],
+                'department_id' => $employee['department_id'],
+                'employee_code' => $employee['employee_code'],
+                'employment_status' => $employee['employment_status'],
+                'notes' => $employee['notes'],
+            ]);
         }
     }
 }

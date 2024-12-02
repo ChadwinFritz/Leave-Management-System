@@ -1,17 +1,20 @@
 <x-app-layout>
     <x-admin.nav />
 
+    <!-- Page Title -->
     <div class="page-title py-6">
         <h2 class="text-3xl font-bold text-black text-center">Update Employee</h2>
     </div>
 
+    <!-- Page Content Wrapper -->
     <div class="page-content-wrap py-8">
         <div class="max-w-7xl mx-auto">
             <div class="bg-white shadow-lg rounded-lg p-8">
-            <form action="{{ route('admin.employees.update', ['employee' => $employee->id]) }}" method="POST">
+                <!-- Form to update employee -->
+                <form action="{{ route('admin.employees.update', ['employee' => $employee->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    
+
                     <!-- Employee Fields -->
                     <div class="grid grid-cols-1 gap-6">
                         <!-- Name -->
@@ -53,10 +56,10 @@
                         <!-- Department -->
                         <div>
                             <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>
-                            <select name="department_id" id="department_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <select name="department_id" id="department_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Select Department</option>
                                 @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" {{ $department->id == $employee->department_id ? 'selected' : '' }}>{{ $department->name }}</option>
+                                    <option value="{{ $department->id }}" {{ $department->id == old('department_id', $employee->department_id) ? 'selected' : '' }}>{{ $department->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -64,10 +67,10 @@
                         <!-- Duty -->
                         <div>
                             <label for="duty_id" class="block text-sm font-medium text-gray-700">Duty</label>
-                            <select name="duty_id" id="duty_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <select name="duty_id" id="duty_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Select Duty</option>
                                 @foreach($duties as $duty)
-                                    <option value="{{ $duty->id }}" {{ $duty->id == $employee->duty_id ? 'selected' : '' }}>{{ $duty->name }}</option>
+                                    <option value="{{ $duty->id }}" {{ $duty->id == old('duty_id', $employee->duty_id) ? 'selected' : '' }}>{{ $duty->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -75,15 +78,15 @@
                         <!-- Employee Code -->
                         <div>
                             <label for="employee_code" class="block text-sm font-medium text-gray-700">Employee Code</label>
-                            <input type="text" name="employee_code" id="employee_code" value="{{ old('employee_code', $employee->employee_code) }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" name="employee_code" id="employee_code" value="{{ old('employee_code', $employee->employee_code) }}" readonly class="mt-1 block w-full border border-gray-300 rounded-md bg-gray-100 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <!-- Employment Status -->
                         <div>
                             <label for="employment_status" class="block text-sm font-medium text-gray-700">Employment Status</label>
                             <select name="employment_status" id="employment_status" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                <option value="active" {{ $employee->employment_status == 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="resigned" {{ $employee->employment_status == 'resigned' ? 'selected' : '' }}>Resigned</option>
+                                <option value="active" {{ old('employment_status', $employee->employment_status) == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="resigned" {{ old('employment_status', $employee->employment_status) == 'resigned' ? 'selected' : '' }}>Resigned</option>
                             </select>
                         </div>
 
@@ -96,7 +99,7 @@
 
                     <!-- Submit Button -->
                     <div class="mt-6">
-                        <button type="submit" class="bg-gray-500 text-black hover:bg-blue-600 px-4 py-2 rounded">Update Employee</button>
+                        <button type="submit" class="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded">Update Employee</button>
                     </div>
                 </form>
             </div>

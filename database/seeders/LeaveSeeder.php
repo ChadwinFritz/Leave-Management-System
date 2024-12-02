@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Leave;
+use App\Models\Employee;
+use App\Models\LeaveApplication;
+use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class LeaveSeeder extends Seeder
 {
@@ -15,161 +17,51 @@ class LeaveSeeder extends Seeder
      */
     public function run(): void
     {
-        // Sample data for leaves
-        $leaves = [
-            [
-                'employee_id' => 1,
-                'leave_application_id' => 1,
-                'total_leave' => 5,
-                'start_date' => Carbon::create(2024, 10, 20),
-                'end_date' => Carbon::create(2024, 10, 25),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'sick_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 2,
-                'leave_application_id' => 2,
-                'total_leave' => 3,
-                'start_date' => Carbon::create(2024, 11, 1),
-                'end_date' => Carbon::create(2024, 11, 3),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'vacation', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 3,
-                'leave_application_id' => 3,
-                'total_leave' => 2,
-                'start_date' => Carbon::create(2024, 11, 10),
-                'end_date' => Carbon::create(2024, 11, 12),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'personal_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 1,
-                'leave_application_id' => 4,
-                'total_leave' => 1,
-                'start_date' => Carbon::create(2024, 11, 15),
-                'end_date' => Carbon::create(2024, 11, 15),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'sick_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 2,
-                'leave_application_id' => 5,
-                'total_leave' => 4,
-                'start_date' => Carbon::create(2024, 12, 5),
-                'end_date' => Carbon::create(2024, 12, 8),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'vacation', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 3,
-                'leave_application_id' => 6,
-                'total_leave' => 1,
-                'start_date' => Carbon::create(2024, 12, 10),
-                'end_date' => Carbon::create(2024, 12, 10),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'sick_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 4,
-                'leave_application_id' => 7,
-                'total_leave' => 2,
-                'start_date' => Carbon::create(2024, 12, 15),
-                'end_date' => Carbon::create(2024, 12, 16),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'personal_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 4,
-                'leave_application_id' => 8,
-                'total_leave' => 3,
-                'start_date' => Carbon::create(2024, 12, 20),
-                'end_date' => Carbon::create(2024, 12, 23),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'vacation', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 5,
-                'leave_application_id' => 9,
-                'total_leave' => 1,
-                'start_date' => Carbon::create(2024, 12, 30),
-                'end_date' => Carbon::create(2024, 12, 30),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'sick_leave', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 5,
-                'leave_application_id' => 10,
-                'total_leave' => 5,
-                'start_date' => Carbon::create(2025, 1, 1),
-                'end_date' => Carbon::create(2025, 1, 5),
-                'start_half' => null,
-                'end_half' => null,
-                'on_date' => null,
-                'on_time' => null,
-                'leave_type' => 'vacation', // Ensure this code exists in leave_types
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ];
+        // Retrieve some existing employees and leave applications to link with the leaves
+        $employee = Employee::first(); // Assuming at least one employee exists in the employees table
+        $leaveApplication = LeaveApplication::first(); // Assuming at least one leave application exists
+        $leaveType = LeaveType::first(); // Assuming at least one leave type exists
 
-        // Ensure the leave types exist before seeding leaves
-        $validLeaveTypes = DB::table('leave_types')->pluck('code')->toArray();
+        // Creating a sample leave entry for an employee
+        Leave::create([
+            'employee_id' => $employee->id, // Linking to the first employee
+            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
+            'total_leave' => 5.00, // Total leave days
+            'start_date' => '2024-12-01', // Start date of the leave
+            'end_date' => '2024-12-05', // End date of the leave
+            'start_half' => false, // Full day off on start date
+            'end_half' => false, // Full day off on end date
+            'on_date' => null, // Not a one-day leave
+            'on_time' => null, // Not a time-specific leave
+            'leave_type' => $leaveType->code, // Linking to the leave type (e.g., 'Sick')
+        ]);
 
-        foreach ($leaves as $leave) {
-            // Check if the leave type exists in leave_types
-            if (in_array($leave['leave_type'], $validLeaveTypes)) {
-                DB::table('leaves')->insert($leave);
-            } else {
-                // Handle the error or log a message
-                \Log::warning("Leave type {$leave['leave_type']} does not exist in leave_types.");
-            }
-        }
+        // Creating another sample leave entry for the same employee but with half-day options
+        Leave::create([
+            'employee_id' => $employee->id, // Linking to the first employee
+            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
+            'total_leave' => 0.5, // Half-day leave
+            'start_date' => '2024-12-10', // Start date of the leave
+            'end_date' => '2024-12-10', // Same day leave
+            'start_half' => true, // Half day on start date
+            'end_half' => false, // Full day on end date
+            'on_date' => '2024-12-10', // One-day leave
+            'on_time' => null, // No specific time for the leave
+            'leave_type' => $leaveType->code, // Linking to the leave type
+        ]);
+
+        // Example of time-specific leave (e.g., leave for a specific time period)
+        Leave::create([
+            'employee_id' => $employee->id, // Linking to the first employee
+            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
+            'total_leave' => 1.00, // Full day leave
+            'start_date' => '2024-12-15', // Start date of the leave
+            'end_date' => '2024-12-15', // Same day leave
+            'start_half' => false, // Full day on start date
+            'end_half' => false, // Full day on end date
+            'on_date' => null, // Not a one-day leave
+            'on_time' => '2024-12-15 09:00:00', // Specific time for the leave
+            'leave_type' => $leaveType->code, // Linking to the leave type
+        ]);
     }
 }

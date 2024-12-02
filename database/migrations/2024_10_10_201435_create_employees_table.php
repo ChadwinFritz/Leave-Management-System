@@ -14,37 +14,26 @@ class CreateEmployeesTable extends Migration
     public function up()
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->increments('id'); // Primary key
-            
-            // Basic employee information
-            $table->string('name'); // Full name of the employee
-            $table->string('surname');
-            $table->string('email')->unique(); // Email address of the employee
-            $table->string('phone')->nullable(); // Phone number
-            $table->string('address')->nullable(); // Address of the employee
-            $table->date('hire_date')->nullable(); // Hiring date
-            
-            // Foreign key to users table
-            $table->unsignedInteger('user_id')->nullable(); 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->id(); // Primary key
+            $table->string('name'); // First name of the employee
+            $table->string('surname'); // Surname of the employee
+            $table->string('email')->unique(); // Employee email, unique for each employee
+            $table->string('phone')->nullable(); // Employee phone number (nullable)
+            $table->string('address')->nullable(); // Employee address (nullable)
+            $table->dateTime('hire_date')->nullable(); // Date the employee was hired
+            $table->unsignedBigInteger('user_id'); // Foreign key for user table
+            $table->unsignedBigInteger('department_id'); // Foreign key for department table
+            $table->string('employee_code')->unique(); // Unique employee code
+            $table->string('employment_status')->nullable(); // Status like "active", "inactive"
+            $table->text('notes')->nullable(); // Optional field for extra notes about the employee
+            $table->timestamps(); // Created and updated timestamps
 
-            // Foreign key to department table
-            $table->unsignedInteger('department_id')->nullable(); 
+            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
 
-            // Foreign key to duty table
-            $table->unsignedInteger('duty_id')->nullable(); 
-            $table->foreign('duty_id')->references('id')->on('duties')->onDelete('set null');
-
-            // Employment-related fields
-            $table->string('employee_code')->unique(); // Unique code for the employee
-            $table->string('employment_status')->default('active'); // Status (active, resigned, etc.)
-
-            // Additional notes
-            $table->text('notes')->nullable(); // Additional notes for the employee
-
-            // Timestamps
-            $table->timestamps(); // Created and updated timestamps
+            // Indexing for employee_code
+            $table->index('employee_code');
         });
     }
 

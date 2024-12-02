@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\LeaveApplication;
+use App\Models\Employee;
+use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class LeaveApplicationSeeder extends Seeder
@@ -13,179 +15,58 @@ class LeaveApplicationSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        DB::table('leave_applications')->insert([
-            [
-                'employee_id' => 1, // Assuming employee with ID 1
-                'leave_type_id' => 1, // Assuming sick leave has ID 1
-                'start_date' => Carbon::now()->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 3,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Flu symptoms.',
-                'rejection_reason' => null,
-                'total_leave' => 10,
-                'status' => 'approved',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 2, // Assuming employee with ID 2
-                'leave_type_id' => 2, // Assuming vacation has ID 2
-                'start_date' => Carbon::now()->addDays(7)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(14)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 7,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Family vacation.',
-                'rejection_reason' => null,
-                'total_leave' => 12,
-                'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 3, // Assuming employee with ID 3
-                'leave_type_id' => 3, // Assuming personal leave has ID 3
-                'start_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(4)->format('Y-m-d'),
-                'start_half' => 'morning',
-                'end_half' => 'afternoon',
-                'number_of_days' => 3,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Attending a personal event.',
-                'rejection_reason' => null,
-                'total_leave' => 5,
-                'status' => 'rejected',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 4, // Assuming employee with ID 4
-                'leave_type_id' => 4, // Assuming bereavement has ID 4
-                'start_date' => Carbon::now()->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 2,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Family bereavement.',
-                'rejection_reason' => null,
-                'total_leave' => 7,
-                'status' => 'approved',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 5, // Assuming employee with ID 5
-                'leave_type_id' => 1, // Assuming sick leave has ID 1
-                'start_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-                'start_half' => 'afternoon',
-                'end_half' => null,
-                'number_of_days' => 1,
-                'on_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-                'on_time' => '14:00:00',
-                'reason' => 'Doctor appointment.',
-                'rejection_reason' => null,
-                'total_leave' => 5,
-                'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 6, // Assuming employee with ID 6
-                'leave_type_id' => 2, // Assuming vacation has ID 2
-                'start_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(12)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 3,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Traveling abroad.',
-                'rejection_reason' => null,
-                'total_leave' => 8,
-                'status' => 'approved',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 7, // Assuming employee with ID 7
-                'leave_type_id' => 3, // Assuming personal leave has ID 3
-                'start_date' => Carbon::now()->addDays(15)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(15)->format('Y-m-d'),
-                'start_half' => 'morning',
-                'end_half' => null,
-                'number_of_days' => 0.5,
-                'on_date' => Carbon::now()->addDays(15)->format('Y-m-d'),
-                'on_time' => '09:00:00',
-                'reason' => 'Half-day personal leave.',
-                'rejection_reason' => null,
-                'total_leave' => 5,
-                'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 8, // Assuming employee with ID 8
-                'leave_type_id' => 4, // Assuming bereavement has ID 4
-                'start_date' => Carbon::now()->addDays(1)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 3,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Loss of a family member.',
-                'rejection_reason' => null,
-                'total_leave' => 6,
-                'status' => 'approved',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 9, // Assuming employee with ID 9
-                'leave_type_id' => 1, // Assuming sick leave has ID 1
-                'start_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
-                'start_half' => 'afternoon',
-                'end_half' => 'morning',
-                'number_of_days' => 1,
-                'on_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
-                'on_time' => '13:00:00',
-                'reason' => 'Migraine attack.',
-                'rejection_reason' => null,
-                'total_leave' => 4,
-                'status' => 'approved',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'employee_id' => 10, // Assuming employee with ID 10
-                'leave_type_id' => 2, // Assuming vacation has ID 2
-                'start_date' => Carbon::now()->addDays(20)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addDays(25)->format('Y-m-d'),
-                'start_half' => null,
-                'end_half' => null,
-                'number_of_days' => 5,
-                'on_date' => null,
-                'on_time' => null,
-                'reason' => 'Annual family trip.',
-                'rejection_reason' => null,
-                'total_leave' => 12,
-                'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // Retrieve employees and leave types to associate with applications
+        $employees = Employee::all();
+        $leaveTypes = LeaveType::all();
+
+        // Loop through each employee and create sample leave applications
+        foreach ($employees as $employee) {
+            // Select a random leave type
+            $leaveType = $leaveTypes->random();
+
+            // Generate a random start and end date for the leave
+            $startDate = Carbon::now()->addDays(rand(1, 30));  // Random start date within the next 30 days
+            $endDate = $startDate->addDays(rand(1, 5));  // Random end date within 1-5 days after the start date
+
+            // Determine if the leave is half-day or full-day
+            $startHalf = rand(0, 1) == 1;
+            $endHalf = rand(0, 1) == 1;
+
+            // Calculate the total number of leave days
+            $numberOfDays = $startDate->diffInDays($endDate) + ($startHalf ? 0.5 : 0) + ($endHalf ? 0.5 : 0);
+
+            // Create the leave application
+            LeaveApplication::create([
+                'employee_id' => $employee->id,
+                'leave_type_id' => $leaveType->id,
+                'start_date' => $startDate->toDateString(),
+                'end_date' => $endDate->toDateString(),
+                'start_half' => $startHalf,
+                'end_half' => $endHalf,
+                'number_of_days' => $numberOfDays,
+                'status' => 'pending',  // Default status set to 'pending'
+                'reason' => 'Personal reasons',  // Example reason
+                'total_leave' => $numberOfDays,
+            ]);
+
+            // Optionally, create some rejected applications
+            if (rand(0, 1) == 1) {
+                LeaveApplication::create([
+                    'employee_id' => $employee->id,
+                    'leave_type_id' => $leaveType->id,
+                    'start_date' => $startDate->toDateString(),
+                    'end_date' => $endDate->toDateString(),
+                    'start_half' => $startHalf,
+                    'end_half' => $endHalf,
+                    'number_of_days' => $numberOfDays,
+                    'status' => 'rejected',  // Set to 'rejected'
+                    'reason' => 'Personal reasons',
+                    'rejection_reason' => 'Insufficient leave balance',  // Rejection reason
+                    'total_leave' => 0,
+                ]);
+            }
+        }
     }
 }

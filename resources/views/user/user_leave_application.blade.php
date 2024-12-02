@@ -3,35 +3,36 @@
     <x-user.nav />
 
     <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-md rounded-lg">
-            <form method="post" action="{{ route('user.leave.request') }}" enctype="multipart/form-data">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <form method="POST" action="{{ route('user.leave.request') }}" enctype="multipart/form-data">
+                @csrf
                 <div class="px-6 py-4 border-b">
-                    <h3 class="text-lg font-semibold"><strong>Apply</strong> for Leave</h3>
+                    <h3 class="text-xl font-semibold"><strong>Apply</strong> for Leave</h3>
                 </div>
 
                 @if(session('success'))
-                    <div class="alert alert-success mt-4" role="alert">
+                    <div class="alert alert-success mt-4 bg-green-100 text-green-700 p-4 rounded-md shadow-md" role="alert">
                         <strong>Success!</strong> {{ session('success') }}
                     </div>
                 @endif
 
                 @if($errors->any())
-                    <div class="alert alert-danger mt-4" role="alert">
-                        <strong>Oh snap!</strong>
-                        @foreach($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
+                    <div class="alert alert-danger mt-4 bg-red-100 text-red-700 p-4 rounded-md shadow-md" role="alert">
+                        <strong>Oh snap!</strong> Please check the form for errors.
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                     <div>
-                        @php $leaveTypes = \App\Models\LeaveType::all(); @endphp
-
-                        <!-- Leave Type -->
+                        <!-- Leave Type Dropdown -->
                         <div class="mt-4">
                             <x-input-label for="leave_type_id" :value="__('Leave Type')" />
-                            <select id="leave_type_id" name="leave_type_id" class="block mt-1 w-full" required>
+                            <select id="leave_type_id" name="leave_type_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
                                 <option value="">{{ __('Select Leave Type') }}</option>
                                 @foreach($leaveTypes as $leaveType)
                                     <option value="{{ $leaveType->id }}" {{ old('leave_type_id') == $leaveType->id ? 'selected' : '' }}>
@@ -42,64 +43,66 @@
                             <x-input-error :messages="$errors->get('leave_type_id')" class="mt-2" />
                         </div>
 
+                        <!-- Start and End Dates -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Start Date</label>
-                            <input name="start_date" id="start_date" type="date" class="form-input mt-1 block w-full" required onchange="calculateDays()" >
+                            <x-input-label for="start_date" :value="__('Start Date')" />
+                            <input type="date" name="start_date" id="start_date" class="form-input mt-1 block w-full" required onchange="calculateDays()">
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">End Date</label>
-                            <input name="end_date" id="end_date" type="date" class="form-input mt-1 block w-full" required onchange="calculateDays()">
+                            <x-input-label for="end_date" :value="__('End Date')" />
+                            <input type="date" name="end_date" id="end_date" class="form-input mt-1 block w-full" required onchange="calculateDays()">
                         </div>
 
                         <div class="mb-4" id="days_count" style="display: none;">
-                            <label class="block text-gray-700">Number of Days</label>
+                            <x-input-label for="days" :value="__('Number of Days')" />
                             <input type="text" id="days" class="form-input mt-1 block w-full" readonly>
                         </div>
 
+                        <!-- Employee Data -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Employee Code</label>
-                            <input type="text" name="employee_code" class="form-input mt-1 block w-full" 
-                                value="{{ $employee->employee_code }}" readonly />
-                            <span class="text-gray-500 text-sm">Employee unique code</span>
+                            <x-input-label for="employee_code" :value="__('Employee Code')" />
+                            <input type="text" name="employee_code" class="form-input mt-1 block w-full" value="{{ $employee->employee_code }}" readonly />
+                            <p class="text-gray-500 text-sm">Employee unique code</p>
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Name</label>
-                            <input type="text" name="name" class="form-input mt-1 block w-full" 
-                                value="{{ $employee->name }}" required/>
-                            <span class="text-gray-500 text-sm">Name of employee</span>
+                            <x-input-label for="name" :value="__('Employee Name')" />
+                            <input type="text" name="name" class="form-input mt-1 block w-full" value="{{ $employee->name }}" required />
+                            <p class="text-gray-500 text-sm">Name of employee</p>
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Username</label>
-                            <input type="text" name="username" class="form-input mt-1 block w-full" 
-                                value="{{ Auth::user()->username }}" required/>
-                            <span class="text-gray-500 text-sm">Username of employee</span>
+                            <x-input-label for="username" :value="__('Username')" />
+                            <input type="text" name="username" class="form-input mt-1 block w-full" value="{{ Auth::user()->username }}" required />
+                            <p class="text-gray-500 text-sm">Username of employee</p>
                         </div>
 
+                        <!-- Reason for Leave -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Leave Reason</label>
+                            <x-input-label for="reason" :value="__('Leave Reason')" />
                             <textarea class="form-textarea mt-1 block w-full" name="reason" rows="5" required></textarea>
-                            <span class="text-gray-500 text-sm">Reason and additional notes on Leave</span>
+                            <p class="text-gray-500 text-sm">Reason and additional notes on leave</p>
                         </div>
                     </div>
 
                     <div>
+                        <!-- Contact Number -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Contact Number</label>
-                            <input type="text" class="form-input mt-1 block w-full" name="contact_number" 
-                                value="{{ $employee->phone }}" readonly placeholder="Mobile number" required/>
-                            <span class="text-gray-500 text-sm">Employee contact number</span>
+                            <x-input-label for="contact_number" :value="__('Contact Number')" />
+                            <input type="text" class="form-input mt-1 block w-full" name="contact_number" value="{{ $employee->phone }}" readonly placeholder="Mobile number" required />
+                            <p class="text-gray-500 text-sm">Employee contact number</p>
                         </div>
 
-                        @csrf
+                        <div class="flex justify-between">
+                            <button type="reset" class="bg-gray-500 hover:bg-gray-400 text-white font-semibold py-2 px-4 rounded">
+                                Clear Form
+                            </button>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                                Apply Leave
+                            </button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="px-6 py-4 border-t flex justify-between">
-                    <button type="reset" class="bg-gray-500 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded">Clear Form</button>
-                    <button type="submit" class="bg-gray-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Apply Leave</button>
                 </div>
             </form>
         </div>

@@ -33,6 +33,8 @@ class RoleMiddleware
     private function mapRoleToLevel($role)
     {
         switch ($role) {
+            case 'supervisor':
+                return 3; // Supervisor level mapping
             case 'superadmin':
                 return 2;
             case 'admin':
@@ -40,7 +42,7 @@ class RoleMiddleware
             case 'user':
                 return 0;
             default:
-                return -1;
+                return -1; // Invalid role
         }
     }
 }

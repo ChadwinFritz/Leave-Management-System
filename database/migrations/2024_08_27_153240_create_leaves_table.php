@@ -4,57 +4,40 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeavesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('leaves', function (Blueprint $table) {
-            $table->increments('id');
-            
-            // Foreign key to the employees table
-            $table->unsignedInteger('employee_id');
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
-            
-            // Foreign key to the leave applications table
-            $table->unsignedInteger('leave_application_id')->unique(); // Unique identifier for the leave application
-            $table->foreign('leave_application_id')->references('id')->on('leave_applications')->onDelete('cascade');
-            
-            // Total number of leave days (nullable in case it's not calculated yet)
-            $table->unsignedInteger('total_leave')->nullable(); 
-            
-            // Start and end dates for the leave
-            $table->date('start_date');
-            $table->date('end_date');
-            
-            // Optional half-day status for the start and end of leave
-            $table->string('start_half')->nullable(); 
-            $table->string('end_half')->nullable(); 
-            
-            // Specific date and time, if applicable (for single-day or specific leave)
-            $table->date('on_date')->nullable(); 
-            $table->time('on_time')->nullable(); 
-            
-            // Foreign key to the leave types table
-            $table->string('leave_type')->nullable(); // Make leave_type nullable
-            $table->foreign('leave_type')->references('code')->on('leave_types')->onDelete('cascade'); // Assuming leave_type stores the code from leave_types table
-            
-            // Standard timestamps column
-            $table->timestamps();
+            $table->id(); // Primary key
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade'); // FK to employees with cascade delete
+            $table->foreignId('leave_application_id')->constrained('leave_applications')->onDelete('cascade'); // FK to leave applications
+            $table->decimal('total_leave', 8, 2); // Total leave days/hours
+            $table->date('start_date'); // Start date of leave
+            $table->date('end_date'); // End date of leave
+            $table->boolean('start_half')->default(false); // Indicates if the start day is a half-day
+            $table->boolean('end_half')->default(false); // Indicates if the end day is a half-day
+            $table->date('on_date')->nullable(); // For one-day leave, nullable
+            $table->dateTime('on_time')->nullable(); // For specific time-based leave, nullable
+            $table->string('leave_type'); // Leave type code
+            $table->timestamps(); // Created and updated timestamps
+
+            // Add a foreign key for leave_type referencing leave_types table
+            $table->foreign('leave_type')->references('code')->on('leave_types')->onDelete('restrict');
+
+            // Indexes for performance
+            $table->index(['employee_id', 'leave_application_id', 'leave_type']);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('leaves');
     }
-}
+};
