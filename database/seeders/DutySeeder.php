@@ -12,50 +12,34 @@ class DutySeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Define an array of sample duties
-        $duties = [
-            [
-                'code' => 'D001',
-                'name' => 'Software Development',
-                'description' => 'Responsible for coding and developing software applications.',
-                'status' => 'active',
-            ],
-            [
-                'code' => 'D002',
-                'name' => 'System Maintenance',
-                'description' => 'Responsible for maintaining and upgrading system infrastructure.',
-                'status' => 'active',
-            ],
-            [
-                'code' => 'D003',
-                'name' => 'User Support',
-                'description' => 'Provides assistance to users with technical issues.',
-                'status' => 'active',
-            ],
-            [
-                'code' => 'D004',
-                'name' => 'Quality Assurance',
-                'description' => 'Ensures the quality of software through testing and bug tracking.',
-                'status' => 'inactive',
-            ],
-            [
-                'code' => 'D005',
-                'name' => 'Project Management',
-                'description' => 'Coordinates projects, manages timelines, and oversees project progress.',
-                'status' => 'active',
-            ],
-        ];
+        // Create 20 random duties
+        Duty::factory()->count(20)->create();
 
-        // Loop through each duty and insert it into the duties table
-        foreach ($duties as $duty) {
-            Duty::create([
-                'code' => $duty['code'],
-                'name' => $duty['name'],
-                'description' => $duty['description'],
-                'status' => $duty['status'],
-            ]);
+        // Example: Create 5 specific active duties with specific names and codes
+        foreach (range(1, 5) as $i) {
+            Duty::factory()
+                ->active()  // Set the duty to active
+                ->withName("Duty Name $i")  // Set custom duty names
+                ->withCode("DUTY-100$i")  // Set custom duty codes
+                ->create();
         }
+
+        // Example: Create 3 specific inactive duties with specific names
+        foreach (range(1, 3) as $i) {
+            Duty::factory()
+                ->inactive()  // Set the duty to inactive
+                ->withName("Inactive Duty $i")  // Set custom inactive duty names
+                ->withCode("DUTY-200$i")  // Set custom duty codes
+                ->create();
+        }
+
+        // Example: Create a duty with a custom description
+        Duty::factory()->create([
+            'name' => 'Admin Duty',
+            'description' => 'This duty involves overseeing administrative tasks and managing systems.',
+            'status' => 'active',
+        ]);
     }
 }

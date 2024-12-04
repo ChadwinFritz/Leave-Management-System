@@ -15,53 +15,52 @@ class LeaveSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Retrieve some existing employees and leave applications to link with the leaves
-        $employee = Employee::first(); // Assuming at least one employee exists in the employees table
-        $leaveApplication = LeaveApplication::first(); // Assuming at least one leave application exists
-        $leaveType = LeaveType::first(); // Assuming at least one leave type exists
+        // Create 50 random leave entries
+        Leave::factory()->count(50)->create();
 
-        // Creating a sample leave entry for an employee
-        Leave::create([
-            'employee_id' => $employee->id, // Linking to the first employee
-            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
-            'total_leave' => 5.00, // Total leave days
-            'start_date' => '2024-12-01', // Start date of the leave
-            'end_date' => '2024-12-05', // End date of the leave
-            'start_half' => false, // Full day off on start date
-            'end_half' => false, // Full day off on end date
-            'on_date' => null, // Not a one-day leave
-            'on_time' => null, // Not a time-specific leave
-            'leave_type' => $leaveType->code, // Linking to the leave type (e.g., 'Sick')
-        ]);
+        // Create 10 pending leave entries
+        Leave::factory()
+            ->count(10)
+            ->pending()
+            ->create();
 
-        // Creating another sample leave entry for the same employee but with half-day options
-        Leave::create([
-            'employee_id' => $employee->id, // Linking to the first employee
-            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
-            'total_leave' => 0.5, // Half-day leave
-            'start_date' => '2024-12-10', // Start date of the leave
-            'end_date' => '2024-12-10', // Same day leave
-            'start_half' => true, // Half day on start date
-            'end_half' => false, // Full day on end date
-            'on_date' => '2024-12-10', // One-day leave
-            'on_time' => null, // No specific time for the leave
-            'leave_type' => $leaveType->code, // Linking to the leave type
-        ]);
+        // Create 5 approved leave entries
+        Leave::factory()
+            ->count(5)
+            ->approved()
+            ->create();
 
-        // Example of time-specific leave (e.g., leave for a specific time period)
-        Leave::create([
-            'employee_id' => $employee->id, // Linking to the first employee
-            'leave_application_id' => $leaveApplication->id, // Linking to the first leave application
-            'total_leave' => 1.00, // Full day leave
-            'start_date' => '2024-12-15', // Start date of the leave
-            'end_date' => '2024-12-15', // Same day leave
-            'start_half' => false, // Full day on start date
-            'end_half' => false, // Full day on end date
-            'on_date' => null, // Not a one-day leave
-            'on_time' => '2024-12-15 09:00:00', // Specific time for the leave
-            'leave_type' => $leaveType->code, // Linking to the leave type
-        ]);
+        // Create 5 rejected leave entries
+        Leave::factory()
+            ->count(5)
+            ->rejected()
+            ->create();
+
+        // Create leave for specific employees with a random leave application
+        $employees = Employee::all();
+        $leaveApplications = LeaveApplication::all();
+        $leaveTypes = LeaveType::all();
+
+        foreach ($employees as $employee) {
+            Leave::factory()
+                ->forEmployee($employee->id)
+                ->forLeaveApplication($leaveApplications->random()->id)
+                ->ofType($leaveTypes->random()->code) // Assign random leave type
+                ->create();
+        }
+
+        // Create 5 single-day leave entries
+        Leave::factory()
+            ->count(5)
+            ->singleDay('2023-05-15') // Specific single day leave
+            ->create();
+
+        // Create 3 leave entries with a specific date range
+        Leave::factory()
+            ->count(3)
+            ->dateRange('2023-06-01', '2023-06-05') // Specific date range
+            ->create();
     }
 }

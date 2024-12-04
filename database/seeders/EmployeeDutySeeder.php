@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\EmployeeDuty;
+use App\Models\Employee;
+use App\Models\Duty;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class EmployeeDutySeeder extends Seeder
 {
@@ -15,43 +16,41 @@ class EmployeeDutySeeder extends Seeder
      */
     public function run()
     {
-        // Assuming there are employees with ids 1, 2, 3, and duties with ids 1, 2, 3
-        DB::table('employee_duties')->insert([
-            [
-                'employee_id' => 1, // Replace with actual employee id
-                'duty_id' => 1, // Replace with actual duty id
-                'assigned_at' => Carbon::now()->subDays(10), // 10 days ago
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'employee_id' => 2, // Replace with actual employee id
-                'duty_id' => 2, // Replace with actual duty id
-                'assigned_at' => Carbon::now()->subDays(5), // 5 days ago
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'employee_id' => 3, // Replace with actual employee id
-                'duty_id' => 3, // Replace with actual duty id
-                'assigned_at' => Carbon::now()->subDays(2), // 2 days ago
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'employee_id' => 1, // Replace with actual employee id
-                'duty_id' => 2, // Replace with actual duty id
-                'assigned_at' => Carbon::now()->subDays(7), // 7 days ago
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'employee_id' => 2, // Replace with actual employee id
-                'duty_id' => 3, // Replace with actual duty id
-                'assigned_at' => Carbon::now()->subDays(3), // 3 days ago
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-        ]);
+        // Create 20 random employee-duties
+        EmployeeDuty::factory()->count(20)->create();
+
+        // Example: Create 5 specific employee-duties for specific employees and duties
+        foreach (range(1, 5) as $i) {
+            // Assign a duty to a specific employee on a specific date
+            EmployeeDuty::factory()
+                ->forEmployee($i)  // Assign a specific employee by ID
+                ->forDuty($i)  // Assign a specific duty by ID
+                ->assignedOn(now()->subDays($i))  // Assign the duty on a specific date
+                ->create();
+        }
+
+        // Example: Assign specific duties to employees with a custom assignment date
+        $employees = Employee::all();  // Get all employees
+        $duties = Duty::all();  // Get all duties
+
+        foreach ($employees as $employee) {
+            foreach ($duties as $duty) {
+                // Randomly assign each employee to a duty on a random date
+                EmployeeDuty::factory()
+                    ->forEmployee($employee->id)  // Assign a specific employee
+                    ->forDuty($duty->id)  // Assign a specific duty
+                    ->assignedOn(now()->subDays(rand(1, 365)))  // Assign on a random date within the last year
+                    ->create();
+            }
+        }
+
+        // Example: Assign duties for employees with custom dates
+        foreach (range(1, 3) as $i) {
+            EmployeeDuty::factory()
+                ->forEmployee($i)  // Assign a specific employee by ID
+                ->forDuty($i)  // Assign a specific duty by ID
+                ->assignedOn(now()->subMonths(2))  // Assign a duty two months ago
+                ->create();
+        }
     }
 }

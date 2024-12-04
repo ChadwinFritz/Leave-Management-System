@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AuditLogSeeder extends Seeder
 {
@@ -14,49 +13,54 @@ class AuditLogSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get some sample users to associate with the logs
-        $users = User::all();
+        // Create 50 audit log entries with random data
+        AuditLog::factory()->count(50)->create();
 
-        // Sample actions and IP addresses
-        $actions = [
-            'Login',
-            'Logout',
-            'Password Change',
-            'Data Update',
-            'Record Created',
-            'Record Deleted',
-        ];
+        // Example: Create specific audit logs with custom user and actions
+        AuditLog::factory()->forUser(1)  // For a specific user with ID 1
+            ->withAction('created')      // Set a custom action
+            ->create();
 
-        $ipAddresses = [
-            '192.168.1.1',
-            '172.16.0.1',
-            '10.0.0.1',
-            '2001:0db8:85a3:0000:0000:8a2e:0370:7334', // Example of an IPv6 address
-        ];
+        AuditLog::factory()->forUser(2)  // For a specific user with ID 2
+            ->withAction('updated')      // Set a custom action
+            ->fromIp('192.168.1.1')      // Set a specific IP address
+            ->create();
 
-        // Sample descriptions for each action
-        $descriptions = [
-            'User logged into the system.',
-            'User logged out successfully.',
-            'User changed their password.',
-            'User updated a record in the system.',
-            'New record was created in the database.',
-            'Record was deleted by the user.',
-        ];
+        // You can continue to create additional logs with specific actions or data
+        AuditLog::factory()->forUser(3)
+            ->withAction('logged_in')
+            ->fromIp('10.0.0.5')
+            ->create();
 
-        // Create some sample audit logs
-        foreach (range(1, 20) as $index) {
-            AuditLog::create([
-                'user_id' => $users->random()->id, // Randomly assign a user
-                'action' => $actions[array_rand($actions)], // Random action from the actions array
-                'ip_address' => $ipAddresses[array_rand($ipAddresses)], // Random IP address from the array
-                'description' => $descriptions[array_rand($descriptions)], // Random description
-            ]);
+        // Example: Create 10 audit logs with random user actions
+        foreach (range(1, 10) as $i) {
+            AuditLog::factory()->forUser(rand(1, 5))  // Random user ID between 1 and 5
+                ->withAction($this->getRandomAction())  // Random action
+                ->fromIp($this->getRandomIp())           // Random IP address
+                ->create();
         }
+    }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Audit logs have been seeded!');
+    /**
+     * Helper method to get a random action.
+     *
+     * @return string
+     */
+    private function getRandomAction(): string
+    {
+        $actions = ['created', 'updated', 'deleted', 'logged_in', 'logged_out'];
+        return $actions[array_rand($actions)];
+    }
+
+    /**
+     * Helper method to get a random IP address.
+     *
+     * @return string
+     */
+    private function getRandomIp(): string
+    {
+        return long2ip(rand(0, 255) . '.' . rand(0, 255) . '.' . rand(0, 255) . '.' . rand(0, 255));
     }
 }

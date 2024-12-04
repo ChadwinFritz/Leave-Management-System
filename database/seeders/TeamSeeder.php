@@ -14,31 +14,48 @@ class TeamSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get a list of all supervisors and departments to associate with the teams
-        $supervisors = Supervisor::all();
-        $departments = Department::all();
+        // Create 5 random teams with default state (random supervisor and department)
+        Team::factory()->count(5)->create();
 
-        // Define a few example team names
-        $teamNames = ['Development', 'Marketing', 'Sales', 'HR', 'Operations'];
-
-        // Loop through each department and assign a random supervisor
-        foreach ($departments as $department) {
-            foreach ($teamNames as $teamName) {
-                // Select a random supervisor from the list
-                $supervisor = $supervisors->random();
-
-                // Create a team for the department
-                Team::create([
-                    'name' => $teamName . ' Team', // Assign a name based on the team type
-                    'supervisor_id' => $supervisor->id, // Associate the supervisor
-                    'department_id' => $department->id, // Associate the department
-                ]);
-            }
+        // Create 3 teams for a specific department (using department ID)
+        $departmentIds = Department::pluck('id')->take(3);  // Get first 3 department IDs
+        foreach ($departmentIds as $departmentId) {
+            Team::factory()
+                ->inDepartment($departmentId)  // Assign to a specific department
+                ->count(1)
+                ->create();
         }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Teams have been seeded successfully!');
+        // Create 3 teams led by a specific supervisor (using supervisor ID)
+        $supervisorIds = Supervisor::pluck('id')->take(3);  // Get first 3 supervisor IDs
+        foreach ($supervisorIds as $supervisorId) {
+            Team::factory()
+                ->ledBySupervisor($supervisorId)  // Assign to a specific supervisor
+                ->count(1)
+                ->create();
+        }
+
+        // Create 2 teams with custom names
+        Team::factory()
+            ->count(2)
+            ->withName('Development Team')  // Set custom team name
+            ->create();
+
+        Team::factory()
+            ->count(2)
+            ->withName('Marketing Team')  // Set custom team name
+            ->create();
+
+        // Create 2 teams with a specific supervisor and department
+        $departmentIds = Department::pluck('id')->take(2);  // Get first 2 department IDs
+        $supervisorIds = Supervisor::pluck('id')->take(2);  // Get first 2 supervisor IDs
+        for ($i = 0; $i < 2; $i++) {
+            Team::factory()
+                ->withSupervisorAndDepartment($supervisorIds[$i], $departmentIds[$i])  // Assign specific supervisor and department
+                ->count(1)
+                ->create();
+        }
     }
 }

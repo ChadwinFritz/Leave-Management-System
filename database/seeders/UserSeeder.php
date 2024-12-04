@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -13,70 +13,85 @@ class UserSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Create 10 regular users (level 0)
-        $level0Users = [
-            ['name' => 'John Doe', 'email' => 'john.doe@example.com', 'username' => 'john_doe', 'password' => 'password123'],
-            ['name' => 'Jane Smith', 'email' => 'jane.smith@example.com', 'username' => 'jane_smith', 'password' => 'password123'],
-            ['name' => 'Michael Johnson', 'email' => 'michael.johnson@example.com', 'username' => 'michael_johnson', 'password' => 'password123'],
-            ['name' => 'Sarah Brown', 'email' => 'sarah.brown@example.com', 'username' => 'sarah_brown', 'password' => 'password123'],
-            ['name' => 'David Lee', 'email' => 'david.lee@example.com', 'username' => 'david_lee', 'password' => 'password123'],
-            ['name' => 'Emily Davis', 'email' => 'emily.davis@example.com', 'username' => 'emily_davis', 'password' => 'password123'],
-            ['name' => 'James Wilson', 'email' => 'james.wilson@example.com', 'username' => 'james_wilson', 'password' => 'password123'],
-            ['name' => 'Sophia Martinez', 'email' => 'sophia.martinez@example.com', 'username' => 'sophia_martinez', 'password' => 'password123'],
-            ['name' => 'Daniel Anderson', 'email' => 'daniel.anderson@example.com', 'username' => 'daniel_anderson', 'password' => 'password123'],
-            ['name' => 'Olivia Thomas', 'email' => 'olivia.thomas@example.com', 'username' => 'olivia_thomas', 'password' => 'password123'],
-        ];
+        // Create 10 random users with default attributes
+        User::factory()->count(10)->create();
 
-        // Create 2 admin users (level 1)
-        $level1Users = [
-            ['name' => 'Alice Green', 'email' => 'alice.green@example.com', 'username' => 'alice_green', 'password' => 'adminpassword123'],
-            ['name' => 'Robert White', 'email' => 'robert.white@example.com', 'username' => 'robert_white', 'password' => 'adminpassword123'],
-        ];
-
-        // Create 2 super admin users (level 2)
-        $level2Users = [
-            ['name' => 'Paul King', 'email' => 'paul.king@example.com', 'username' => 'paul_king', 'password' => 'superadminpassword123'],
-            ['name' => 'Mary Scott', 'email' => 'mary.scott@example.com', 'username' => 'mary_scott', 'password' => 'superadminpassword123'],
-        ];
-
-        // Create 4 supervisor users (level 3)
-        $level3Users = [
-            ['name' => 'William Adams', 'email' => 'william.adams@example.com', 'username' => 'william_adams', 'password' => 'supervisorpassword123'],
-            ['name' => 'Linda Clark', 'email' => 'linda.clark@example.com', 'username' => 'linda_clark', 'password' => 'supervisorpassword123'],
-            ['name' => 'Joseph Lewis', 'email' => 'joseph.lewis@example.com', 'username' => 'joseph_lewis', 'password' => 'supervisorpassword123'],
-            ['name' => 'Barbara Harris', 'email' => 'barbara.harris@example.com', 'username' => 'barbara_harris', 'password' => 'supervisorpassword123'],
-        ];
-
-        // Helper function to create users with common fields
-        $this->createUsers($level0Users, 0);
-        $this->createUsers($level1Users, 1);
-        $this->createUsers($level2Users, 2);
-        $this->createUsers($level3Users, 3);
-
-        $this->command->info('Users have been seeded successfully!');
-    }
-
-    /**
-     * Helper function to create users with level and common fields
-     *
-     * @param array $users
-     * @param int $level
-     * @return void
-     */
-    private function createUsers(array $users, int $level): void
-    {
-        foreach ($users as $userData) {
-            User::create([
-                'name' => $userData['name'],
-                'email' => $userData['email'],
-                'level' => $level,
-                'username' => $userData['username'],
-                'password' => Hash::make($userData['password']),
-                'status' => 'approved',
-                'is_approved' => true,
+        // Create 5 approved users with unique emails and levels
+        User::factory()
+            ->count(5)
+            ->approved()  // Use the approved state
+            ->create([
+                'email' => 'approved_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
             ]);
-        }
+
+        // Create 3 pending users with unique emails
+        User::factory()
+            ->count(3)
+            ->pending()  // Use the pending state
+            ->create([
+                'email' => 'pending_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        // Create 2 inactive users with unique emails
+        User::factory()
+            ->count(2)
+            ->inactive()  // Use the inactive state
+            ->create([
+                'email' => 'inactive_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        // Create 2 users with specific levels (User, Admin, Super Admin, Supervisor)
+        User::factory()
+            ->count(2)
+            ->withLevel(User::LEVEL_USER)  // Set user level to regular user
+            ->create([
+                'email' => 'user_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        User::factory()
+            ->count(2)
+            ->withLevel(User::LEVEL_ADMIN)  // Set user level to admin
+            ->create([
+                'email' => 'admin_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        User::factory()
+            ->count(2)
+            ->withLevel(User::LEVEL_SUPER_ADMIN)  // Set user level to super admin
+            ->create([
+                'email' => 'super_admin_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        User::factory()
+            ->count(2)
+            ->withLevel(User::LEVEL_SUPERVISOR)  // Set user level to supervisor
+            ->create([
+                'email' => 'supervisor_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        // Create 3 users with a specific name and unique email
+        User::factory()
+            ->count(3)
+            ->withName('Custom User')  // Set a custom name for the users
+            ->withEmail('customuser_' . Str::random(10) . '@example.com')  // Use Str::random for a unique email
+            ->create();
+
+        // Create 2 users with specific passwords and unique emails
+        User::factory()
+            ->count(2)
+            ->withPassword('Custompassword@123')  // Set a custom password for the users
+            ->create([
+                'email' => 'password_user_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
+
+        // Create 3 users with specific usernames and unique emails
+        User::factory()
+            ->count(3)
+            ->withUsername('customuser123')  // Set a custom username for the users
+            ->create([
+                'email' => 'username_user_' . Str::random(10) . '@example.com'  // Use Str::random for a unique email
+            ]);
     }
 }

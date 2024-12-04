@@ -2,74 +2,53 @@
 
 namespace Database\Seeders;
 
+use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class LeaveTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        DB::table('leave_types')->insert([
-            [
-                'code' => 'ANNUAL',
-                'name' => 'Annual Leave',
-                'has_limit' => true,
-                'limit' => 20, // Example limit for annual leave
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'SICK',
-                'name' => 'Sick Leave',
-                'has_limit' => true,
-                'limit' => 15, // Example limit for sick leave
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'CASUAL',
-                'name' => 'Casual Leave',
-                'has_limit' => true,
-                'limit' => 10, // Example limit for casual leave
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'COMPENSATORY',
-                'name' => 'Compensatory Leave',
-                'has_limit' => false, // No limit for compensatory leave
-                'limit' => null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'MATERNITY',
-                'name' => 'Maternity Leave',
-                'has_limit' => true,
-                'limit' => 90, // Example limit for maternity leave
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'PATERNITY',
-                'name' => 'Paternity Leave',
-                'has_limit' => true,
-                'limit' => 10, // Example limit for paternity leave
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'code' => 'UNPAID',
-                'name' => 'Unpaid Leave',
-                'has_limit' => false, // No limit for unpaid leave
-                'limit' => null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-        ]);
+        // Create 10 random leave types
+        LeaveType::factory()->count(10)->create();
+
+        // Create 5 leave types with limits
+        LeaveType::factory()
+            ->count(5)
+            ->withLimit()
+            ->create();
+
+        // Create 5 leave types without limits
+        LeaveType::factory()
+            ->count(5)
+            ->withoutLimit()
+            ->create();
+
+        // Create 3 leave types with specific codes
+        LeaveType::factory()
+            ->count(3)
+            ->withCode('SICK_LEAVE')
+            ->create();
+
+        LeaveType::factory()
+            ->count(3)
+            ->withCode('VACATION_LEAVE')
+            ->create();
+
+        // Create 2 leave types with specific names
+        LeaveType::factory()
+            ->count(2)
+            ->withName('Parental Leave')
+            ->create();
+
+        LeaveType::factory()
+            ->count(2)
+            ->withName('Emergency Leave')
+            ->create();
     }
 }

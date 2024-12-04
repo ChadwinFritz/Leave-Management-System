@@ -13,35 +13,53 @@ class TaskSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all users (assuming tasks are created by users)
-        $users = User::all();
+        // Create 5 random tasks with default states
+        Task::factory()->count(5)->create();
 
-        // Example task data
-        $taskData = [
-            ['title' => 'Complete project report', 'description' => 'Finish the annual project report and submit it by the end of the week.', 'status' => 'pending'],
-            ['title' => 'Fix bug in login page', 'description' => 'Resolve the issue with the login page where users are unable to log in.', 'status' => 'in_progress'],
-            ['title' => 'Prepare presentation for client', 'description' => 'Prepare a PowerPoint presentation for the upcoming client meeting.', 'status' => 'completed'],
-            ['title' => 'Update website content', 'description' => 'Update the content on the homepage and blog section with the latest posts.', 'status' => 'pending'],
-            ['title' => 'Conduct team meeting', 'description' => 'Schedule and lead a meeting with the team to discuss the project progress.', 'status' => 'in_progress']
-        ];
+        // Create 3 tasks with a specific status (e.g., completed)
+        Task::factory()
+            ->count(3)
+            ->completed()  // Set status to 'completed'
+            ->create();
 
-        // Loop through each task data and create tasks for random users
-        foreach ($taskData as $task) {
-            // Randomly assign a user to the task (if there are users available)
-            $assignedUser = $users->random();
+        // Create 3 tasks with a specific status (e.g., in-progress)
+        Task::factory()
+            ->count(3)
+            ->inProgress()  // Set status to 'in-progress'
+            ->create();
 
-            // Create the task
-            Task::create([
-                'title' => $task['title'],
-                'description' => $task['description'],
-                'status' => $task['status'],
-                'user_id' => $assignedUser->id,
-            ]);
+        // Create 2 pending tasks
+        Task::factory()
+            ->count(2)
+            ->pending()  // Set status to 'pending'
+            ->create();
+
+        // Create 2 archived tasks
+        Task::factory()
+            ->count(2)
+            ->archived()  // Set status to 'archived'
+            ->create();
+
+        // Create 4 tasks assigned to specific users
+        $userIds = User::pluck('id')->take(4);  // Get first 4 user IDs
+        foreach ($userIds as $userId) {
+            Task::factory()
+                ->assignedToUser($userId)  // Assign to a specific user
+                ->count(1)
+                ->create();
         }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Tasks have been seeded successfully!');
+        // Create 2 tasks with custom titles and descriptions
+        Task::factory()
+            ->count(2)
+            ->withTitleAndDescription('Task 1', 'Description for Task 1')
+            ->create();
+        
+        Task::factory()
+            ->count(2)
+            ->withTitleAndDescription('Task 2', 'Description for Task 2')
+            ->create();
     }
 }

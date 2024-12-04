@@ -13,58 +13,38 @@ class DepartmentSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Retrieve a collection of employees who can act as supervisors
-        $supervisors = Employee::where('employment_status', 'active')->get();
+        // Create 50 random departments with random managers and supervisors
+        Department::factory()->count(50)->create();
 
-        // If no supervisors are available, provide a fallback or skip supervisor assignment
-        if ($supervisors->isEmpty()) {
-            $this->command->warn("No active employees found to assign as supervisors. Departments will be seeded without supervisors.");
+        // Example: Create a specific active department with a specific manager and supervisor
+        $manager = Employee::factory()->create();  // Create a manager
+        $supervisor = Employee::factory()->create();  // Create a supervisor
+
+        Department::factory()
+            ->withManager($manager->id)  // Assign the created manager
+            ->withSupervisor($supervisor->id)  // Assign the created supervisor
+            ->active()  // Set the department to active
+            ->create();
+
+        // Example: Create inactive departments
+        foreach (range(1, 5) as $i) {
+            $manager = Employee::factory()->create();
+            $supervisor = Employee::factory()->create();
+
+            Department::factory()
+                ->withManager($manager->id)
+                ->withSupervisor($supervisor->id)
+                ->inactive()  // Set the department to inactive
+                ->create();
         }
 
-        // Define an array of sample departments
-        $departments = [
-            [
-                'name' => 'Software Development',
-                'description' => 'Responsible for developing software solutions.',
-                'manager_id' => null,
-                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null, // Assign if available
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Human Resources',
-                'description' => 'Manages employee relations, payroll, and benefits.',
-                'manager_id' => null,
-                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Marketing',
-                'description' => 'Handles marketing strategies and campaigns.',
-                'manager_id' => null,
-                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Finance',
-                'description' => 'Responsible for managing financial operations.',
-                'manager_id' => null,
-                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
-                'status' => 'inactive',
-            ],
-            [
-                'name' => 'Customer Support',
-                'description' => 'Supports customers with inquiries and technical issues.',
-                'manager_id' => null,
-                'supervisor_id' => $supervisors->isNotEmpty() ? $supervisors->random()->id : null,
-                'status' => 'active',
-            ],
-        ];
-
-        // Loop through each department and insert it into the departments table
-        foreach ($departments as $department) {
-            Department::create($department);
-        }
+        // Example: Create a specific department with a specific name
+        Department::factory()->create([
+            'name' => 'HR Department',  // Set a custom name
+            'description' => 'Human resources and employee management.',  // Custom description
+            'status' => 'active',  // Set to active status
+        ]);
     }
 }

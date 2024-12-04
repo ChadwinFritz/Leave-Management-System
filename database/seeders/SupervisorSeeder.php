@@ -15,28 +15,48 @@ class SupervisorSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Fetch all users, departments, and teams
-        $users = User::all();
-        $departments = Department::all();
-        $teams = Team::all();
+        // Create 5 random supervisors with default states
+        Supervisor::factory()->count(5)->create();
 
-        // Assign supervisors to users
-        foreach ($users as $user) {
-            // Randomly assign a department and a team (optional)
-            $department = $departments->random();
-            $team = $teams->random();
+        // Create 3 department head supervisors
+        Supervisor::factory()
+            ->count(3)
+            ->departmentHead()  // Set as department head (with a department)
+            ->create();
 
-            // Create supervisor record
-            Supervisor::create([
-                'user_id' => $user->id,
-                'department_id' => $department->id,
-                'team_id' => $team->id,
-            ]);
-        }
+        // Create 3 team leader supervisors
+        Supervisor::factory()
+            ->count(3)
+            ->teamLeader()  // Set as team leader (with a team)
+            ->create();
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Supervisors have been seeded successfully!');
+        // Create 2 senior supervisors (manages multiple teams)
+        Supervisor::factory()
+            ->count(2)
+            ->seniorSupervisor()  // Set as senior supervisor (with multiple teams)
+            ->create();
+
+        // Create 4 supervisors without a department or team
+        Supervisor::factory()
+            ->count(4)
+            ->withoutDepartment()  // Set without department
+            ->withoutTeam()  // Set without team
+            ->create();
+
+        // Create 3 supervisors in a specific department (using an existing department)
+        $departmentId = Department::first()->id;  // Assuming at least one department exists
+        Supervisor::factory()
+            ->count(3)
+            ->inDepartment($departmentId)  // Assign to a specific department
+            ->create();
+
+        // Create 3 supervisors in a specific team (using an existing team)
+        $teamId = Team::first()->id;  // Assuming at least one team exists
+        Supervisor::factory()
+            ->count(3)
+            ->inTeam($teamId)  // Assign to a specific team
+            ->create();
     }
 }

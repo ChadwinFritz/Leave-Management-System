@@ -13,35 +13,49 @@ class NotificationSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all users to assign notifications
-        $users = User::all();
+        // Create 10 random notifications
+        Notification::factory()->count(10)->create();
 
-        // Define possible types for notifications
-        $types = ['leave_approval', 'reminder', 'alert', 'announcement'];
+        // Create 5 unread notifications
+        Notification::factory()
+            ->count(5)
+            ->unread()  // Mark as unread
+            ->create();
 
-        // Define some example messages for each type of notification
-        $messages = [
-            'leave_approval' => 'Your leave request has been approved.',
-            'reminder' => 'Reminder: You have an upcoming meeting tomorrow.',
-            'alert' => 'Alert: Your password will expire soon. Please update it.',
-            'announcement' => 'Announcement: The office will be closed on Friday.',
-        ];
+        // Create 5 read notifications
+        Notification::factory()
+            ->count(5)
+            ->read()  // Mark as read
+            ->create();
 
-        // Loop through users to generate random notifications
-        foreach ($users as $user) {
-            foreach (range(1, 5) as $index) {
-                Notification::create([
-                    'user_id' => $user->id,
-                    'type' => $types[array_rand($types)], // Randomly assign a notification type
-                    'message' => $messages[$types[array_rand($types)]], // Assign a corresponding message
-                    'is_read' => false, // Initially unread
-                ]);
-            }
-        }
+        // Create 3 leave approval notifications for specific users
+        Notification::factory()
+            ->count(3)
+            ->withType('leave_approval')  // Set the type to 'leave_approval'
+            ->forUser(User::factory()->create()->id)  // Assign a specific user
+            ->create();
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Notification data has been seeded!');
+        // Create 3 reminder notifications for specific users
+        Notification::factory()
+            ->count(3)
+            ->withType('reminder')  // Set the type to 'reminder'
+            ->forUser(User::factory()->create()->id)  // Assign a specific user
+            ->create();
+
+        // Create 2 alert notifications with a custom message
+        Notification::factory()
+            ->count(2)
+            ->withType('alert')  // Set the type to 'alert'
+            ->withMessage('This is a custom alert message.')  // Set a specific message
+            ->create();
+
+        // Create 2 announcement notifications with a custom message
+        Notification::factory()
+            ->count(2)
+            ->withType('announcement')  // Set the type to 'announcement'
+            ->withMessage('Important announcement: System maintenance scheduled.')  // Custom announcement
+            ->create();
     }
 }

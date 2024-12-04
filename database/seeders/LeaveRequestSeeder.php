@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\LeaveRequest;
 use App\Models\Employee;
 use App\Models\LeaveApplication;
+use App\Models\Supervisor;
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 
 class LeaveRequestSeeder extends Seeder
 {
@@ -14,49 +15,50 @@ class LeaveRequestSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all employees and leave applications from the database
+        // Create 50 random leave requests
+        LeaveRequest::factory()->count(50)->create();
+
+        // Create 10 pending leave requests
+        LeaveRequest::factory()
+            ->count(10)
+            ->pending()
+            ->create();
+
+        // Create 5 approved leave requests
+        LeaveRequest::factory()
+            ->count(5)
+            ->approved()
+            ->create();
+
+        // Create 5 rejected leave requests
+        LeaveRequest::factory()
+            ->count(5)
+            ->rejected()
+            ->create();
+
+        // Create leave requests with assigned supervisors
         $employees = Employee::all();
-        $leaveApplications = LeaveApplication::all();
+        $supervisors = Supervisor::all();  // Ensure you have some supervisor records in the DB
 
-        // Example leave reasons
-        $leaveReasons = [
-            'Personal time off',
-            'Sick leave',
-            'Vacation',
-            'Family emergency',
-            'Medical treatment',
-            'Wedding'
-        ];
-
-        // Loop through each employee and assign random leave requests
         foreach ($employees as $employee) {
-            // Choose a random leave application for the employee
-            $leaveApplication = $leaveApplications->random();
-
-            // Generate random leave dates within the next 30 days
-            $startDate = Carbon::now()->addDays(rand(1, 30))->toDateString();
-            $endDate = Carbon::parse($startDate)->addDays(rand(1, 5))->toDateString(); // Leave duration from 1 to 5 days
-
-            // Generate a random leave reason
-            $reason = $leaveReasons[array_rand($leaveReasons)];
-
-            // Random leave request status
-            $status = ['pending', 'approved', 'rejected'][rand(0, 2)];
-
-            // Create the leave request
-            $employee->leaveRequests()->create([
-                'leave_application_id' => $leaveApplication->id,
-                'request_date' => Carbon::now()->toDateString(),
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'reason' => $reason,
-                'status' => $status,
-            ]);
+            LeaveRequest::factory()
+                ->withSupervisor($supervisors->random()->id)  // Assign a random supervisor
+                ->forEmployee($employee->id)  // Assign the employee
+                ->forLeaveApplication(LeaveApplication::inRandomOrder()->first()->id)  // Random leave application
+                ->create();
         }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Leave requests have been seeded successfully!');
+        // Create leave requests with specific date ranges
+        LeaveRequest::factory()
+            ->count(3)
+            ->dateRange('2024-01-01', '2024-01-10')  // Specific date range
+            ->create();
+
+        LeaveRequest::factory()
+            ->count(2)
+            ->dateRange('2024-06-01', '2024-06-05')  // Another specific date range
+            ->create();
     }
 }

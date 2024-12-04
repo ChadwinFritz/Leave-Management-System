@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Availability;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class AvailabilitySeeder extends Seeder
 {
@@ -14,31 +13,30 @@ class AvailabilitySeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all employees from the database
-        $employees = Employee::all();
+        // Create 50 random availability records for employees
+        Availability::factory()->count(50)->create();
 
-        // Define sample status for availability
-        $statuses = ['available', 'unavailable'];
+        // Example: Create specific availability for a given employee
+        Availability::factory()->forEmployee(1)  // For employee with ID 1
+            ->withTimeRange('2024-12-10 09:00', '2024-12-10 13:00')  // Custom time range
+            ->active()  // Set the status to active
+            ->create();
 
-        // Create sample availability records for each employee
-        foreach ($employees as $employee) {
-            // Generate random availability periods for each employee
-            foreach (range(1, 5) as $index) {
-                $start = Carbon::now()->addDays(rand(1, 30)); // Start date is in the next 1-30 days
-                $end = $start->copy()->addHours(rand(4, 8)); // End date is 4 to 8 hours after the start
+        Availability::factory()->forEmployee(2)  // For employee with ID 2
+            ->withTimeRange('2024-12-11 14:00', '2024-12-11 18:00')  // Custom time range
+            ->inactive()  // Set the status to inactive
+            ->create();
 
-                Availability::create([
-                    'employee_id' => $employee->id,
-                    'available_from' => $start,
-                    'available_to' => $end,
-                    'status' => $statuses[array_rand($statuses)], // Randomly assign available/unavailable status
-                ]);
-            }
+        // Example: Create availability with random times for employees
+        foreach (range(1, 10) as $i) {
+            $from = now()->addDays(rand(1, 10));  // Random start date within the next 10 days
+            $to = (clone $from)->addHours(rand(1, 6));  // Random end time within 1-6 hours after start
+
+            Availability::factory()->forEmployee(rand(1, 5))  // Random employee between ID 1 and 5
+                ->withTimeRange($from->format('Y-m-d H:i'), $to->format('Y-m-d H:i'))
+                ->create();
         }
-
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Availability data has been seeded!');
     }
 }

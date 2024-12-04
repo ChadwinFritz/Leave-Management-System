@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Team;
+use App\Models\TeamReport;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
@@ -13,37 +14,47 @@ class TeamReportSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all teams from the database
-        $teams = Team::all();
+        // Create 5 random team reports
+        TeamReport::factory()->count(5)->create();
 
-        // Define some example report dates, you can expand this as needed
-        $reportDates = [
-            Carbon::now()->subMonths(1), // 1 month ago
-            Carbon::now()->subWeeks(2),  // 2 weeks ago
-            Carbon::now(),               // Today
-        ];
-
-        // Loop through each team and assign a random report for each date
-        foreach ($teams as $team) {
-            foreach ($reportDates as $reportDate) {
-                // Generate random performance, attendance, and leave percentages
-                $performanceScore = rand(80, 100) / 20; // Random performance between 4.00 and 5.00
-                $attendancePercentage = rand(80, 100); // Random attendance between 80% and 100%
-                $leavePercentage = rand(0, 30); // Random leave percentage between 0% and 30%
-
-                // Create a report for the team
-                $team->reports()->create([
-                    'report_date' => $reportDate->toDateString(),
-                    'performance_score' => $performanceScore,
-                    'attendance_percentage' => $attendancePercentage,
-                    'leave_percentage' => $leavePercentage,
-                ]);
-            }
+        // Create 3 team reports for specific teams with custom performance scores
+        $teamIds = Team::pluck('id')->take(3);  // Get first 3 team IDs
+        foreach ($teamIds as $teamId) {
+            TeamReport::factory()
+                ->forTeam($teamId)  // Assign to specific team
+                ->withPerformanceScore(rand(60, 90))  // Random performance score between 60 and 90
+                ->count(1)
+                ->create();
         }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Team reports have been seeded successfully!');
+        // Create 2 reports with specific attendance percentages
+        TeamReport::factory()
+            ->count(2)
+            ->withAttendancePercentage(rand(75, 95))  // Random attendance percentage between 75 and 95
+            ->create();
+
+        // Create 2 reports with specific leave percentages
+        TeamReport::factory()
+            ->count(2)
+            ->withLeavePercentage(rand(5, 15))  // Random leave percentage between 5 and 15
+            ->create();
+
+        // Create 3 reports with a specific date range (e.g., last month)
+        $startDate = Carbon::now()->subMonth()->startOfMonth();
+        $endDate = Carbon::now()->subMonth()->endOfMonth();
+        TeamReport::factory()
+            ->count(3)
+            ->withinDateRange($startDate, $endDate)  // Generate reports within the last month
+            ->create();
+
+        // Create 2 reports with specific dates (e.g., this week)
+        $startDate = Carbon::now()->startOfWeek();
+        $endDate = Carbon::now()->endOfWeek();
+        TeamReport::factory()
+            ->count(2)
+            ->withinDateRange($startDate, $endDate)  // Generate reports within this week
+            ->create();
     }
 }

@@ -5,41 +5,58 @@ namespace Database\Seeders;
 use App\Models\EscalationRequest;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
-class EscalationRequestsSeeder extends Seeder
+class EscalationRequestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
-        // Get all employees to assign as employees and supervisors
+        // Create 50 random escalation requests
+        EscalationRequest::factory()->count(50)->create();
+
+        // Example: Create 10 pending escalation requests
+        EscalationRequest::factory()
+            ->count(10)
+            ->pending() // Status: Pending
+            ->create();
+
+        // Example: Create 5 approved escalation requests
+        EscalationRequest::factory()
+            ->count(5)
+            ->approved() // Status: Approved
+            ->create();
+
+        // Example: Create 5 rejected escalation requests
+        EscalationRequest::factory()
+            ->count(5)
+            ->rejected() // Status: Rejected
+            ->create();
+
+        // Example: Create 3 escalation requests for specific employees and supervisors
         $employees = Employee::all();
-
-        // Define possible statuses for escalation requests
-        $statuses = ['pending', 'approved', 'rejected'];
-
-        // Loop to generate random escalation requests
         foreach ($employees as $employee) {
-            // Skip if no other employees are available for supervisor assignment
-            $supervisor = $employees->where('id', '!=', $employee->id)->random();
-
-            // Generate a random number of escalation requests for the employee
-            foreach (range(1, 3) as $index) {
-                EscalationRequest::create([
-                    'employee_id' => $employee->id,
-                    'supervisor_id' => $supervisor->id,
-                    'reason' => 'Request to escalate an issue regarding ' . $employee->name,
-                    'status' => $statuses[array_rand($statuses)], // Randomly assign a status
-                    'date_requested' => Carbon::now()->subDays(rand(1, 15)), // Request date within the last 15 days
-                ]);
-            }
+            // Randomly assign an employee and a supervisor to the escalation request
+            $supervisor = $employees->random(); // Assign a random supervisor
+            EscalationRequest::factory()
+                ->forEmployee($employee->id) // Assign a specific employee
+                ->forSupervisor($supervisor->id) // Assign a specific supervisor
+                ->create();
         }
 
-        // Optionally, print a message to indicate successful seeding
-        $this->command->info('Escalation request data has been seeded!');
+        // Example: Create 5 escalation requests with specific requested dates
+        EscalationRequest::factory()
+            ->count(5)
+            ->requestedOn('2023-01-01')  // Set a specific date for the escalation request
+            ->create();
+
+        // Example: Create 3 escalation requests for specific dates within the last 6 months
+        EscalationRequest::factory()
+            ->count(3)
+            ->requestedOn(now()->subMonths(6)->format('Y-m-d'))  // Set date within the last 6 months
+            ->create();
     }
 }
