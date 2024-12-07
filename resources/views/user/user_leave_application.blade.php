@@ -1,11 +1,21 @@
 <x-app-layout>
-    <!-- Navigation Bar -->
     <x-user.nav />
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <form method="POST" action="{{ route('user.leave.request') }}" enctype="multipart/form-data">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-green-500 to-teal-500 text-black py-8">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-extrabold">Apply for Leave</h1>
+            <p class="mt-4 text-xl font-medium">Fill out the form to apply for your leave</p>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container mx-auto px-6 py-8">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <form method="POST" action="{{ route('user.leave.application.submit') }}" enctype="multipart/form-data">
                 @csrf
+
+                <!-- Application Header -->
                 <div class="px-6 py-4 border-b">
                     <h3 class="text-xl font-semibold"><strong>Apply</strong> for Leave</h3>
                 </div>
@@ -27,10 +37,11 @@
                     </div>
                 @endif
 
+                <!-- Form Fields -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                     <div>
                         <!-- Leave Type Dropdown -->
-                        <div class="mt-4">
+                        <div class="mb-4">
                             <x-input-label for="leave_type_id" :value="__('Leave Type')" />
                             <select id="leave_type_id" name="leave_type_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
                                 <option value="">{{ __('Select Leave Type') }}</option>
@@ -108,6 +119,12 @@
         </div>
     </div>
 
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-6 text-center">
+        <p>&copy; {{ date('Y') }} Leave Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Date Calculation -->
     <script>
         function calculateDays() {
             const startDateInput = document.getElementById('start_date');

@@ -2,96 +2,55 @@
 
 namespace Database\Seeders;
 
-use App\Models\TaskAssignment;
-use App\Models\Employee;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\Supervisor;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TaskAssignmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 5 random task assignments with default states
-        TaskAssignment::factory()->count(5)->create();
-
-        // Create 3 task assignments with a specific status (e.g., pending)
-        TaskAssignment::factory()
-            ->count(3)
-            ->pending()  // Assign 'pending' status
-            ->create();
-
-        // Create 3 task assignments with a specific status (e.g., in progress)
-        TaskAssignment::factory()
-            ->count(3)
-            ->inProgress()  // Assign 'in progress' status
-            ->create();
-
-        // Create 2 completed task assignments
-        TaskAssignment::factory()
-            ->count(2)
-            ->completed()  // Assign 'completed' status
-            ->create();
-
-        // Create 2 archived task assignments
-        TaskAssignment::factory()
-            ->count(2)
-            ->archived()  // Assign 'archived' status
-            ->create();
-
-        // Create 4 task assignments assigned to specific employees
-        $employeeIds = Employee::pluck('id')->take(4);  // Get first 4 employee IDs
-        foreach ($employeeIds as $employeeId) {
-            TaskAssignment::factory()
-                ->assignedToEmployee($employeeId)  // Assign to a specific employee
-                ->count(1)
-                ->create();
-        }
-
-        // Create 3 task assignments for specific tasks
-        $taskIds = Task::pluck('id')->take(3);  // Get first 3 task IDs
-        foreach ($taskIds as $taskId) {
-            TaskAssignment::factory()
-                ->forTask($taskId)  // Assign to a specific task
-                ->count(1)
-                ->create();
-        }
-
-        // Create 3 task assignments assigned by specific users
-        $userIds = User::pluck('id')->take(3);  // Get first 3 user IDs
-        foreach ($userIds as $userId) {
-            TaskAssignment::factory()
-                ->assignedByUser($userId)  // Assign by a specific user
-                ->count(1)
-                ->create();
-        }
-
-        // Create 2 task assignments assigned by specific supervisors
-        $supervisorIds = Supervisor::pluck('id')->take(2);  // Get first 2 supervisor IDs
-        foreach ($supervisorIds as $supervisorId) {
-            TaskAssignment::factory()
-                ->assignedBySupervisor($supervisorId)  // Assign by a specific supervisor
-                ->count(1)
-                ->create();
-        }
-
-        // Create 3 task assignments with specific due dates
-        $dueDates = [
-            now()->addDays(2),
-            now()->addDays(5),
-            now()->addDays(7),
+        $taskAssignments = [
+            [
+                'employee_id' => 1, // Assigned to Peter Parker (Employee ID 1)
+                'task_id' => 1, // Assuming Task ID 1 exists (e.g., "Fix Web Application Bugs")
+                'assigned_by' => 2, // Assigned by Tony Stark (User ID 2)
+                'status' => 'in_progress',
+                'due_date' => '2024-12-15 17:00:00',
+            ],
+            [
+                'employee_id' => 2, // Assigned to Tony Stark (Employee ID 2)
+                'task_id' => 2, // Assuming Task ID 2 exists (e.g., "Prepare Annual Financial Report")
+                'assigned_by' => 3, // Assigned by Steve Rogers (User ID 3)
+                'status' => 'pending',
+                'due_date' => '2024-12-20 09:00:00',
+            ],
+            [
+                'employee_id' => 3, // Assigned to Steve Rogers (Employee ID 3)
+                'task_id' => 3, // Assuming Task ID 3 exists (e.g., "User Interface Redesign")
+                'assigned_by' => 4, // Assigned by Natasha Romanoff (User ID 4)
+                'status' => 'in_progress',
+                'due_date' => '2024-12-25 17:00:00',
+            ],
+            [
+                'employee_id' => 4, // Assigned to Natasha Romanoff (Employee ID 4)
+                'task_id' => 4, // Assuming Task ID 4 exists (e.g., "Conduct Employee Interviews")
+                'assigned_by' => 5, // Assigned by Bruce Banner (User ID 5)
+                'status' => 'completed',
+                'due_date' => '2024-12-05 12:00:00',
+            ],
+            [
+                'employee_id' => 5, // Assigned to Bruce Banner (Employee ID 5)
+                'task_id' => 5, // Assuming Task ID 5 exists (e.g., "Test New Features")
+                'assigned_by' => 1, // Assigned by Peter Parker (User ID 1)
+                'status' => 'pending',
+                'due_date' => '2024-12-18 14:00:00',
+            ],
         ];
-        foreach ($dueDates as $dueDate) {
-            TaskAssignment::factory()
-                ->withDueDate($dueDate)  // Assign with a specific due date
-                ->count(1)
-                ->create();
-        }
+
+        // Insert task assignments into the database
+        DB::table('task_assignments')->insert($taskAssignments);
     }
 }

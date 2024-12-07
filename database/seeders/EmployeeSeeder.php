@@ -2,61 +2,85 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
-use App\Models\Department;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 50 random employees
-        Employee::factory()->count(50)->create();
+        $employees = [
+            [
+                'name' => 'Peter',
+                'surname' => 'Parker',
+                'email' => 'spiderman.employee@marvel.com',
+                'phone' => '555-1234',
+                'address' => '20 Ingram Street, Forest Hills, Queens, NY',
+                'hire_date' => '2015-06-15 09:00:00',
+                'user_id' => 1, // Assuming this matches the user with ID 1
+                'department_id' => 1, // Replace with an actual department ID
+                'employee_code' => 'EMP001',
+                'employment_status' => 'active',
+                'notes' => 'Excellent web developer and team player.',
+            ],
+            [
+                'name' => 'Tony',
+                'surname' => 'Stark',
+                'email' => 'ironman.employee@marvel.com',
+                'phone' => '555-5678',
+                'address' => '10880 Malibu Point, Malibu, CA',
+                'hire_date' => '2010-03-10 09:00:00',
+                'user_id' => 2, // Assuming this matches the user with ID 2
+                'department_id' => 2, // Replace with an actual department ID
+                'employee_code' => 'EMP002',
+                'employment_status' => 'active',
+                'notes' => 'Engineering genius and leader of innovation.',
+            ],
+            [
+                'name' => 'Steve',
+                'surname' => 'Rogers',
+                'email' => 'captain.employee@marvel.com',
+                'phone' => '555-9876',
+                'address' => '569 Leaman Place, Brooklyn, NY',
+                'hire_date' => '1945-01-01 09:00:00',
+                'user_id' => 3, // Assuming this matches the user with ID 3
+                'department_id' => 3, // Replace with an actual department ID
+                'employee_code' => 'EMP003',
+                'employment_status' => 'active',
+                'notes' => 'Natural leader with an unwavering moral compass.',
+            ],
+            [
+                'name' => 'Natasha',
+                'surname' => 'Romanoff',
+                'email' => 'blackwidow.employee@marvel.com',
+                'phone' => '555-3456',
+                'address' => 'Unknown, Classified',
+                'hire_date' => '2012-05-01 09:00:00',
+                'user_id' => 4, // Assuming this matches the user with ID 4
+                'department_id' => 4, // Replace with an actual department ID
+                'employee_code' => 'EMP004',
+                'employment_status' => 'active',
+                'notes' => 'Expert in espionage and close combat.',
+            ],
+            [
+                'name' => 'Bruce',
+                'surname' => 'Banner',
+                'email' => 'hulk.employee@marvel.com',
+                'phone' => '555-6789',
+                'address' => 'Culver University, Virginia',
+                'hire_date' => '2008-08-10 09:00:00',
+                'user_id' => 5, // Assuming this matches the user with ID 5
+                'department_id' => 5, // Replace with an actual department ID
+                'employee_code' => 'EMP005',
+                'employment_status' => 'active',
+                'notes' => 'Brilliant scientist with expertise in gamma radiation.',
+            ],
+        ];
 
-        // Example: Create 5 active employees
-        Employee::factory()->count(5)->active()->create();
-
-        // Example: Create 5 inactive employees
-        Employee::factory()->count(5)->inactive()->create();
-
-        // Example: Assign employees to specific departments
-        $departments = Department::all(); // Fetch all departments from the database
-        foreach ($departments as $department) {
-            Employee::factory()
-                ->inDepartment($department->id)  // Assign to specific department
-                ->count(5)  // Create 5 employees for each department
-                ->create();
-        }
-
-        // Example: Hire employees after a specific date
-        Employee::factory()
-            ->count(3)
-            ->hiredOnOrAfter('2020-01-01')  // Hire after January 1st, 2020
-            ->create();
-
-        // Example: Hire employees before a specific date
-        Employee::factory()
-            ->count(3)
-            ->hiredBefore('2015-01-01')  // Hire before January 1st, 2015
-            ->create();
-
-        // Example: Assign employees with specific hire dates
-        Employee::factory()
-            ->count(10)
-            ->hiredOnOrAfter('2018-01-01')  // Hire after January 1st, 2018
-            ->hiredBefore('2023-12-31')  // Hire before December 31st, 2023
-            ->create();
-
-        // Example: Create 10 employees with custom attributes
-        Employee::factory()
-            ->count(10)
-            ->forUser(User::factory())  // Assign a specific user (could be an existing user)
-            ->create();
+        // Insert employees into the database
+        DB::table('employees')->insert($employees);
     }
 }

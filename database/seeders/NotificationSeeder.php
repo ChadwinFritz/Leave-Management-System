@@ -2,60 +2,50 @@
 
 namespace Database\Seeders;
 
-use App\Models\Notification;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class NotificationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 10 random notifications
-        Notification::factory()->count(10)->create();
+        $notifications = [
+            [
+                'user_id' => 1, // Peter Parker (User ID 1)
+                'type' => 'leave_approval',
+                'message' => 'Your leave request for December 25th has been approved.',
+                'is_read' => false,
+            ],
+            [
+                'user_id' => 2, // Tony Stark (User ID 2)
+                'type' => 'announcement',
+                'message' => 'The company will be closed on January 1st for the New Year holiday.',
+                'is_read' => false,
+            ],
+            [
+                'user_id' => 3, // Steve Rogers (User ID 3)
+                'type' => 'reminder',
+                'message' => 'Please submit your weekly report by end of day today.',
+                'is_read' => false,
+            ],
+            [
+                'user_id' => 4, // Natasha Romanoff (User ID 4)
+                'type' => 'alert',
+                'message' => 'Security breach detected. Please check your devices for any suspicious activity.',
+                'is_read' => false,
+            ],
+            [
+                'user_id' => 5, // Bruce Banner (User ID 5)
+                'type' => 'reminder',
+                'message' => 'Reminder: Team meeting scheduled for 10:00 AM tomorrow.',
+                'is_read' => false,
+            ],
+        ];
 
-        // Create 5 unread notifications
-        Notification::factory()
-            ->count(5)
-            ->unread()  // Mark as unread
-            ->create();
-
-        // Create 5 read notifications
-        Notification::factory()
-            ->count(5)
-            ->read()  // Mark as read
-            ->create();
-
-        // Create 3 leave approval notifications for specific users
-        Notification::factory()
-            ->count(3)
-            ->withType('leave_approval')  // Set the type to 'leave_approval'
-            ->forUser(User::factory()->create()->id)  // Assign a specific user
-            ->create();
-
-        // Create 3 reminder notifications for specific users
-        Notification::factory()
-            ->count(3)
-            ->withType('reminder')  // Set the type to 'reminder'
-            ->forUser(User::factory()->create()->id)  // Assign a specific user
-            ->create();
-
-        // Create 2 alert notifications with a custom message
-        Notification::factory()
-            ->count(2)
-            ->withType('alert')  // Set the type to 'alert'
-            ->withMessage('This is a custom alert message.')  // Set a specific message
-            ->create();
-
-        // Create 2 announcement notifications with a custom message
-        Notification::factory()
-            ->count(2)
-            ->withType('announcement')  // Set the type to 'announcement'
-            ->withMessage('Important announcement: System maintenance scheduled.')  // Custom announcement
-            ->create();
+        // Insert notifications into the database
+        DB::table('notifications')->insert($notifications);
     }
 }

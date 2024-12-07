@@ -2,41 +2,51 @@
 
 namespace Database\Seeders;
 
-use App\Models\Availability;
-use App\Models\Employee;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AvailabilitySeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 50 random availability records for employees
-        Availability::factory()->count(50)->create();
+        $availabilities = [
+            [
+                'employee_id' => 1, // Peter Parker (ID 1)
+                'available_from' => Carbon::now()->addDays(1)->setTime(9, 0), // Available starting tomorrow at 9 AM
+                'available_to' => Carbon::now()->addDays(1)->setTime(17, 0), // Available until 5 PM
+                'status' => 'available',
+            ],
+            [
+                'employee_id' => 2, // Tony Stark (ID 2)
+                'available_from' => Carbon::now()->addDays(2)->setTime(10, 0), // Available starting in two days at 10 AM
+                'available_to' => Carbon::now()->addDays(2)->setTime(18, 0), // Available until 6 PM
+                'status' => 'available',
+            ],
+            [
+                'employee_id' => 3, // Steve Rogers (ID 3)
+                'available_from' => Carbon::now()->addDays(3)->setTime(8, 0), // Available starting in three days at 8 AM
+                'available_to' => Carbon::now()->addDays(3)->setTime(16, 0), // Available until 4 PM
+                'status' => 'available',
+            ],
+            [
+                'employee_id' => 4, // Natasha Romanoff (ID 4)
+                'available_from' => Carbon::now()->addDays(5)->setTime(11, 0), // Available starting in five days at 11 AM
+                'available_to' => Carbon::now()->addDays(5)->setTime(15, 0), // Available until 3 PM
+                'status' => 'unavailable', // Natasha Romanoff is unavailable on this date
+            ],
+            [
+                'employee_id' => 5, // Bruce Banner (ID 5)
+                'available_from' => Carbon::now()->addDays(1)->setTime(9, 30), // Available starting tomorrow at 9:30 AM
+                'available_to' => Carbon::now()->addDays(1)->setTime(17, 30), // Available until 5:30 PM
+                'status' => 'available',
+            ],
+        ];
 
-        // Example: Create specific availability for a given employee
-        Availability::factory()->forEmployee(1)  // For employee with ID 1
-            ->withTimeRange('2024-12-10 09:00', '2024-12-10 13:00')  // Custom time range
-            ->active()  // Set the status to active
-            ->create();
-
-        Availability::factory()->forEmployee(2)  // For employee with ID 2
-            ->withTimeRange('2024-12-11 14:00', '2024-12-11 18:00')  // Custom time range
-            ->inactive()  // Set the status to inactive
-            ->create();
-
-        // Example: Create availability with random times for employees
-        foreach (range(1, 10) as $i) {
-            $from = now()->addDays(rand(1, 10));  // Random start date within the next 10 days
-            $to = (clone $from)->addHours(rand(1, 6));  // Random end time within 1-6 hours after start
-
-            Availability::factory()->forEmployee(rand(1, 5))  // Random employee between ID 1 and 5
-                ->withTimeRange($from->format('Y-m-d H:i'), $to->format('Y-m-d H:i'))
-                ->create();
-        }
+        // Insert availability data into the database
+        DB::table('availabilities')->insert($availabilities);
     }
 }

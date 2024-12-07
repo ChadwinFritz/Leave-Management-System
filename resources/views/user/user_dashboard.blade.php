@@ -1,11 +1,16 @@
 <x-app-layout>
     <x-user.nav />
 
-    <!-- Dashboard Welcome Section -->
-    <div class="container mx-auto px-6 py-8">
-        <h1 class="text-3xl font-semibold text-gray-900">Welcome, {{ Auth::user()->name }}</h1>
-        <p class="text-gray-600 mt-2">Here is an overview of your leave information.</p>
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-black py-8">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-extrabold">Welcome, {{ Auth::user()->name }}</h1>
+            <p class="mt-4 text-xl font-medium">Here is an overview of your leave information</p>
+        </div>
+    </header>
 
+    <!-- Main Content Section -->
+    <div class="container mx-auto px-6 py-8">
         <!-- Dashboard Overview Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             <!-- Total Leaves Taken -->
@@ -26,21 +31,14 @@
                 <canvas id="leaveTypesChart"></canvas>
             </div>
         </div>
-
-        <!-- Quick Actions -->
-        <div class="flex justify-center space-x-6 mt-8">
-            <a href="{{ route('user.leave.application') }}" class="bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition">
-                Apply for Leave
-            </a>
-            <a href="{{ route('user.leave.history') }}" class="bg-green-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-green-700 transition">
-                View Leave History
-            </a>
-            <a href="{{ route('user.profile') }}" class="bg-yellow-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-yellow-700 transition">
-                Update Profile
-            </a>
-        </div>
     </div>
 
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-6 text-center">
+        <p>&copy; {{ date('Y') }} Leave Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- Chart.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const leaveTypes = @json($leaveTypes);

@@ -17,22 +17,22 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('supervisor_id');
+            $table->unsignedBigInteger('user_id'); // Changed from 'supervisor_id' to 'user_id'
             $table->unsignedBigInteger('department_id');
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('supervisor_id')->references('id')->on('supervisors')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // Foreign key to 'users' table
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
 
             // Indexes for better performance
-            $table->index('supervisor_id');
+            $table->index('user_id'); // Changed from 'supervisor_id' to 'user_id'
             $table->index('department_id');
         });
 
         // Add table comment only for databases that support it
         if (Schema::getConnection()->getDriverName() !== 'sqlite') {
-            DB::statement("ALTER TABLE teams COMMENT = 'Table for teams with a supervisor and department association.'");
+            DB::statement("ALTER TABLE teams COMMENT = 'Table for teams with a user (supervisor) and department association.'");
         }
     }
 

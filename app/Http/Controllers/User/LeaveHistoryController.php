@@ -17,11 +17,11 @@ class LeaveHistoryController extends Controller
     {
         $user = Auth::user();
 
-        // Fetch leave history for the logged-in user, ordered by most recent
+        // Fetch leave history for the logged-in user, ordered by most recent, with pagination
         $leaveHistory = Leave::with('leaveType')
             ->where('user_id', $user->id)
             ->orderBy('start_date', 'desc')
-            ->get();
+            ->paginate(10);  // Paginate the results (10 items per page)
 
         return view('user.user_leave_history', compact('leaveHistory'));
     }

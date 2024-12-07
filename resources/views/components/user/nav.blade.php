@@ -3,7 +3,6 @@
         <!-- Logo/Brand -->
         <div>
             <a href="{{ route('user.dashboard') }}" class="text-black text-2xl font-bold">
-                Employee
             </a>
         </div>
 
@@ -17,9 +16,9 @@
             </a>
 
             <!-- User Profile Link -->
-            <a href="{{ route('user.profile') }}" 
+            <a href="{{ route('user.profile.edit') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('user.profile') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('user.profile.edit') ? 'font-semibold' : '' }}">
                 Profile
             </a>
 

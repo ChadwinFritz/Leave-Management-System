@@ -17,13 +17,6 @@
                 Dashboard
             </a>
 
-            <!-- Approve Leave -->
-            <a href="{{ route('leave.approve.index') }}" 
-               class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('leave.approve.index') ? 'font-semibold' : '' }}">
-                Approve Leave
-            </a>
-
             <!-- Department Report -->
             <a href="{{ route('admin.department.report') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 

@@ -22,6 +22,12 @@ class UserLeaveApplicationController extends Controller
         // Fetch employee data
         $employee = $user->employee; // Assuming `employee` is a relation on the User model
 
+        // If employee data is not available, handle the error gracefully
+        if (!$employee) {
+            // You can either redirect the user or show an error message
+            return redirect()->route('user.dashboard')->with('error', 'Employee data not found.');
+        }
+
         // Fetch available leave types
         $leaveTypes = LeaveType::all();
 
@@ -44,6 +50,13 @@ class UserLeaveApplicationController extends Controller
         ]);
 
         $user = Auth::user();
+
+        // Fetch employee data again for validation or any further use
+        $employee = $user->employee;
+
+        if (!$employee) {
+            return back()->withErrors(['error' => 'Employee data not found.']);
+        }
 
         // Calculate the number of days for the leave
         $startDate = new \DateTime($request->start_date);

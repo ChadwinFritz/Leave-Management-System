@@ -2,44 +2,80 @@
 
 namespace Database\Seeders;
 
-use App\Models\Duty;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DutySeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 20 random duties
-        Duty::factory()->count(20)->create();
+        $duties = [
+            [
+                'code' => 'DUTY001',
+                'name' => 'Project Management',
+                'description' => 'Oversee project timelines, deliverables, and team coordination.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY002',
+                'name' => 'Data Analysis',
+                'description' => 'Analyze data trends to provide actionable insights.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY003',
+                'name' => 'Customer Support',
+                'description' => 'Handle customer inquiries and resolve issues effectively.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY004',
+                'name' => 'Software Development',
+                'description' => 'Design, develop, and maintain software applications.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY005',
+                'name' => 'Quality Assurance Testing',
+                'description' => 'Test and validate product quality before release.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY006',
+                'name' => 'Marketing Strategy',
+                'description' => 'Plan and execute marketing campaigns to drive growth.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY007',
+                'name' => 'Team Training',
+                'description' => 'Provide training and mentorship to team members.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY008',
+                'name' => 'Financial Reporting',
+                'description' => 'Prepare and review financial reports for stakeholders.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY009',
+                'name' => 'Inventory Management',
+                'description' => 'Monitor and manage stock levels and logistics.',
+                'status' => 'active',
+            ],
+            [
+                'code' => 'DUTY010',
+                'name' => 'Content Creation',
+                'description' => 'Develop engaging content for various platforms.',
+                'status' => 'active',
+            ],
+        ];
 
-        // Example: Create 5 specific active duties with specific names and codes
-        foreach (range(1, 5) as $i) {
-            Duty::factory()
-                ->active()  // Set the duty to active
-                ->withName("Duty Name $i")  // Set custom duty names
-                ->withCode("DUTY-100$i")  // Set custom duty codes
-                ->create();
-        }
-
-        // Example: Create 3 specific inactive duties with specific names
-        foreach (range(1, 3) as $i) {
-            Duty::factory()
-                ->inactive()  // Set the duty to inactive
-                ->withName("Inactive Duty $i")  // Set custom inactive duty names
-                ->withCode("DUTY-200$i")  // Set custom duty codes
-                ->create();
-        }
-
-        // Example: Create a duty with a custom description
-        Duty::factory()->create([
-            'name' => 'Admin Duty',
-            'description' => 'This duty involves overseeing administrative tasks and managing systems.',
-            'status' => 'active',
-        ]);
+        // Insert duties into the database
+        DB::table('duties')->insert($duties);
     }
 }

@@ -15,16 +15,15 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('name')->unique(); // Unique name for the department
             $table->string('description')->nullable(); // Optional department description
-            $table->unsignedBigInteger('manager_id')->nullable(); // Reference to the manager
-            $table->unsignedBigInteger('supervisor_id')->nullable(); // Reference to the supervisor (fixed here)
+            $table->unsignedBigInteger('user_id')->nullable(); // Reference to the user (supervisor)
             $table->enum('status', ['active', 'inactive'])->default('active'); // Status of the department
             $table->timestamps(); // Created and updated timestamps
 
-            // Foreign keys
-            $table->foreign('supervisor_id')->references('id')->on('employees')->nullOnDelete();
+            // Foreign key referencing the users table (instead of employees)
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
 
             // Indexing
-            $table->index('supervisor_id');
+            $table->index('user_id');
         });
     }
 

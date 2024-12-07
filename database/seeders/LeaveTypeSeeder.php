@@ -2,53 +2,80 @@
 
 namespace Database\Seeders;
 
-use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class LeaveTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 10 random leave types
-        LeaveType::factory()->count(10)->create();
+        $leaveTypes = [
+            [
+                'code' => 'LT001',
+                'name' => 'Annual Leave',
+                'has_limit' => true,
+                'limit' => 20, // Typical annual leave days
+            ],
+            [
+                'code' => 'LT002',
+                'name' => 'Sick Leave',
+                'has_limit' => true,
+                'limit' => 10, // Typical sick leave days per year
+            ],
+            [
+                'code' => 'LT003',
+                'name' => 'Maternity Leave',
+                'has_limit' => true,
+                'limit' => 90, // Maternity leave in days
+            ],
+            [
+                'code' => 'LT004',
+                'name' => 'Paternity Leave',
+                'has_limit' => true,
+                'limit' => 15, // Paternity leave in days
+            ],
+            [
+                'code' => 'LT005',
+                'name' => 'Bereavement Leave',
+                'has_limit' => true,
+                'limit' => 5, // Bereavement leave in days
+            ],
+            [
+                'code' => 'LT006',
+                'name' => 'Compensatory Leave',
+                'has_limit' => false, // No predefined limit; depends on accrued compensatory hours
+                'limit' => null,
+            ],
+            [
+                'code' => 'LT007',
+                'name' => 'Unpaid Leave',
+                'has_limit' => false, // No predefined limit as it is unpaid
+                'limit' => null,
+            ],
+            [
+                'code' => 'LT008',
+                'name' => 'Study Leave',
+                'has_limit' => true,
+                'limit' => 10, // Days allowed for study or exams
+            ],
+            [
+                'code' => 'LT009',
+                'name' => 'Public Holiday Leave',
+                'has_limit' => true,
+                'limit' => 12, // Standard public holidays per year
+            ],
+            [
+                'code' => 'LT010',
+                'name' => 'Sabbatical Leave',
+                'has_limit' => true,
+                'limit' => 365, // A year for sabbatical
+            ],
+        ];
 
-        // Create 5 leave types with limits
-        LeaveType::factory()
-            ->count(5)
-            ->withLimit()
-            ->create();
-
-        // Create 5 leave types without limits
-        LeaveType::factory()
-            ->count(5)
-            ->withoutLimit()
-            ->create();
-
-        // Create 3 leave types with specific codes
-        LeaveType::factory()
-            ->count(3)
-            ->withCode('SICK_LEAVE')
-            ->create();
-
-        LeaveType::factory()
-            ->count(3)
-            ->withCode('VACATION_LEAVE')
-            ->create();
-
-        // Create 2 leave types with specific names
-        LeaveType::factory()
-            ->count(2)
-            ->withName('Parental Leave')
-            ->create();
-
-        LeaveType::factory()
-            ->count(2)
-            ->withName('Emergency Leave')
-            ->create();
+        // Insert leave types into the database
+        DB::table('leave_types')->insert($leaveTypes);
     }
 }

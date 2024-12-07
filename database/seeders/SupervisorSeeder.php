@@ -2,61 +2,70 @@
 
 namespace Database\Seeders;
 
-use App\Models\Supervisor;
-use App\Models\User;
-use App\Models\Department;
-use App\Models\Team;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SupervisorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 5 random supervisors with default states
-        Supervisor::factory()->count(5)->create();
+        $supervisors = [
+            [
+                'user_id' => 4, // Natasha Romanoff (blackwidow@marvel.com)
+                'department_id' => 1, // Research and Development
+                'team_id' => 1, // Innovation Team
+            ],
+            [
+                'user_id' => 5, // Bruce Banner (hulk@marvel.com)
+                'department_id' => 2, // Human Resources
+                'team_id' => 2, // Recruitment Team
+            ],
+            [
+                'user_id' => 6, // Steve Rogers (captainamerica@marvel.com)
+                'department_id' => 3, // Finance
+                'team_id' => 3, // Budget Planning Team
+            ],
+            [
+                'user_id' => 7, // Tony Stark (ironman@marvel.com)
+                'department_id' => 4, // Marketing
+                'team_id' => 4, // Brand Management Team
+            ],
+            [
+                'user_id' => 8, // Natasha Romanoff (blackwidow@marvel.com) - duplicated here for the example
+                'department_id' => 5, // Operations
+                'team_id' => 5, // Logistics Team
+            ],
+            [
+                'user_id' => 9, // Bruce Banner (hulk@marvel.com) - example for IT and Support
+                'department_id' => 6, // IT and Support
+                'team_id' => 6, // Tech Support Team
+            ],
+            [
+                'user_id' => 10, // Steve Rogers (captainamerica@marvel.com)
+                'department_id' => 7, // Sales
+                'team_id' => 7, // Client Acquisition Team
+            ],
+            [
+                'user_id' => 11, // Tony Stark (ironman@marvel.com)
+                'department_id' => 8, // Legal
+                'team_id' => 8, // Compliance Team
+            ],
+            [
+                'user_id' => 12, // Natasha Romanoff (blackwidow@marvel.com)
+                'department_id' => 9, // Customer Service
+                'team_id' => 9, // Customer Care Team
+            ],
+            [
+                'user_id' => 13, // Steve Rogers (captainamerica@marvel.com)
+                'department_id' => 10, // Quality Assurance
+                'team_id' => 10, // Product Testing Team
+            ],
+        ];
 
-        // Create 3 department head supervisors
-        Supervisor::factory()
-            ->count(3)
-            ->departmentHead()  // Set as department head (with a department)
-            ->create();
-
-        // Create 3 team leader supervisors
-        Supervisor::factory()
-            ->count(3)
-            ->teamLeader()  // Set as team leader (with a team)
-            ->create();
-
-        // Create 2 senior supervisors (manages multiple teams)
-        Supervisor::factory()
-            ->count(2)
-            ->seniorSupervisor()  // Set as senior supervisor (with multiple teams)
-            ->create();
-
-        // Create 4 supervisors without a department or team
-        Supervisor::factory()
-            ->count(4)
-            ->withoutDepartment()  // Set without department
-            ->withoutTeam()  // Set without team
-            ->create();
-
-        // Create 3 supervisors in a specific department (using an existing department)
-        $departmentId = Department::first()->id;  // Assuming at least one department exists
-        Supervisor::factory()
-            ->count(3)
-            ->inDepartment($departmentId)  // Assign to a specific department
-            ->create();
-
-        // Create 3 supervisors in a specific team (using an existing team)
-        $teamId = Team::first()->id;  // Assuming at least one team exists
-        Supervisor::factory()
-            ->count(3)
-            ->inTeam($teamId)  // Assign to a specific team
-            ->create();
+        // Insert supervisors into the database
+        DB::table('supervisors')->insert($supervisors);
     }
 }

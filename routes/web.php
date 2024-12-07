@@ -48,7 +48,6 @@ Route::middleware('guest')->group(function () {
     })->name('auth.register');
 
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('auth.register.post');
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('auth.register');
 });
 
 // Authentication session routes (for logout)
@@ -75,6 +74,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     
     Route::get('/employees/{id}/edit', [AdminUpdateEmployeeController::class, 'edit'])->name('employees.edit');
     Route::put('/employees/{id}', [AdminUpdateEmployeeController::class, 'update'])->name('employees.update');
+
+    Route::post('user/logout', [LoginController::class, 'logout'])->name('admin.logout');
 });
 
 // Routes for Super Admin
@@ -94,6 +95,8 @@ Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(fu
     
     Route::get('system/settings', [SuperAdminSystemSettingsController::class, 'index'])->name('system.settings');
     Route::post('system/settings', [SuperAdminSystemSettingsController::class, 'update'])->name('system.settings.update');
+
+    Route::post('user/logout', [LoginController::class, 'logout'])->name('superadmin.logout');
 });
 
 // Routes for Supervisor
@@ -114,14 +117,25 @@ Route::middleware(['auth'])->prefix('supervisor')->name('supervisor.')->group(fu
     Route::get('team/availability', [TeamAvailabilityController::class, 'index'])->name('team_availability');
     Route::get('team/leave', [TeamLeaveController::class, 'index'])->name('team_leave');
     Route::get('team/report', [TeamReportController::class, 'index'])->name('team_report');
+
+    Route::post('user/logout', [LoginController::class, 'logout'])->name('supervisor.logout');
 });
 
-// Routes for Users
 Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('user/leave/history', [LeaveHistoryController::class, 'index'])->name('leave.history');
-    Route::get('user/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
-    Route::get('user/leave/application', [UserLeaveApplicationController::class, 'create'])->name('leave.application');
-    Route::post('user/leave/application', [UserLeaveApplicationController::class, 'store'])->name('leave.application.submit');
-    Route::get('user/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('user/profile', [UserProfileController::class, 'update'])->name('profile.update');
+    // Existing routes
+    Route::get('user/leave/history', [LeaveHistoryController::class, 'index'])->name('user.leave.history');
+    Route::get('user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('user/leave/application', [UserLeaveApplicationController::class, 'create'])->name('user.leave.application');
+    Route::post('user/leave/application', [UserLeaveApplicationController::class, 'store'])->name('user.leave.application.submit');
+    
+    // Add this route definition for leave request (if it was missing)
+    Route::post('user/leave/request', [UserLeaveApplicationController::class, 'store'])->name('user.leave.request'); 
+    
+    Route::get('user/profile', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::post('user/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+    Route::post('user/logout', [LoginController::class, 'logout'])->name('user.logout');
 });
+
+
+// Common Logout Route (for all roles)
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('auth.logout');

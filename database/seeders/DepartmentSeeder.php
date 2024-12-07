@@ -2,49 +2,80 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
-use App\Models\Employee;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 50 random departments with random managers and supervisors
-        Department::factory()->count(50)->create();
+        $departments = [
+            [
+                'name' => 'Research and Development',
+                'description' => 'Focuses on innovation and creating new products and technologies.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Human Resources',
+                'description' => 'Responsible for employee relations, payroll, benefits, and recruitment.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Finance',
+                'description' => 'Handles budgeting, financial planning, and management of company resources.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Marketing',
+                'description' => 'Drives brand awareness, advertising, and market research.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Operations',
+                'description' => 'Oversees day-to-day business operations and logistics.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'IT and Support',
+                'description' => 'Maintains and supports technology infrastructure and systems.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Sales',
+                'description' => 'Drives revenue by managing client relationships and closing deals.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Legal',
+                'description' => 'Handles contracts, compliance, and legal matters for the company.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Customer Service',
+                'description' => 'Provides support and solutions to customer inquiries and complaints.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Quality Assurance',
+                'description' => 'Ensures products and services meet quality standards.',
+                'user_id' => 4, // Reference to a user (supervisor) from the users table
+                'status' => 'active',
+            ],
+        ];
 
-        // Example: Create a specific active department with a specific manager and supervisor
-        $manager = Employee::factory()->create();  // Create a manager
-        $supervisor = Employee::factory()->create();  // Create a supervisor
-
-        Department::factory()
-            ->withManager($manager->id)  // Assign the created manager
-            ->withSupervisor($supervisor->id)  // Assign the created supervisor
-            ->active()  // Set the department to active
-            ->create();
-
-        // Example: Create inactive departments
-        foreach (range(1, 5) as $i) {
-            $manager = Employee::factory()->create();
-            $supervisor = Employee::factory()->create();
-
-            Department::factory()
-                ->withManager($manager->id)
-                ->withSupervisor($supervisor->id)
-                ->inactive()  // Set the department to inactive
-                ->create();
-        }
-
-        // Example: Create a specific department with a specific name
-        Department::factory()->create([
-            'name' => 'HR Department',  // Set a custom name
-            'description' => 'Human resources and employee management.',  // Custom description
-            'status' => 'active',  // Set to active status
-        ]);
+        // Insert departments into the database
+        DB::table('departments')->insert($departments);
     }
 }

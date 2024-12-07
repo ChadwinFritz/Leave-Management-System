@@ -17,7 +17,7 @@ class CreateEscalationRequestsTable extends Migration
         Schema::create('escalation_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->unsignedBigInteger('supervisor_id');
+            $table->unsignedBigInteger('user_id'); // Changed from supervisor_id to user_id
             $table->text('reason');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->dateTime('date_requested');
@@ -25,16 +25,16 @@ class CreateEscalationRequestsTable extends Migration
 
             // Foreign keys
             $table->foreign('employee_id')->references('id')->on('employees');
-            $table->foreign('supervisor_id')->references('id')->on('employees'); // Assuming supervisor is also an employee
+            $table->foreign('user_id')->references('id')->on('employees'); // Assuming user is also an employee
 
             // Indexes for better performance
             $table->index('employee_id');
-            $table->index('supervisor_id');
+            $table->index('user_id'); // Changed from supervisor_id to user_id
         });
 
         // Add table comment only if the database supports it
         if (Schema::getConnection()->getDriverName() !== 'sqlite') {
-            DB::statement("ALTER TABLE escalation_requests COMMENT = 'Tracks escalation requests made by employees to supervisors, including status and reasons.'");
+            DB::statement("ALTER TABLE escalation_requests COMMENT = 'Tracks escalation requests made by employees to users (supervisors or managers), including status and reasons.'");
         }
     }
 

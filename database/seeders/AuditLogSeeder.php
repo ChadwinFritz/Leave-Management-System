@@ -2,65 +2,61 @@
 
 namespace Database\Seeders;
 
-use App\Models\AuditLog;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AuditLogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 50 audit log entries with random data
-        AuditLog::factory()->count(50)->create();
+        $auditLogs = [
+            [
+                'user_id' => 1, // Peter Parker (User ID 1)
+                'action' => 'Created a new task',
+                'ip_address' => '192.168.1.1',
+                'description' => 'Peter created a task for web development.',
+                'created_at' => Carbon::now()->subDays(3), // 3 days ago
+                'updated_at' => Carbon::now()->subDays(3),
+            ],
+            [
+                'user_id' => 2, // Tony Stark (User ID 2)
+                'action' => 'Updated employee details',
+                'ip_address' => '192.168.1.2',
+                'description' => 'Tony updated employee records for new hire.',
+                'created_at' => Carbon::now()->subDays(2), // 2 days ago
+                'updated_at' => Carbon::now()->subDays(2),
+            ],
+            [
+                'user_id' => 3, // Steve Rogers (User ID 3)
+                'action' => 'Approved a request',
+                'ip_address' => '192.168.1.3',
+                'description' => 'Steve approved an employee leave request.',
+                'created_at' => Carbon::now()->subDay(), // 1 day ago
+                'updated_at' => Carbon::now()->subDay(),
+            ],
+            [
+                'user_id' => 4, // Natasha Romanoff (User ID 4)
+                'action' => 'Escalated an issue',
+                'ip_address' => '192.168.1.4',
+                'description' => 'Natasha escalated a customer service issue.',
+                'created_at' => Carbon::now()->subHours(12), // 12 hours ago
+                'updated_at' => Carbon::now()->subHours(12),
+            ],
+            [
+                'user_id' => 5, // Bruce Banner (User ID 5)
+                'action' => 'Logged out',
+                'ip_address' => '192.168.1.5',
+                'description' => 'Bruce logged out from the system.',
+                'created_at' => Carbon::now()->subHours(1), // 1 hour ago
+                'updated_at' => Carbon::now()->subHours(1),
+            ],
+        ];
 
-        // Example: Create specific audit logs with custom user and actions
-        AuditLog::factory()->forUser(1)  // For a specific user with ID 1
-            ->withAction('created')      // Set a custom action
-            ->create();
-
-        AuditLog::factory()->forUser(2)  // For a specific user with ID 2
-            ->withAction('updated')      // Set a custom action
-            ->fromIp('192.168.1.1')      // Set a specific IP address
-            ->create();
-
-        // You can continue to create additional logs with specific actions or data
-        AuditLog::factory()->forUser(3)
-            ->withAction('logged_in')
-            ->fromIp('10.0.0.5')
-            ->create();
-
-        // Example: Create 10 audit logs with random user actions
-        foreach (range(1, 10) as $i) {
-            AuditLog::factory()->forUser(rand(1, 5))  // Random user ID between 1 and 5
-                ->withAction($this->getRandomAction())  // Random action
-                ->fromIp($this->getRandomIp())           // Random IP address
-                ->create();
-        }
-    }
-
-    /**
-     * Helper method to get a random action.
-     *
-     * @return string
-     */
-    private function getRandomAction(): string
-    {
-        $actions = ['created', 'updated', 'deleted', 'logged_in', 'logged_out'];
-        return $actions[array_rand($actions)];
-    }
-
-    /**
-     * Helper method to get a random IP address.
-     *
-     * @return string
-     */
-    private function getRandomIp(): string
-    {
-        return long2ip(rand(0, 255) . '.' . rand(0, 255) . '.' . rand(0, 255) . '.' . rand(0, 255));
+        // Insert audit logs into the database
+        DB::table('audit_logs')->insert($auditLogs);
     }
 }

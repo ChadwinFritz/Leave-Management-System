@@ -22,14 +22,11 @@ return new class extends Migration
             $table->boolean('end_half')->default(false); // Indicates if the end day is a half-day
             $table->date('on_date')->nullable(); // For one-day leave, nullable
             $table->dateTime('on_time')->nullable(); // For specific time-based leave, nullable
-            $table->string('leave_type'); // Leave type code
+            $table->foreignId('leave_type_id')->constrained('leave_types')->onDelete('restrict'); // Foreign key for leave type, changed from leave_type
             $table->timestamps(); // Created and updated timestamps
 
-            // Add a foreign key for leave_type referencing leave_types table
-            $table->foreign('leave_type')->references('code')->on('leave_types')->onDelete('restrict');
-
             // Indexes for performance
-            $table->index(['employee_id', 'leave_application_id', 'leave_type']);
+            $table->index(['employee_id', 'leave_application_id', 'leave_type_id']); // Updated index for leave_type_id
         });
     }
 

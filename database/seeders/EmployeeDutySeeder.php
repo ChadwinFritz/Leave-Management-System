@@ -2,55 +2,45 @@
 
 namespace Database\Seeders;
 
-use App\Models\EmployeeDuty;
-use App\Models\Employee;
-use App\Models\Duty;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeDutySeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 20 random employee-duties
-        EmployeeDuty::factory()->count(20)->create();
+        $employeeDuties = [
+            [
+                'employee_id' => 1, // Assigned to Peter Parker (Employee ID 1)
+                'duty_id' => 1, // Assigned "Project Management" (Duty ID 1)
+                'assigned_at' => '2024-12-01 08:00:00',
+            ],
+            [
+                'employee_id' => 2, // Assigned to Tony Stark (Employee ID 2)
+                'duty_id' => 4, // Assigned "Software Development" (Duty ID 4)
+                'assigned_at' => '2024-12-01 09:00:00',
+            ],
+            [
+                'employee_id' => 3, // Assigned to Steve Rogers (Employee ID 3)
+                'duty_id' => 2, // Assigned "Data Analysis" (Duty ID 2)
+                'assigned_at' => '2024-12-01 10:00:00',
+            ],
+            [
+                'employee_id' => 4, // Assigned to Natasha Romanoff (Employee ID 4)
+                'duty_id' => 3, // Assigned "Customer Support" (Duty ID 3)
+                'assigned_at' => '2024-12-01 11:00:00',
+            ],
+            [
+                'employee_id' => 5, // Assigned to Bruce Banner (Employee ID 5)
+                'duty_id' => 5, // Assigned "Quality Assurance Testing" (Duty ID 5)
+                'assigned_at' => '2024-12-01 12:00:00',
+            ],
+        ];
 
-        // Example: Create 5 specific employee-duties for specific employees and duties
-        foreach (range(1, 5) as $i) {
-            // Assign a duty to a specific employee on a specific date
-            EmployeeDuty::factory()
-                ->forEmployee($i)  // Assign a specific employee by ID
-                ->forDuty($i)  // Assign a specific duty by ID
-                ->assignedOn(now()->subDays($i))  // Assign the duty on a specific date
-                ->create();
-        }
-
-        // Example: Assign specific duties to employees with a custom assignment date
-        $employees = Employee::all();  // Get all employees
-        $duties = Duty::all();  // Get all duties
-
-        foreach ($employees as $employee) {
-            foreach ($duties as $duty) {
-                // Randomly assign each employee to a duty on a random date
-                EmployeeDuty::factory()
-                    ->forEmployee($employee->id)  // Assign a specific employee
-                    ->forDuty($duty->id)  // Assign a specific duty
-                    ->assignedOn(now()->subDays(rand(1, 365)))  // Assign on a random date within the last year
-                    ->create();
-            }
-        }
-
-        // Example: Assign duties for employees with custom dates
-        foreach (range(1, 3) as $i) {
-            EmployeeDuty::factory()
-                ->forEmployee($i)  // Assign a specific employee by ID
-                ->forDuty($i)  // Assign a specific duty by ID
-                ->assignedOn(now()->subMonths(2))  // Assign a duty two months ago
-                ->create();
-        }
+        // Insert employee duties into the database
+        DB::table('employee_duties')->insert($employeeDuties);
     }
 }

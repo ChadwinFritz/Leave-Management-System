@@ -2,59 +2,90 @@
 
 namespace Database\Seeders;
 
-use App\Models\Team;
-use App\Models\TeamReport;
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TeamReportSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 5 random team reports
-        TeamReport::factory()->count(5)->create();
+        $teamReports = [
+            [
+                'team_id' => 1, // Innovation Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.5,
+                'attendance_percentage' => 95.0,
+                'leave_percentage' => 2.0,
+            ],
+            [
+                'team_id' => 2, // Recruitment Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.2,
+                'attendance_percentage' => 97.0,
+                'leave_percentage' => 1.5,
+            ],
+            [
+                'team_id' => 3, // Budget Planning Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.3,
+                'attendance_percentage' => 98.0,
+                'leave_percentage' => 1.0,
+            ],
+            [
+                'team_id' => 4, // Brand Management Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.0,
+                'attendance_percentage' => 94.0,
+                'leave_percentage' => 3.0,
+            ],
+            [
+                'team_id' => 5, // Logistics Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.6,
+                'attendance_percentage' => 99.0,
+                'leave_percentage' => 0.5,
+            ],
+            [
+                'team_id' => 6, // Tech Support Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.1,
+                'attendance_percentage' => 96.0,
+                'leave_percentage' => 2.5,
+            ],
+            [
+                'team_id' => 7, // Client Acquisition Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.3,
+                'attendance_percentage' => 97.5,
+                'leave_percentage' => 1.8,
+            ],
+            [
+                'team_id' => 8, // Compliance Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.4,
+                'attendance_percentage' => 98.5,
+                'leave_percentage' => 1.2,
+            ],
+            [
+                'team_id' => 9, // Customer Care Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.0,
+                'attendance_percentage' => 95.0,
+                'leave_percentage' => 2.2,
+            ],
+            [
+                'team_id' => 10, // Product Testing Team
+                'report_date' => '2024-11-30',
+                'performance_score' => 4.2,
+                'attendance_percentage' => 96.5,
+                'leave_percentage' => 1.8,
+            ],
+        ];
 
-        // Create 3 team reports for specific teams with custom performance scores
-        $teamIds = Team::pluck('id')->take(3);  // Get first 3 team IDs
-        foreach ($teamIds as $teamId) {
-            TeamReport::factory()
-                ->forTeam($teamId)  // Assign to specific team
-                ->withPerformanceScore(rand(60, 90))  // Random performance score between 60 and 90
-                ->count(1)
-                ->create();
-        }
-
-        // Create 2 reports with specific attendance percentages
-        TeamReport::factory()
-            ->count(2)
-            ->withAttendancePercentage(rand(75, 95))  // Random attendance percentage between 75 and 95
-            ->create();
-
-        // Create 2 reports with specific leave percentages
-        TeamReport::factory()
-            ->count(2)
-            ->withLeavePercentage(rand(5, 15))  // Random leave percentage between 5 and 15
-            ->create();
-
-        // Create 3 reports with a specific date range (e.g., last month)
-        $startDate = Carbon::now()->subMonth()->startOfMonth();
-        $endDate = Carbon::now()->subMonth()->endOfMonth();
-        TeamReport::factory()
-            ->count(3)
-            ->withinDateRange($startDate, $endDate)  // Generate reports within the last month
-            ->create();
-
-        // Create 2 reports with specific dates (e.g., this week)
-        $startDate = Carbon::now()->startOfWeek();
-        $endDate = Carbon::now()->endOfWeek();
-        TeamReport::factory()
-            ->count(2)
-            ->withinDateRange($startDate, $endDate)  // Generate reports within this week
-            ->create();
+        // Insert team reports into the database
+        DB::table('team_reports')->insert($teamReports);
     }
 }
