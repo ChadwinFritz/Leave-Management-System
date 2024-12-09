@@ -1,3 +1,5 @@
+resources/views/admin/admin_update_employee.blade.php
+
 <x-app-layout>
     <x-admin.nav />
 

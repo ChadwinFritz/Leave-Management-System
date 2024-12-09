@@ -25,7 +25,7 @@ class AdminManageUserController extends Controller
         $employee = Employee::findOrFail($id);
 
         // Return the edit view with the employee data
-        return view('admin.employees.edit', compact('employee'));
+        return view('admin.update.employee', compact('employee'));
     }
 
     // Update the specified employee in the database

@@ -25,20 +25,19 @@
             </a>
 
             <!-- Manage Users -->
-            <a href="{{ route('users.index') }}" 
-               class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('users.index') ? 'font-semibold' : '' }}">
+            <a href="{{ route('admin.manage.users') }}" 
+            class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
+            {{ request()->routeIs('admin.manage.users') ? 'font-semibold' : '' }}">
                 Manage Users
             </a>
 
             <!-- Pending Users -->
-            <a href="{{ route('users.pending') }}" 
+            <a href="{{ route('admin.pending.users') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
                {{ request()->routeIs('users.pending') ? 'font-semibold' : '' }}">
                 Pending Users
             </a>
 
-            <!-- Logout Button -->
             <form action="{{ route('admin.logout') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit" class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded">

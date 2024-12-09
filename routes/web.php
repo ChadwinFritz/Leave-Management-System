@@ -55,28 +55,35 @@ Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name(
 
 // Routes for Admin
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/leave', [AdminApproveLeaveController::class, 'index'])->name('leave.index');
-    Route::post('/leave/{id}/approve', [AdminApproveLeaveController::class, 'approve'])->name('leave.approve');
-    Route::post('/leave/{id}/reject', [AdminApproveLeaveController::class, 'reject'])->name('leave.reject');
-    
+
+    // Dashboard Route
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
+
+    // Department Report Route
     Route::get('/department-report', [AdminDepartmentReportController::class, 'index'])->name('department.report');
-    
+
+    // Manage Users Routes
     Route::get('/manage-users', [AdminManageUserController::class, 'index'])->name('manage.users');
     Route::get('/manage-users/{id}/edit', [AdminManageUserController::class, 'edit'])->name('manage.users.edit');
     Route::put('/manage-users/{id}', [AdminManageUserController::class, 'update'])->name('manage.users.update');
     Route::delete('/manage-users/{id}', [AdminManageUserController::class, 'destroy'])->name('manage.users.destroy');
-    
-    Route::get('/pending-users', [AdminPendingUsersController::class, 'index'])->name('users.pending');
-    Route::post('/pending-users/{id}/approve', [AdminPendingUsersController::class, 'approve'])->name('users.pending.approve');
-    Route::post('/pending-users/{id}/reject', [AdminPendingUsersController::class, 'reject'])->name('users.pending.reject');
-    
-    Route::get('/employees/{id}/edit', [AdminUpdateEmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('/employees/{id}', [AdminUpdateEmployeeController::class, 'update'])->name('employees.update');
 
-    Route::post('user/logout', [LoginController::class, 'logout'])->name('admin.logout');
+    // Pending Users Routes
+    Route::get('/pending-users', [AdminPendingUsersController::class, 'index'])->name('pending.users');
+    Route::post('/pending-users/{id}/approve', [AdminPendingUsersController::class, 'approve'])->name('pending.users.approve');
+    Route::post('/pending-users/{id}/reject', [AdminPendingUsersController::class, 'reject'])->name('pending.users.reject');
+
+    // Employee Update Route
+    Route::get('/employees/{id}/edit', [AdminUpdateEmployeeController::class, 'edit'])->name('update.employee.edit');
+    Route::put('/employees/{id}', [AdminUpdateEmployeeController::class, 'update'])->name('update.employee');
+
+    // Delete Employee Route (alternative route)
+    Route::delete('/employees/{id}', [AdminManageUserController::class, 'destroy'])->name('employees.destroy');
+
+    // Logout Route
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+
 
 // Routes for Super Admin
 Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(function () {

@@ -23,7 +23,6 @@
                                 <h4 class="text-xl font-semibold text-blue-700">Pending Requests</h4>
                                 <p class="text-3xl font-bold text-blue-900 mt-2">{{ $pendingRequestsCount }}</p>
                             </div>
-                            <x-icon name="hourglass" class="text-blue-500 w-12 h-12" />
                         </div>
 
                         <!-- Approved Leaves -->
@@ -32,7 +31,6 @@
                                 <h4 class="text-xl font-semibold text-green-700">Approved Leaves</h4>
                                 <p class="text-3xl font-bold text-green-900 mt-2">{{ $approvedLeavesCount }}</p>
                             </div>
-                            <x-icon name="check-circle" class="text-green-500 w-12 h-12" />
                         </div>
 
                         <!-- Rejected Leaves -->
@@ -41,7 +39,6 @@
                                 <h4 class="text-xl font-semibold text-red-700">Rejected Leaves</h4>
                                 <p class="text-3xl font-bold text-red-900 mt-2">{{ $rejectedLeavesCount }}</p>
                             </div>
-                            <x-icon name="x-circle" class="text-red-500 w-12 h-12" />
                         </div>
                     </div>
                 </div>
