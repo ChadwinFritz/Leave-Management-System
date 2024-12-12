@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SupervisorDashboardController extends Controller
 {
-    // Constructor to ensure only supervisors can access the routes
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Display the Supervisor Dashboard.
@@ -45,7 +40,7 @@ class SupervisorDashboardController extends Controller
                                   ->count();
 
         // Pass the data to the view
-        return view('supervisor.dashboard', [
+        return view('supervisor.supervisor_dashboard', [
             'pendingApprovalsCount' => $pendingApprovalsCount,
             'availableMembersCount' => $availableMembersCount,
             'tasksAssignedCount' => $tasksAssignedCount

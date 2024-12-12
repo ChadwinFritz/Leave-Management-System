@@ -17,30 +17,30 @@
             </a>
 
             <!-- Team Report Link -->
-            <a href="{{ route('supervisor.team.report') }}" 
+            <a href="{{ route('supervisor.team_report') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('supervisor.team.report') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('supervisor.team_report') ? 'font-semibold' : '' }}">
                 Team Reports
             </a>
 
             <!-- Approve Leave Link -->
-            <a href="{{ route('supervisor.approve.leave') }}" 
+            <a href="{{ route('supervisor.approve_leave') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('supervisor.approve.leave') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('supervisor.approve_leave') ? 'font-semibold' : '' }}">
                 Approve Leave
             </a>
 
             <!-- Assign Tasks Link -->
-            <a href="{{ route('supervisor.assign.tasks') }}" 
+            <a href="{{ route('supervisor.assign_tasks') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('supervisor.assign.tasks') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('supervisor.assign_tasks') ? 'font-semibold' : '' }}">
                 Assign Tasks
             </a>
 
             <!-- Escalation Requests Link -->
-            <a href="{{ route('supervisor.escalation.requests') }}" 
+            <a href="{{ route('supervisor.escalation_requests') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('supervisor.escalation.requests') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('supervisor.escalation_requests') ? 'font-semibold' : '' }}">
                 Escalation Requests
             </a>
 

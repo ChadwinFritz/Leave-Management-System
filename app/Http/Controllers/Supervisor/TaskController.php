@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    // Constructor to ensure only supervisors can access the routes
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Show the form to assign tasks to team members.
@@ -27,7 +22,7 @@ class TaskController extends Controller
         $teamMembers = Employee::where('supervisor_id', Auth::id())->get();
 
         // Pass the team members to the view
-        return view('supervisor.assign-task', compact('teamMembers'));
+        return view('supervisor.supervisor_assign_tasks', compact('teamMembers'));
     }
 
     /**

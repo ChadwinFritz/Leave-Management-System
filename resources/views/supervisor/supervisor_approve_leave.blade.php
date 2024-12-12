@@ -1,4 +1,7 @@
 <x-app-layout>
+    <!-- Navigation Bar -->
+    <x-supervisor.nav />
+    
     <div class="max-w-7xl mx-auto py-8">
         <h1 class="text-3xl font-bold mb-6">Approve Leave Requests</h1>
 

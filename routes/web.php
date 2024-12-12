@@ -109,24 +109,34 @@ Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(fu
 
 // Routes for Supervisor
 Route::middleware(['auth'])->prefix('supervisor')->name('supervisor.')->group(function () {
-    Route::get('approve/leave', [ApproveLeaveController::class, 'index'])->name('approve.leave');
-    Route::post('approve/leave/{applicationId}/approve', [ApproveLeaveController::class, 'approve'])->name('approve.leave.approve');
-    Route::post('approve/leave/{applicationId}/reject', [ApproveLeaveController::class, 'reject'])->name('approve.leave.reject');
-    
+    // Approve Leave
+    Route::get('approve/leave', [ApproveLeaveController::class, 'index'])->name('approve_leave');
+    Route::post('approve/leave/{applicationId}/approve', [ApproveLeaveController::class, 'approve'])->name('approve_leave_approve');
+    Route::post('approve/leave/{applicationId}/reject', [ApproveLeaveController::class, 'reject'])->name('approve_leave_reject');
+
+    // Escalation Requests
     Route::get('escalation/requests', [EscalationRequestController::class, 'index'])->name('escalation_requests');
-    Route::post('escalation/requests/{id}/approve', [EscalationRequestController::class, 'approve'])->name('escalation_requests.approve');
-    Route::post('escalation/requests/{id}/reject', [EscalationRequestController::class, 'reject'])->name('escalation_requests.reject');
-    
+    Route::post('escalation/requests/{id}/approve', [EscalationRequestController::class, 'approve'])->name('escalation_requests_approve');
+    Route::post('escalation/requests/{id}/reject', [EscalationRequestController::class, 'reject'])->name('escalation_requests_reject');
+
+    // Dashboard
     Route::get('dashboard', [SupervisorDashboardController::class, 'index'])->name('dashboard');
-    
-    Route::get('tasks/create', [TaskController::class, 'create'])->name('assign_task');
-    Route::post('tasks', [TaskController::class, 'store'])->name('store_task');
-    
+
+    // Assign Tasks
+    Route::get('tasks/create', [TaskController::class, 'create'])->name('assign_tasks');
+    Route::post('tasks', [TaskController::class, 'store'])->name('store_tasks');
+
+    // Team Availability
     Route::get('team/availability', [TeamAvailabilityController::class, 'index'])->name('team_availability');
+
+    // Team Leave
     Route::get('team/leave', [TeamLeaveController::class, 'index'])->name('team_leave');
+
+    // Team Report
     Route::get('team/report', [TeamReportController::class, 'index'])->name('team_report');
 
-    Route::post('user/logout', [LoginController::class, 'logout'])->name('supervisor.logout');
+    // Logout
+    Route::post('user/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {

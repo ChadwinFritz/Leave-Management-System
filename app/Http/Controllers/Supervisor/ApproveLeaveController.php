@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class ApproveLeaveController extends Controller
 {
-    // Middleware to ensure only supervisors have access
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Display a listing of pending leave requests for the supervisor.
@@ -31,7 +26,7 @@ class ApproveLeaveController extends Controller
             ->with('employee', 'leaveType')  // Eager load related models
             ->get();
 
-        return view('supervisor.approve_leave', compact('leaveApplications'));
+        return view('supervisor.supervisor_approve_leave', compact('leaveApplications'));
     }
 
     /**

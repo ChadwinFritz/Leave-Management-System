@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EscalationRequestController extends Controller
 {
-    // Constructor to ensure only supervisors can access the routes
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Display the list of escalated leave requests.
@@ -28,7 +23,7 @@ class EscalationRequestController extends Controller
                                               ->get();
 
         // Pass the data to the view
-        return view('supervisor.escalation_requests', [
+        return view('supervisor.supervisor_escalation_requests', [
             'escalatedRequests' => $escalatedRequests
         ]);
     }

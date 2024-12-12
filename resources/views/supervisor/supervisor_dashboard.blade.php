@@ -19,21 +19,21 @@
             <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
                 <h3 class="text-xl font-semibold text-gray-900">Pending Leave Approvals</h3>
                 <p class="text-sm text-gray-600 mt-2">{{ $pendingApprovalsCount ?? 0 }} leave requests are waiting for your approval.</p>
-                <a href="{{ route('supervisor.supervisor_team_leave') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">Review Requests</a>
+                <a href="{{ route('supervisor.team_leave') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">Review Requests</a>
             </div>
 
             <!-- Team Availability -->
             <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
                 <h3 class="text-xl font-semibold text-gray-900">Team Availability</h3>
                 <p class="text-sm text-gray-600 mt-2">{{ $availableMembersCount ?? 0 }} team members are currently available.</p>
-                <a href="{{ route('supervisor.supervisor_team_availability') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">View Details</a>
+                <a href="{{ route('supervisor.team_availability') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">View Details</a>
             </div>
 
             <!-- Task Assignments -->
             <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
                 <h3 class="text-xl font-semibold text-gray-900">Task Assignments</h3>
                 <p class="text-sm text-gray-600 mt-2">{{ $tasksAssignedCount ?? 0 }} tasks have been assigned this month.</p>
-                <a href="{{ route('supervisor.supervisor_assign_tasks') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">Assign New Task</a>
+                <a href="{{ route('supervisor.assign_tasks') }}" class="mt-4 block text-indigo-600 hover:underline font-medium">Assign New Task</a>
             </div>
 
         </div>

@@ -32,7 +32,7 @@
                 @endif
 
                 <!-- Assign Task Form -->
-                <form method="POST" action="{{ route('supervisor.assign_task') }}">
+                <form method="POST" action="{{ route('supervisor.assign_tasks') }}">
                     @csrf
                     <div class="grid grid-cols-1 gap-6">
                         <!-- Employee Selection -->

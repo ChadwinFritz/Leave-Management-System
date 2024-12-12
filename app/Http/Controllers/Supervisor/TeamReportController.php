@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamReportController extends Controller
 {
-    // Constructor to ensure only supervisors can access the routes
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Display the team performance report.
@@ -31,24 +26,27 @@ class TeamReportController extends Controller
         $currentYear = $request->year ?? Carbon::now()->year;
 
         // Generate the list of months and years for the dropdowns
-        $months = Carbon::now()->monthsShort;
+        $months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
         $years = range(Carbon::now()->year - 5, Carbon::now()->year);
 
         // Get the team members for the logged-in supervisor
         $teamMembers = Employee::where('supervisor_id', Auth::id())
-                               ->with([
-                                   'tasks' => function ($query) use ($currentMonth, $currentYear) {
-                                       // Filter tasks for the selected month and year
-                                       $query->whereMonth('completed_at', Carbon::parse($currentMonth)->month)
-                                             ->whereYear('completed_at', $currentYear);
-                                   },
-                                   'leaveApplications' => function ($query) use ($currentMonth, $currentYear) {
-                                       // Filter leave applications for the selected month and year
-                                       $query->whereMonth('start_date', Carbon::parse($currentMonth)->month)
-                                             ->whereYear('start_date', $currentYear);
-                                   }
-                               ])
-                               ->get();
+                            ->with([
+                                'tasks' => function ($query) use ($currentMonth, $currentYear) {
+                                    // Filter tasks for the selected month and year
+                                    $query->whereMonth('completed_at', Carbon::parse($currentMonth)->month)
+                                            ->whereYear('completed_at', $currentYear);
+                                },
+                                'leaveApplications' => function ($query) use ($currentMonth, $currentYear) {
+                                    // Filter leave applications for the selected month and year
+                                    $query->whereMonth('start_date', Carbon::parse($currentMonth)->month)
+                                            ->whereYear('start_date', $currentYear);
+                                }
+                            ])
+                            ->get();
 
         // Process data for each team member to calculate report data
         $teamReports = $teamMembers->map(function ($member) use ($currentMonth, $currentYear) {
@@ -72,7 +70,7 @@ class TeamReportController extends Controller
         });
 
         // Return the view with the report data
-        return view('supervisor.team_report', [
+        return view('supervisor.supervisor_team_report', [
             'teamReports' => $teamReports,
             'months' => $months,
             'years' => $years,

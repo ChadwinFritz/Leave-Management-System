@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamLeaveController extends Controller
 {
-    // Constructor to ensure only supervisors can access the routes
-    public function __construct()
-    {
-        $this->middleware('role:supervisor');
-    }
 
     /**
      * Display the list of team members and their leave information.
