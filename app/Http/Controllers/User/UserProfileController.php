@@ -2,63 +2,59 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
-use App\Models\Employee;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserProfileController extends Controller
 {
-    /**
-     * Show the user profile edit form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit()
+    // Show the authenticated user's profile
+    public function index()
     {
-        return view('user.user_profile');
+        // Pass the authenticated user to the view
+        return view('user.user_profile', ['user' => auth()->user()]);
     }
 
-    /**
-     * Update the user profile.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    // Show the edit profile form
+    public function edit($id)
+    {
+        // Retrieve the user by ID (the user ID from route)
+        $user = User::findOrFail($id);
+        
+        return view('user.user_update_profile', compact('user'));
+    }
+
+    // Update the authenticated user's profile
     public function update(Request $request)
     {
-        // Validation for user profile fields
-        $validator = Validator::make($request->all(), [
+        // Validate input data
+        $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . Auth::id(),
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string',
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
         ]);
 
-        // Check for validation errors
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        // Get the authenticated user
+        $user = auth()->user();
+
+        // Update the user's information
+        $user->update([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+        ]);
+
+        // Update associated employee details (if applicable)
+        if ($user->employee) {
+            $user->employee->update([
+                'phone' => $request->phone,
+                'address' => $request->address,
+            ]);
         }
 
-        // Get authenticated user
-        $user = Auth::user();
-        $employee = $user->employee;
-
-        // Update user information
-        $user->name = $request->input('name');
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
-        $user->save();
-
-        // Update employee information
-        $employee->address = $request->input('address');
-        $employee->save();
-
-        // Redirect back with success message
-        return redirect()->route('user.profile.edit')->with('success', 'Profile updated successfully!');
+        // Redirect back with a success message
+        return redirect()->route('user.profile')->with('success', 'Profile updated successfully.');
     }
 }

@@ -27,6 +27,7 @@ use App\Http\Controllers\User\LeaveHistoryController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserLeaveApplicationController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\User\UserUpdateProfileController;
 
 // Welcome Page Route
 Route::get('/', function () {
@@ -128,21 +129,30 @@ Route::middleware(['auth'])->prefix('supervisor')->name('supervisor.')->group(fu
     Route::post('user/logout', [LoginController::class, 'logout'])->name('supervisor.logout');
 });
 
-Route::middleware(['auth', 'role:user'])->group(function () {
-    // Existing routes
-    Route::get('user/leave/history', [LeaveHistoryController::class, 'index'])->name('user.leave.history');
-    Route::get('user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
-    Route::get('user/leave/application', [UserLeaveApplicationController::class, 'create'])->name('user.leave.application');
-    Route::post('user/leave/application', [UserLeaveApplicationController::class, 'store'])->name('user.leave.application.submit');
-    
-    // Add this route definition for leave request (if it was missing)
-    Route::post('user/leave/request', [UserLeaveApplicationController::class, 'store'])->name('user.leave.request'); 
-    
-    Route::get('user/profile', [UserProfileController::class, 'edit'])->name('user.profile.edit');
-    Route::post('user/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
-    Route::post('user/logout', [LoginController::class, 'logout'])->name('user.logout');
-});
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    // Dashboard Route
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
+    // Leave Application Routes
+    Route::get('/leave/application', [UserLeaveApplicationController::class, 'create'])->name('leave.application');
+    Route::post('/leave/application', [UserLeaveApplicationController::class, 'store'])->name('leave.application.submit');
+    Route::post('/leave/request', [UserLeaveApplicationController::class, 'store'])->name('leave.request'); 
+
+    // Leave History Route
+    Route::get('/leave/history', [LeaveHistoryController::class, 'index'])->name('leave.history');
+
+    // Route for viewing user profile
+    Route::get('/user/profile', [UserProfileController::class, 'index'])->name('profile');
+
+    // Route for editing user profile
+    Route::get('/user/{user}/edit', [UserProfileController::class, 'edit'])->name('update.profile');
+
+    // Route for updating the profile after editing
+    Route::post('/user/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+
+    // Logout Route
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
 
 // Common Logout Route (for all roles)
 Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('auth.logout');
