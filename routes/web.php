@@ -44,11 +44,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('auth.login.post');
 
     // Registration Routes
-    Route::get('/register', function () {
-        return view('auth.register');
-    })->name('auth.register');
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('auth.register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::post('/register', [RegisteredUserController::class, 'store'])->name('auth.register.post');
 });
 
 // Authentication session routes (for logout)
@@ -80,6 +78,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Delete Employee Route (alternative route)
     Route::delete('/employees/{id}', [AdminManageUserController::class, 'destroy'])->name('employees.destroy');
+
+    Route::get('/users/pending', [AdminPendingUsersController::class, 'index'])->name('users.pending');
+    Route::post('/users/{id}/approve', [AdminPendingUsersController::class, 'approve'])->name('users.approve');
+    Route::post('/users/{id}/reject', [AdminPendingUsersController::class, 'reject'])->name('users.reject');
 
     // Logout Route
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

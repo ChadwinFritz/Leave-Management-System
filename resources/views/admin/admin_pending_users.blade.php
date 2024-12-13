@@ -40,7 +40,7 @@
                                         <!-- Approve Button -->
                                         <form action="{{ route('admin.users.approve', $user->id) }}" method="POST" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-green-500 text-white hover:bg-green-600 px-3 py-2 rounded-lg shadow-sm"
+                                            <button type="submit" class="bg-green-500 text-black hover:bg-green-600 px-3 py-2 rounded-lg shadow-sm"
                                                     onclick="return confirm('Are you sure you want to approve this user?');">
                                                 Approve
                                             </button>
@@ -49,7 +49,7 @@
                                         <!-- Reject Button -->
                                         <form action="{{ route('admin.users.reject', $user->id) }}" method="POST" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-red-500 text-white hover:bg-red-600 px-3 py-2 rounded-lg shadow-sm"
+                                            <button type="submit" class="bg-red-500 text-black hover:bg-red-600 px-3 py-2 rounded-lg shadow-sm"
                                                     onclick="return confirm('Are you sure you want to reject this user?');">
                                                 Reject
                                             </button>

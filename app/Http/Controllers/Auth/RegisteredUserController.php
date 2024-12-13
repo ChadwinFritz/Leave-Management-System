@@ -55,7 +55,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate the incoming request data with additional password rules
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
@@ -65,19 +64,18 @@ class RegisteredUserController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
             'employee_code' => ['required', 'string', 'unique:employees,employee_code'],
             'department_id' => ['required', 'exists:departments,id'],
-            'duty_id' => ['required', 'exists:duties,id'],
+            'duty_id' => ['required', 'exists:duties,id'], // Ensures a valid duty is selected
             'employment_status' => ['required', 'string'],
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'regex:/[A-Z]/',       // Must contain at least one uppercase letter
-                'regex:/[0-9]/',       // Must contain at least one number
-                'regex:/[!@#$%^&*()_+]/', // Must contain at least one special character
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[!@#$%^&*()_+]/',
                 'confirmed',
             ],
         ], [
-            // Custom error message for regex rule
             'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character (!@#$%^&*()_+).',
         ]);
 
@@ -102,9 +100,9 @@ class RegisteredUserController extends Controller
             'hire_date' => $hireDate,
             'employee_code' => $request->employee_code,
             'department_id' => $request->department_id,
-            'duty_id' => $request->duty_id,
+            'duty_id' => $request->duty_id, // Fix: Adding `duty_id`
             'employment_status' => $request->employment_status,
-            'status' => 'pending', // Assuming 'pending' is the status for new users
+            'status' => 'pending',
         ]);
 
         event(new Registered($user));
