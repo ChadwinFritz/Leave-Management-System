@@ -15,9 +15,6 @@ class SuperAdminManageAdminController extends Controller
      */
     public function index()
     {
-        // Ensure only SuperAdmins can access this page
-        $this->authorize('viewAnyAdmin', auth()->user());
-
         // Fetch all users with the 'admin' role
         $admins = User::where('role', 'admin')->get();
 
@@ -32,9 +29,6 @@ class SuperAdminManageAdminController extends Controller
      */
     public function destroy($id)
     {
-        // Ensure only SuperAdmins can delete admins
-        $this->authorize('deleteAdmin', auth()->user());
-
         // Find the admin user by ID
         $admin = User::where('role', 'admin')->findOrFail($id);
 

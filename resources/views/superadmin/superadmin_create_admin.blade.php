@@ -72,7 +72,7 @@
 
             <!-- Submit Button -->
             <div class="mt-6">
-                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                <button type="submit" class="w-full bg-indigo-600 text-black px-4 py-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
                     Create Admin
                 </button>
             </div>

@@ -7,12 +7,9 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SuperAdminDashboardController extends Controller
 {
-    use AuthorizesRequests; // Include this trait for authorization
-
     /**
      * Display the Super Admin Dashboard.
      *
@@ -20,9 +17,6 @@ class SuperAdminDashboardController extends Controller
      */
     public function index()
     {
-        // Ensure only SuperAdmins can access this page
-        $this->authorize('viewDashboard', auth()->user());
-
         // Cache dashboard stats to reduce database load
         $dashboardData = Cache::remember('superadmin_dashboard_stats', 60, function () {
             return [

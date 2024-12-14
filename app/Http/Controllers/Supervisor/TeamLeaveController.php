@@ -27,7 +27,7 @@ class TeamLeaveController extends Controller
                                ->get();
 
         // Pass the team members' data to the view
-        return view('supervisor.team_leave', [
+        return view('supervisor.supervisor_team_leave', [
             'teamMembers' => $teamMembers
         ]);
     }

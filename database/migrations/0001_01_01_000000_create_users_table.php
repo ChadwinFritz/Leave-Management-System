@@ -23,6 +23,9 @@ return new class extends Migration
             $table->rememberToken(); // Token for "remember me" functionality
             $table->timestamps(); // Created and updated timestamps
 
+            // Foreign key for department_id
+            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null'); // FK to departments table
+
             // Index for quick filtering
             $table->index(['level', 'status']);
         });

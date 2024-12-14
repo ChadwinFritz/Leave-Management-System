@@ -24,7 +24,7 @@ class TeamAvailabilityController extends Controller
                                ->get();
 
         // Pass the team members' data to the view
-        return view('supervisor.team_availability', [
+        return view('supervisor.supervisor_team_availability', [
             'teamMembers' => $teamMembers
         ]);
     }

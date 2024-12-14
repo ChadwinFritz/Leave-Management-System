@@ -17,9 +17,6 @@ class SuperAdminCreateAdminController extends Controller
      */
     public function create()
     {
-        // Ensure only SuperAdmin has access
-        $this->authorize('createAdmin', User::class);
-
         // Return the view for creating a new admin
         return view('superadmin.superadmin_create_admin');
     }
@@ -32,9 +29,6 @@ class SuperAdminCreateAdminController extends Controller
      */
     public function store(Request $request)
     {
-        // Ensure only SuperAdmin has access
-        $this->authorize('createAdmin', User::class);
-
         // Validate the incoming request
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users,username',

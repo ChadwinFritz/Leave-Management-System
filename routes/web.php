@@ -87,7 +87,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
-
 // Routes for Super Admin
 Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('audit-logs', [SuperAdminAuditLogController::class, 'index'])->name('auditLogs');
@@ -106,7 +105,8 @@ Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(fu
     Route::get('system/settings', [SuperAdminSystemSettingsController::class, 'index'])->name('system.settings');
     Route::post('system/settings', [SuperAdminSystemSettingsController::class, 'update'])->name('system.settings.update');
 
-    Route::post('user/logout', [LoginController::class, 'logout'])->name('superadmin.logout');
+    // Logout Route
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // Routes for Supervisor

@@ -9,7 +9,7 @@
     <div class="container mx-auto py-6 px-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-semibold text-gray-900">Manage Admins</h1>
-            <a href="{{ route('superadmin.create.admin') }}" class="bg-blue-500 text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 transition">
+            <a href="{{ route('superadmin.admin.create') }}" class="bg-blue-500 text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 transition">
                 Add New Admin
             </a>
         </div>
@@ -46,12 +46,12 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $admin->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <!-- Edit Admin Link -->
-                                <a href="{{ route('superadmin.edit.admin', $admin->id) }}" class="text-blue-600 hover:text-blue-900 transition">Edit</a>
+                                <a href="{{ route('superadmin.admin.edit', $admin->id) }}" class="text-blue-600 hover:text-blue-900 transition">Edit</a>
 
                                 <!-- Delete Admin Form -->
-                                <form action="{{ route('superadmin.delete.admin', $admin->id) }}" method="POST" class="inline">
+                                <form action="{{ route('superadmin.manage.admins.destroy', $admin->id) }}" method="POST" class="inline">
                                     @csrf
-                                    @method('DELETE') <!-- This is necessary to use the DELETE HTTP method -->
+                                    @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900 ml-4 transition">Delete</button>
                                 </form>
                             </td>

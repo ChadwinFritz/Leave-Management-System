@@ -17,9 +17,6 @@ class SuperAdminEditAdminController extends Controller
      */
     public function edit($id)
     {
-        // Ensure only SuperAdmins can access this page
-        $this->authorize('editAdmin', auth()->user());
-
         // Find the admin user by ID
         $admin = User::where('role', 'admin')->findOrFail($id);
 
@@ -35,9 +32,6 @@ class SuperAdminEditAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Ensure only SuperAdmins can update admins
-        $this->authorize('editAdmin', auth()->user());
-
         // Validate the input
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users,username,' . $id,

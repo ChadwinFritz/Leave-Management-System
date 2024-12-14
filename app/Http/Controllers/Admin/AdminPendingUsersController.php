@@ -24,8 +24,11 @@ class AdminPendingUsersController extends Controller
         // Find the user by their ID
         $user = User::findOrFail($id);
 
-        // Change the user's status to approved
-        $user->update(['status' => 'approved']);
+        // Update both the status and approval fields
+        $user->update([
+            'status' => 'approved',    // Update status to 'approved'
+            'is_approved' => true,     // Set is_approved to true
+        ]);
 
         // Redirect back with a success message
         return redirect()->route('admin.users.pending')->with('success', 'User approved successfully.');
@@ -37,8 +40,11 @@ class AdminPendingUsersController extends Controller
         // Find the user by their ID
         $user = User::findOrFail($id);
 
-        // Change the user's status to rejected
-        $user->update(['status' => 'rejected']);
+        // Change the user's status to rejected and set is_approved to false
+        $user->update([
+            'status' => 'rejected',
+            'is_approved' => false,
+        ]);
 
         // Redirect back with a success message
         return redirect()->route('admin.users.pending')->with('success', 'User rejected successfully.');

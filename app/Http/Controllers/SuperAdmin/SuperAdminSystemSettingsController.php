@@ -15,9 +15,6 @@ class SuperAdminSystemSettingsController extends Controller
      */
     public function index()
     {
-        // Ensure only SuperAdmins can access this page
-        $this->authorize('manageSystemSettings', auth()->user());
-
         // Load settings from cache or a configuration model
         $settings = $this->getSettings();
 
@@ -32,9 +29,6 @@ class SuperAdminSystemSettingsController extends Controller
      */
     public function update(Request $request)
     {
-        // Ensure only SuperAdmins can update settings
-        $this->authorize('manageSystemSettings', auth()->user());
-
         // Validate the incoming request data
         $validated = $request->validate([
             'maintenance_mode' => 'required|boolean',

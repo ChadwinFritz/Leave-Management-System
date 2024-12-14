@@ -175,4 +175,12 @@ class User extends Authenticatable
     {
         return $query->where('is_approved', true);
     }
+
+    /**
+     * Get the department that owns the user.
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class); // Assuming your Department model is in App\Models\Department
+    }
 }

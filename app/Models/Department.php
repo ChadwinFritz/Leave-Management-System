@@ -152,4 +152,12 @@ class Department extends Model
     {
         $this->update(['status' => 'inactive']);
     }
+
+    /**
+     * Get the users for the department.
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class); // A department has many users
+    }
 }

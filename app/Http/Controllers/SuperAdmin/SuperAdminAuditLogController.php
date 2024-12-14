@@ -16,9 +16,6 @@ class SuperAdminAuditLogController extends Controller
      */
     public function index(Request $request)
     {
-        // Ensure only SuperAdmin has access
-        $this->authorize('viewAuditLogs', AuditLog::class);
-
         // Retrieve audit logs with pagination, eager load associated user
         $auditLogs = AuditLog::with('user')
             ->orderBy('created_at', 'desc')

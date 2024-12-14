@@ -24,9 +24,9 @@
             </a>
 
             <!-- Create Admin Link -->
-            <a href="{{ route('superadmin.create.admin') }}" 
+            <a href="{{ route('superadmin.admin.create') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('superadmin.create.admin') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('superadmin.admin.create') ? 'font-semibold' : '' }}">
                 Create Admin
             </a>
 
@@ -38,9 +38,9 @@
             </a>
 
             <!-- Audit Logs Link -->
-            <a href="{{ route('superadmin.audit.logs') }}" 
+            <a href="{{ route('superadmin.auditLogs') }}" 
                class="bg-gray-500 text-white hover:bg-gray-600 flex items-center px-4 py-2 rounded 
-               {{ request()->routeIs('superadmin.audit.logs') ? 'font-semibold' : '' }}">
+               {{ request()->routeIs('superadmin.auditLogs') ? 'font-semibold' : '' }}">
                 Audit Logs
             </a>
 
