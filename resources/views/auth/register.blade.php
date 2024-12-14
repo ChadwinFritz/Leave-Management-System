@@ -106,9 +106,33 @@
         <script>
             function validatePassword() {
                 const password = document.getElementById('password').value;
-                document.getElementById('uppercase').classList.toggle('text-green-500', /[A-Z]/.test(password));
-                document.getElementById('number').classList.toggle('text-green-500', /[0-9]/.test(password));
-                document.getElementById('special').classList.toggle('text-green-500', /[!@#$%^&*()_+]/.test(password));
+
+                const uppercaseElement = document.getElementById('uppercase');
+                if (/[A-Z]/.test(password)) {
+                    uppercaseElement.classList.add('text-green-500');
+                    uppercaseElement.innerHTML = "✔ At least one uppercase letter";
+                } else {
+                    uppercaseElement.classList.remove('text-green-500');
+                    uppercaseElement.innerHTML = "• At least one uppercase letter";
+                }
+
+                const numberElement = document.getElementById('number');
+                if (/[0-9]/.test(password)) {
+                    numberElement.classList.add('text-green-500');
+                    numberElement.innerHTML = "✔ At least one number";
+                } else {
+                    numberElement.classList.remove('text-green-500');
+                    numberElement.innerHTML = "• At least one number";
+                }
+
+                const specialElement = document.getElementById('special');
+                if (/[!@#$%^&*()_+]/.test(password)) {
+                    specialElement.classList.add('text-green-500');
+                    specialElement.innerHTML = "✔ At least one special character (!@#$%^&*()_+)";
+                } else {
+                    specialElement.classList.remove('text-green-500');
+                    specialElement.innerHTML = "• At least one special character (!@#$%^&*()_+)";
+                }
             }
         </script>
 
