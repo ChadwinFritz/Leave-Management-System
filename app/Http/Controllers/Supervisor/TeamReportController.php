@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
-use App\Models\LeaveApplication;
-use App\Models\Task;
+use App\Models\TeamReport; // Add TeamReport model
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TeamReportController extends Controller
 {
-
     /**
      * Display the team performance report.
      *
@@ -32,46 +30,26 @@ class TeamReportController extends Controller
         ];
         $years = range(Carbon::now()->year - 5, Carbon::now()->year);
 
-        // Get the team members for the logged-in supervisor
-        $teamMembers = Employee::where('supervisor_id', Auth::id())
-                            ->with([
-                                'tasks' => function ($query) use ($currentMonth, $currentYear) {
-                                    // Filter tasks for the selected month and year
-                                    $query->whereMonth('completed_at', Carbon::parse($currentMonth)->month)
-                                            ->whereYear('completed_at', $currentYear);
-                                },
-                                'leaveApplications' => function ($query) use ($currentMonth, $currentYear) {
-                                    // Filter leave applications for the selected month and year
-                                    $query->whereMonth('start_date', Carbon::parse($currentMonth)->month)
-                                            ->whereYear('start_date', $currentYear);
-                                }
-                            ])
-                            ->get();
+        // Fetch the team reports based on the selected month and year
+        $teamReports = TeamReport::whereMonth('report_date', Carbon::parse($currentMonth)->month)
+                                 ->whereYear('report_date', $currentYear)
+                                 ->with('employee') // Eager load employee data
+                                 ->get();
 
-        // Process data for each team member to calculate report data
-        $teamReports = $teamMembers->map(function ($member) use ($currentMonth, $currentYear) {
-            // Calculate completed tasks count
-            $completedTasks = $member->tasks->count();
-
-            // Calculate leave days count
-            $leaveDays = $member->leaveApplications->reduce(function ($carry, $leave) {
-                return $carry + $leave->days; // Assuming 'days' is an attribute in LeaveApplication
-            }, 0);
-
-            // Calculate overtime hours (assuming overtime is tracked in 'overtime_hours' attribute)
-            $overtimeHours = $member->tasks->sum('overtime_hours');
-
+        // Process data for each report to prepare the data for the view
+        $teamReportsData = $teamReports->map(function ($report) {
+            // Return the relevant data
             return (object) [
-                'employee' => $member,
-                'completed_tasks' => $completedTasks,
-                'leave_days' => $leaveDays,
-                'overtime_hours' => $overtimeHours
+                'employee' => $report->employee-> name,
+                'performance_score' => $report->performance_score,
+                'attendance_percentage' => $report->attendance_percentage,
+                'leave_percentage' => $report->leave_percentage,
             ];
         });
 
         // Return the view with the report data
         return view('supervisor.supervisor_team_report', [
-            'teamReports' => $teamReports,
+            'teamReports' => $teamReportsData,
             'months' => $months,
             'years' => $years,
             'currentMonth' => $currentMonth,

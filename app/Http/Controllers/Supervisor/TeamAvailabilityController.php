@@ -19,13 +19,13 @@ class TeamAvailabilityController extends Controller
     {
         // Fetch the team members for the logged-in supervisor
         // Assuming Employee model has a relationship with Availability model
-        $teamMembers = Employee::where('supervisor_id', Auth::id())
+        $employees = Employee::where('user_id', Auth::id()) // Fetch employees based on user_id
                                ->with('availability')  // Eager load the availability data
                                ->get();
 
-        // Pass the team members' data to the view
+        // Pass the employees' data to the view
         return view('supervisor.supervisor_team_availability', [
-            'teamMembers' => $teamMembers
+            'employees' => $employees
         ]);
     }
 }

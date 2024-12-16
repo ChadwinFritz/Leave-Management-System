@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class ApproveLeaveController extends Controller
 {
-
     /**
      * Display a listing of pending leave requests for the supervisor.
      *
@@ -21,7 +20,7 @@ class ApproveLeaveController extends Controller
         $leaveApplications = LeaveApplication::where('status', 'pending')
             ->whereHas('employee', function ($query) {
                 // Ensure we only get the leave applications of the supervisor's team members
-                $query->where('supervisor_id', auth()->user()->id);
+                $query->where('user_id', auth()->user()->id);  // Changed to user_id
             })
             ->with('employee', 'leaveType')  // Eager load related models
             ->get();

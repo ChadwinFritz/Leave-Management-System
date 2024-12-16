@@ -18,7 +18,7 @@ class Team extends Model
      */
     protected $fillable = [
         'name',
-        'supervisor_id',
+        'user_id', // Changed supervisor_id to user_id
         'department_id',
     ];
 
@@ -36,12 +36,12 @@ class Team extends Model
     }
 
     /**
-     * Relationship to the Supervisor model.
-     * A team is led by a supervisor.
+     * Relationship to the User model.
+     * A team is led by a user (previously supervisor).
      */
-    public function supervisor(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Supervisor::class, 'supervisor_id');
+        return $this->belongsTo(User::class, 'user_id'); // Changed from supervisor to user
     }
 
     /**
@@ -66,25 +66,25 @@ class Team extends Model
     }
 
     /**
-     * Scope to filter teams by supervisor.
+     * Scope to filter teams by user (previously supervisor).
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $supervisorId
+     * @param int $userId
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBySupervisor($query, int $supervisorId)
+    public function scopeByUser($query, int $userId)
     {
-        return $query->where('supervisor_id', $supervisorId);
+        return $query->where('user_id', $userId); // Changed from supervisor_id to user_id
     }
 
     /**
-     * Get the full name of the supervisor leading the team.
+     * Get the full name of the user leading the team.
      *
      * @return string
      */
-    public function getSupervisorName(): string
+    public function getUserName(): string
     {
-        return $this->supervisor ? $this->supervisor->full_name : 'No supervisor assigned';
+        return $this->user ? $this->user->full_name : 'No user assigned'; // Changed supervisor to user
     }
 
     /**
@@ -123,13 +123,13 @@ class Team extends Model
     }
 
     /**
-     * Get a list of all teams led by a specific supervisor.
+     * Get a list of all teams led by a specific user (previously supervisor).
      *
-     * @param int $supervisorId
+     * @param int $userId
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function getTeamsBySupervisor(int $supervisorId)
+    public static function getTeamsByUser(int $userId)
     {
-        return self::bySupervisor($supervisorId)->get();
+        return self::byUser($userId)->get(); // Changed from supervisorId to userId
     }
 }

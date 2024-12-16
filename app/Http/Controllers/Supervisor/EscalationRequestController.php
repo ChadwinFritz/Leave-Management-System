@@ -18,7 +18,7 @@ class EscalationRequestController extends Controller
     public function index()
     {
         // Fetch the escalated leave requests for the logged-in supervisor
-        $escalatedRequests = EscalationRequest::where('supervisor_id', Auth::id())
+        $escalatedRequests = EscalationRequest::where('user_id', Auth::id())
                                               ->where('status', 'pending')
                                               ->get();
 
@@ -41,7 +41,7 @@ class EscalationRequestController extends Controller
         $escalationRequest = EscalationRequest::findOrFail($id);
 
         // Check if the current supervisor is assigned to the request
-        if ($escalationRequest->supervisor_id !== Auth::id()) {
+        if ($escalationRequest->user_id !== Auth::id()) {
             return redirect()->route('supervisor.dashboard')->with('error', 'Unauthorized action.');
         }
 
@@ -66,7 +66,7 @@ class EscalationRequestController extends Controller
         $escalationRequest = EscalationRequest::findOrFail($id);
 
         // Check if the current supervisor is assigned to the request
-        if ($escalationRequest->supervisor_id !== Auth::id()) {
+        if ($escalationRequest->user_id !== Auth::id()) {
             return redirect()->route('supervisor.dashboard')->with('error', 'Unauthorized action.');
         }
 

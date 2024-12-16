@@ -19,7 +19,7 @@ class TaskController extends Controller
     public function create()
     {
         // Fetch the team members assigned to the supervisor (assuming supervisor has a team relationship with employees)
-        $teamMembers = Employee::where('supervisor_id', Auth::id())->get();
+        $teamMembers = Employee::where('user_id', Auth::id())->get();
 
         // Pass the team members to the view
         return view('supervisor.supervisor_assign_tasks', compact('teamMembers'));
@@ -43,7 +43,7 @@ class TaskController extends Controller
         // Create a new task for the selected employee
         Task::create([
             'employee_id' => $request->employee_id,
-            'supervisor_id' => Auth::id(),  // Set the supervisor ID from the logged-in user
+            'user_id' => Auth::id(),  // Set the supervisor ID from the logged-in user
             'task_description' => $request->task_description,
             'deadline' => $request->deadline,
         ]);

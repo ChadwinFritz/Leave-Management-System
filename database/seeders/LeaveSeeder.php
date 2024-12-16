@@ -15,7 +15,7 @@ class LeaveSeeder extends Seeder
         $leaves = [
             [
                 'employee_id' => 1, // Peter Parker
-                'leave_application_id' => 1, // Corresponding to leave application ID
+                'leave_application_id' => 1,
                 'total_leave' => 5.0,
                 'start_date' => '2024-01-15',
                 'end_date' => '2024-01-20',
@@ -23,49 +23,49 @@ class LeaveSeeder extends Seeder
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 1, // Annual Leave (ID for Annual Leave)
+                'leave_type_id' => 1, // Annual Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'employee_id' => 2, // Tony Stark
                 'leave_application_id' => 2,
-                'total_leave' => 2.5,
+                'total_leave' => 2.0,
                 'start_date' => '2024-02-05',
-                'end_date' => '2024-02-07',
-                'start_half' => true,
+                'end_date' => '2024-02-06',
+                'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 2, // Sick Leave (ID for Sick Leave)
+                'leave_type_id' => 2, // Sick Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'employee_id' => 3, // Steve Rogers
                 'leave_application_id' => 3,
-                'total_leave' => 3.0,
-                'start_date' => '2024-03-10',
-                'end_date' => '2024-03-12',
+                'total_leave' => 7.0,
+                'start_date' => '2024-03-01',
+                'end_date' => '2024-03-07',
                 'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 5, // Bereavement Leave (ID for Bereavement Leave)
+                'leave_type_id' => 3, // Bereavement Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'employee_id' => 4, // Natasha Romanoff
                 'leave_application_id' => 4,
-                'total_leave' => 0.5,
-                'start_date' => '2024-03-20',
-                'end_date' => '2024-03-20', // Added the same date for single-day leave
+                'total_leave' => 3.0,
+                'start_date' => '2024-04-10',
+                'end_date' => '2024-04-12',
                 'start_half' => false,
-                'end_half' => true,
+                'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 6, // Compensatory Leave (ID for Compensatory Leave)
+                'leave_type_id' => 4, // Personal Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -73,83 +73,126 @@ class LeaveSeeder extends Seeder
                 'employee_id' => 5, // Bruce Banner
                 'leave_application_id' => 5,
                 'total_leave' => 10.0,
-                'start_date' => '2024-04-01',
-                'end_date' => '2024-04-10',
+                'start_date' => '2024-05-01',
+                'end_date' => '2024-05-10',
                 'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 8, // Study Leave (ID for Study Leave)
+                'leave_type_id' => 5, // Study Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'employee_id' => 1, // Peter Parker
+                'employee_id' => 6, // Wanda Maximoff
                 'leave_application_id' => 6,
                 'total_leave' => 1.0,
-                'start_date' => '2024-05-01',
-                'end_date' => '2024-05-01',  // Added same end_date for Public Holiday Leave
+                'start_date' => '2024-06-15',
+                'end_date' => '2024-06-15',
                 'start_half' => false,
-                'end_half' => false,
-                'on_date' => '2024-05-01',
+                'end_half' => true,
+                'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 9, // Public Holiday Leave (ID for Public Holiday Leave)
+                'leave_type_id' => 6, // Compensatory Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'employee_id' => 2, // Tony Stark
+                'employee_id' => 7, // Clint Barton
                 'leave_application_id' => 7,
-                'total_leave' => 0.0,
-                'start_date' => '2024-06-01',
-                'end_date' => '2024-08-30',
+                'total_leave' => 3.0,
+                'start_date' => '2024-07-10',
+                'end_date' => '2024-07-12',
                 'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 3, // Maternity Leave (mocked, rejected) (ID for Maternity Leave)
+                'leave_type_id' => 7, // Unpaid Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'employee_id' => 4, // Natasha Romanoff
+                'employee_id' => 8, // Sam Wilson
                 'leave_application_id' => 8,
-                'total_leave' => 15.0,
-                'start_date' => '2024-07-01',
-                'end_date' => '2024-07-15',
+                'total_leave' => 5.0,
+                'start_date' => '2024-08-01',
+                'end_date' => '2024-08-05',
                 'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 4, // Paternity Leave (mocked) (ID for Paternity Leave)
+                'leave_type_id' => 1, // Annual Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'employee_id' => 3, // Steve Rogers
+                'employee_id' => 9, // Scott Lang
                 'leave_application_id' => 9,
-                'total_leave' => 365.0,
-                'start_date' => '2025-01-01',
-                'end_date' => '2025-12-31',
-                'start_half' => false,
+                'total_leave' => 2.5,
+                'start_date' => '2024-09-01',
+                'end_date' => '2024-09-02',
+                'start_half' => true,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 10, // Sabbatical Leave (ID for Sabbatical Leave)
+                'leave_type_id' => 2, // Sick Leave
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'employee_id' => 5, // Bruce Banner
+                'employee_id' => 10, // Hope Van Dyne
                 'leave_application_id' => 10,
-                'total_leave' => 15.0,
-                'start_date' => '2024-09-01',
-                'end_date' => '2024-09-15',
+                'total_leave' => 7.0,
+                'start_date' => '2024-10-01',
+                'end_date' => '2024-10-07',
                 'start_half' => false,
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 7, // Unpaid Leave (ID for Unpaid Leave)
+                'leave_type_id' => 3, // Parental Leave
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // Additional entries for remaining employees
+            [
+                'employee_id' => 11, // Stephen Strange
+                'leave_application_id' => 11,
+                'total_leave' => 4.0,
+                'start_date' => '2024-11-01',
+                'end_date' => '2024-11-04',
+                'start_half' => false,
+                'end_half' => false,
+                'on_date' => null,
+                'on_time' => null,
+                'leave_type_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'employee_id' => 12, // T'Challa
+                'leave_application_id' => 12,
+                'total_leave' => 1.0,
+                'start_date' => '2024-12-25',
+                'end_date' => '2024-12-25',
+                'start_half' => false,
+                'end_half' => false,
+                'on_date' => null,
+                'on_time' => null,
+                'leave_type_id' => 9, // Public Holiday Leave
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'employee_id' => 13, // Carol Danvers
+                'leave_application_id' => 13,
+                'total_leave' => 5.0,
+                'start_date' => '2024-12-20',
+                'end_date' => '2024-12-24',
+                'start_half' => false,
+                'end_half' => false,
+                'on_date' => null,
+                'on_time' => null,
+                'leave_type_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

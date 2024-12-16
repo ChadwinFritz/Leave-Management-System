@@ -59,48 +59,93 @@ class LeaveRequestSeeder extends Seeder
                 'status' => 'pending',
             ],
             [
-                'employee_id' => 1, // Employee: Peter Parker
+                'employee_id' => 6, // Employee: Wanda Maximoff
                 'leave_application_id' => 6, // Linked leave application
-                'request_date' => '2024-04-20',
-                'start_date' => '2024-05-01',
-                'end_date' => '2024-05-01',
-                'reason' => 'Observing May Day holiday.',
+                'request_date' => '2024-05-01',
+                'start_date' => '2024-05-15',
+                'end_date' => '2024-05-20',
+                'reason' => 'Spending quality time with family.',
                 'status' => 'approved',
             ],
             [
-                'employee_id' => 2, // Employee: Tony Stark
+                'employee_id' => 7, // Employee: Clint Barton
                 'leave_application_id' => 7, // Linked leave application
                 'request_date' => '2024-05-20',
                 'start_date' => '2024-06-01',
-                'end_date' => '2024-08-30',
-                'reason' => 'Long-term rest and rejuvenation.',
-                'status' => 'rejected',
-            ],
-            [
-                'employee_id' => 4, // Employee: Natasha Romanoff
-                'leave_application_id' => 8, // Linked leave application
-                'request_date' => '2024-06-15',
-                'start_date' => '2024-07-01',
-                'end_date' => '2024-07-15',
-                'reason' => 'Spending time with family.',
+                'end_date' => '2024-06-15',
+                'reason' => 'Family bonding and caregiving.',
                 'status' => 'approved',
             ],
             [
-                'employee_id' => 3, // Employee: Steve Rogers
+                'employee_id' => 8, // Employee: Sam Wilson
+                'leave_application_id' => 8, // Linked leave application
+                'request_date' => '2024-06-10',
+                'start_date' => '2024-07-10',
+                'end_date' => '2024-07-20',
+                'reason' => 'Volunteering at a community event.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 9, // Employee: Scott Lang
                 'leave_application_id' => 9, // Linked leave application
-                'request_date' => '2024-12-01',
+                'request_date' => '2024-07-25',
+                'start_date' => '2024-08-01',
+                'end_date' => '2024-08-14',
+                'reason' => 'Spending time with daughter during her summer break.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 10, // Employee: Hope Van Dyne
+                'leave_application_id' => 10, // Linked leave application
+                'request_date' => '2024-09-01',
+                'start_date' => '2024-09-05',
+                'end_date' => '2024-09-08',
+                'reason' => 'Health recovery and rest.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 11, // Employee: Stephen Strange
+                'leave_application_id' => 11, // Linked leave application
+                'request_date' => '2024-09-15',
+                'start_date' => '2024-10-01',
+                'end_date' => '2024-10-10',
+                'reason' => 'Attending a mystical arts training session.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 12, // Employee: T’Challa
+                'leave_application_id' => 12, // Linked leave application
+                'request_date' => '2024-12-15',
                 'start_date' => '2025-01-01',
-                'end_date' => '2025-12-31',
-                'reason' => 'Extended mission leave.',
+                'end_date' => '2025-06-30',
+                'reason' => 'Royal duties and leadership in Wakanda.',
                 'status' => 'pending',
             ],
             [
-                'employee_id' => 5, // Employee: Bruce Banner
-                'leave_application_id' => 10, // Linked leave application
-                'request_date' => '2024-08-20',
-                'start_date' => '2024-09-01',
-                'end_date' => '2024-09-15',
-                'reason' => 'Research leave for gamma experiments.',
+                'employee_id' => 13, // Employee: Carol Danvers
+                'leave_application_id' => 13, // Linked leave application
+                'request_date' => '2024-10-20',
+                'start_date' => '2024-11-01',
+                'end_date' => '2024-11-15',
+                'reason' => 'Rest and recuperation from mission.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 14, // Employee: Bucky Barnes
+                'leave_application_id' => 14, // Linked leave application
+                'request_date' => '2024-12-01',
+                'start_date' => '2024-12-25',
+                'end_date' => '2024-12-25',
+                'reason' => 'Observing the Christmas holiday.',
+                'status' => 'approved',
+            ],
+            [
+                'employee_id' => 15, // Employee: Nick Fury
+                'leave_application_id' => 15, // Linked leave application
+                'request_date' => '2024-11-20',
+                'start_date' => '2024-12-01',
+                'end_date' => '2024-12-05',
+                'reason' => 'Strategic retreat and planning session.',
                 'status' => 'approved',
             ],
         ];

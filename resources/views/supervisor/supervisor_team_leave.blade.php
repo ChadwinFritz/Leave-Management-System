@@ -39,16 +39,16 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($teamMembers as $member)
-                                @foreach($member->leaveApplications as $application)
+                            @foreach($employees as $employee) <!-- Assuming employees are passed from controller -->
+                                @foreach($employee->leaveApplications as $application)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $member->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $employee->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $application->leaveType->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $application->start_date->format('Y-m-d') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $application->end_date->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($application->start_date)->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($application->end_date)->format('Y-m-d') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 text-xs font-medium {{ $application->status === 'Approved' ? 'text-green-800 bg-green-200' : 'text-red-800 bg-red-200' }} rounded">
-                                                {{ $application->status }}
+                                            <span class="px-2 py-1 text-xs font-medium {{ $application->status === 'approved' ? 'text-green-800 bg-green-200' : 'text-red-800 bg-red-200' }} rounded">
+                                                {{ ucfirst($application->status) }}
                                             </span>
                                         </td>
                                     </tr>

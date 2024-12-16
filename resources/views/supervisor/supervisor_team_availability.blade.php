@@ -38,16 +38,26 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($teamMembers as $member)
+                            @forelse($employees as $employee)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $member->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $employee->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 text-xs font-medium {{ $member->availability->status === 'Available' ? 'text-green-800 bg-green-200' : 'text-red-800 bg-red-200' }} rounded">
-                                            {{ $member->availability->status }}
-                                        </span>
+                                        @if($employee->availability)
+                                            <span class="px-2 py-1 text-xs font-medium {{ $employee->availability->status === 'Available' ? 'text-green-800 bg-green-200' : 'text-red-800 bg-red-200' }} rounded">
+                                                {{ $employee->availability->status }}
+                                            </span>
+                                        @else
+                                            <span class="px-2 py-1 text-xs font-medium text-gray-400 bg-gray-200 rounded">
+                                                No Data
+                                            </span>
+                                        @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $member->availability->current_task ?? 'None' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $member->availability->availability_hours }} hrs/day</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $employee->availability ? $employee->availability->current_task : 'None' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $employee->availability ? $employee->availability->availability_hours . ' hrs/day' : 'N/A' }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

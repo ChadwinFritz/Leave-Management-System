@@ -20,12 +20,12 @@ class SupervisorDashboardController extends Controller
     public function index()
     {
         // Fetch the count of pending leave approvals for the logged-in supervisor
-        $pendingApprovalsCount = LeaveApplication::where('supervisor_id', Auth::id())
+        $pendingApprovalsCount = LeaveApplication::where('user_id', Auth::id())
                                                   ->where('status', 'pending')
                                                   ->count();
 
         // Fetch the count of available team members (excluding those on leave)
-        $availableMembersCount = Employee::where('supervisor_id', Auth::id())
+        $availableMembersCount = Employee::where('user_id', Auth::id())
                                          ->where('status', 'active')
                                          ->whereNotIn('id', function ($query) {
                                              $query->select('employee_id')
@@ -35,7 +35,7 @@ class SupervisorDashboardController extends Controller
                                          ->count();
 
         // Fetch the count of tasks assigned in the current month
-        $tasksAssignedCount = Task::where('supervisor_id', Auth::id())
+        $tasksAssignedCount = Task::where('user_id', Auth::id())
                                   ->whereMonth('created_at', now()->month)
                                   ->count();
 

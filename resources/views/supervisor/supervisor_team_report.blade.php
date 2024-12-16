@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="flex items-end">
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow hover:bg-indigo-700">
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-black font-medium rounded-md shadow hover:bg-indigo-700">
                                 Generate Report
                             </button>
                         </div>

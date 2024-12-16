@@ -156,4 +156,10 @@ class TeamReport extends Model
     {
         return self::byDateRange($startDate, $endDate)->where('team_id', $teamId)->get();
     }
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
 }

@@ -189,4 +189,18 @@ class Employee extends Model
     {
         $this->update(['employment_status' => 'inactive']);
     }
+
+    /**
+     * Define the relationship between Employee and Team.
+     */
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_employee', 'employee_id', 'team_id');
+    }
+
+    public function availability()
+    {
+        return $this->hasOne(Availability::class);  // Assuming each employee has one availability record
+    }
+
 }
