@@ -69,7 +69,7 @@ class UserLeaveApplicationController extends Controller
             ->where('leave_type_id', $leaveType->id)
             ->where('status', 'approved')
             ->sum('days');
-        $remainingDays = max(0, $leaveType->default_days - $takenDays);
+        $remainingDays = max(25, $leaveType->default_days - $takenDays);
 
         if ($days > $remainingDays) {
             return back()->withErrors(['Insufficient leave balance for the selected leave type.']);
@@ -88,7 +88,7 @@ class UserLeaveApplicationController extends Controller
             'days' => $days,
             'reason' => $request->reason,
             'status' => 'pending',
-            'total_leave' => $totalLeave, // Include the total_leave value
+            'total_leave' => $totalLeave,
         ]);
 
         return redirect()->route('user.dashboard')->with('success', 'Leave application submitted successfully.');

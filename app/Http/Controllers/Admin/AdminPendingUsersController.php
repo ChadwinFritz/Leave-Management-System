@@ -26,8 +26,8 @@ class AdminPendingUsersController extends Controller
 
         // Update both the status and approval fields
         $user->update([
-            'status' => 'approved',    // Update status to 'approved'
-            'is_approved' => true,     // Set is_approved to true
+            'status' => 'approved',
+            'is_approved' => true,
         ]);
 
         // Redirect back with a success message
