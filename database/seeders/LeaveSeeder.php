@@ -24,6 +24,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 1, // Annual Leave
+                'status' => 'approved', // Example status
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -38,6 +39,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 2, // Sick Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -52,6 +54,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 3, // Bereavement Leave
+                'status' => 'rejected',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -66,6 +69,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 4, // Personal Leave
+                'status' => 'approved',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -80,6 +84,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 5, // Study Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -94,6 +99,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 6, // Compensatory Leave
+                'status' => 'approved',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -108,6 +114,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 7, // Unpaid Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -122,6 +129,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 1, // Annual Leave
+                'status' => 'approved',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -136,6 +144,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 2, // Sick Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -150,10 +159,10 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 3, // Parental Leave
+                'status' => 'approved',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Additional entries for remaining employees
             [
                 'employee_id' => 11, // Stephen Strange
                 'leave_application_id' => 11,
@@ -164,7 +173,8 @@ class LeaveSeeder extends Seeder
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 1,
+                'leave_type_id' => 1, // Annual Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -179,6 +189,7 @@ class LeaveSeeder extends Seeder
                 'on_date' => null,
                 'on_time' => null,
                 'leave_type_id' => 9, // Public Holiday Leave
+                'status' => 'approved',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -192,7 +203,8 @@ class LeaveSeeder extends Seeder
                 'end_half' => false,
                 'on_date' => null,
                 'on_time' => null,
-                'leave_type_id' => 1,
+                'leave_type_id' => 1, // Annual Leave
+                'status' => 'pending',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

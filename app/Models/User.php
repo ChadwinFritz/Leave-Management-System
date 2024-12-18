@@ -181,6 +181,6 @@ class User extends Authenticatable
      */
     public function department()
     {
-        return $this->belongsTo(Department::class); // Assuming your Department model is in App\Models\Department
+        return $this->belongsTo(Department::class); 
     }
 }

@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         // Redirect based on user role
-        $user = Auth::user(); // Get the currently authenticated user
+        $user = Auth::user(); 
 
         switch ($user->level) {
             case 0: // Normal User

@@ -107,7 +107,7 @@
 
             <!-- Action Buttons -->
             <div class="px-6 py-4 border-t flex justify-between">
-                <a href="{{ route('user.update.profile', ['user' => Auth::user()->id]) }}" class="bg-gray-600 hover:bg-blue-700 text-black font-semibold py-2 px-4 rounded">
+                <a href="{{ route('user.update.profile', ['user' => Auth::user()->id]) }}" class="<bg-gray-5></bg-gray-5>00 hover:bg-gray-700 text-black font-semibold py-2 px-4 rounded">
                     Edit Profile
                 </a>
             </div>

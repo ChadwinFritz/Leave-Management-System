@@ -64,7 +64,7 @@ class RegisteredUserController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
             'employee_code' => ['required', 'string', 'unique:employees,employee_code'],
             'department_id' => ['required', 'exists:departments,id'],
-            'duty_id' => ['required', 'exists:duties,id'], // Ensures a valid duty is selected
+            'duty_id' => ['required', 'exists:duties,id'],
             'employment_status' => ['required', 'string'],
             'password' => [
                 'required',
@@ -100,7 +100,7 @@ class RegisteredUserController extends Controller
             'hire_date' => $hireDate,
             'employee_code' => $request->employee_code,
             'department_id' => $request->department_id,
-            'duty_id' => $request->duty_id, // Fix: Adding `duty_id`
+            'duty_id' => $request->duty_id,
             'employment_status' => $request->employment_status,
             'status' => 'pending',
         ]);

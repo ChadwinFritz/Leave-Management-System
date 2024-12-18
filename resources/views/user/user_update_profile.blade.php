@@ -109,8 +109,8 @@
 
                 <!-- Action Buttons -->
                 <div class="px-6 py-4 border-t flex justify-between">
-                    <button type="reset" class="bg-gray-500 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded">Clear Form</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Update Profile</button>
+                    <button type="reset" class="bg-gray-500 hover:bg-gray-400 text-black font-semibold py-2 px-4 rounded">Clear Form</button>
+                    <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-black font-semibold py-2 px-4 rounded">Update Profile</button>
                 </div>
             </form>
         </div>

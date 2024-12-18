@@ -51,7 +51,7 @@ class UserLeaveApplicationController extends Controller
 
         $user = Auth::user();
 
-        // Fetch employee data again for validation or any further use
+        // Fetch employee data for validation and use
         $employee = $user->employee;
 
         if (!$employee) {
@@ -61,11 +61,11 @@ class UserLeaveApplicationController extends Controller
         // Calculate the number of days for the leave
         $startDate = new \DateTime($request->start_date);
         $endDate = new \DateTime($request->end_date);
-        $days = $startDate->diff($endDate)->days + 1; // Include the start date
+        $days = $startDate->diff($endDate)->days + 1;
 
-        // Check if the user has enough leave balance for the selected leave type
+        // Check leave balance for the selected leave type
         $leaveType = LeaveType::findOrFail($request->leave_type_id);
-        $takenDays = Leave::where('user_id', $user->id)
+        $takenDays = Leave::where('employee_id', $employee->id)
             ->where('leave_type_id', $leaveType->id)
             ->where('status', 'approved')
             ->sum('days');
@@ -75,15 +75,20 @@ class UserLeaveApplicationController extends Controller
             return back()->withErrors(['Insufficient leave balance for the selected leave type.']);
         }
 
-        // Create a new leave application
+        // Calculate the total leave value (use $days unless there is a specific rule)
+        $totalLeave = $days; // Adjust calculation if needed (e.g., include half-days)
+
+        // Create a new leave application with the employee_id
         Leave::create([
+            'employee_id' => $employee->id,
             'user_id' => $user->id,
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'days' => $days,
             'reason' => $request->reason,
-            'status' => 'pending', // Default status
+            'status' => 'pending',
+            'total_leave' => $totalLeave, // Include the total_leave value
         ]);
 
         return redirect()->route('user.dashboard')->with('success', 'Leave application submitted successfully.');
